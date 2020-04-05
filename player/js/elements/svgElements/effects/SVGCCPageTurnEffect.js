@@ -1,14 +1,16 @@
+// ref: https://github.com/livingbio/fitgames/issues/2#issuecomment-607055180
+
 function setupAnimation() {
     const tl = anime.timeline({
         delay: 1000,
         endDelay: 1500,
-        loop: true,
+        // loop: true,
         easing: 'cubicBezier(0.25, 0.1, 0.25, 1.0)'
     })
     const animations = [
         ...setupPageFlip(),
         ...setupPageFade(),
-        ...setupShowDay()
+        // ...setupShowDay()
     ]
     for (let animation of animations) {
         tl.add(animation, 0)
@@ -74,37 +76,8 @@ function setupPageFade(duration = 1000) {
     }]
 }
 
-function setupShowDay(duration = 1000) {
-    const easing = 'steps(1)'
-    return [{
-            targets: '.act-1',
-            opacity: [1, 0],
-            duration,
-            easing
-        },
-        {
-            targets: '.act-2',
-            opacity: [0, 1],
-            duration,
-            easing
-        }
-    ]
-}
 
 function SVGCCPageTurnEffect(filter, filterManager, elem) {
-    // filter: A empty SVG filter DOM element
-
-    // filterManger: GroupEffect
-    // filterManager.data: the related node in data.json
-    // filterManager.effectElements: the related options
-    // filterManager.container: SVGCompElement
-    // filterManager.dynamicProperties: Animated Property
-    // filterManager._mdf
-
-    // elem = sfilterManager.container
-
-    // filterManager.container.globalData
-
     this.filter = filter
     this.filterManager = filterManager
     this.elem = elem
@@ -113,7 +86,6 @@ function SVGCCPageTurnEffect(filter, filterManager, elem) {
 
 SVGCCPageTurnEffect.prototype.initialize = function () {
     if (this.initialized == false && this.elem.baseElement.ownerSVGElement) {
-        // 1. move element to defs
         var svg = SVG(this.elem.baseElement.ownerSVGElement)
         var root = SVG(this.elem.baseElement.parentNode)
 
@@ -168,7 +140,6 @@ SVGCCPageTurnEffect.prototype.initialize = function () {
       </g>`))
         // this.elem
 
-        timeline = setupAnimation()
         this.initialized = true
     }
 }
@@ -176,6 +147,10 @@ SVGCCPageTurnEffect.prototype.initialize = function () {
 SVGCCPageTurnEffect.prototype.renderFrame = function (forceRender) {
     if (!this.initialized) {
         this.initialize();
+    }
+
+    if (forceRender) {
+        timeline = setupAnimation()
     }
 
 };
