@@ -1,33 +1,18 @@
-/*global anime, SVG*/
+/*global anime, createElementID*/
 // ref: https://github.com/livingbio/fitgames/issues/2#issuecomment-607055180
 
-function setupAnimation() {
-    const tl = anime.timeline({
-        delay: 1000,
-        endDelay: 1500,
-        // loop: true,
-        easing: 'cubicBezier(0.25, 0.1, 0.25, 1.0)',
-    });
-    const animations = [
-        ...setupPageFlip(),
-        ...setupPageFade(),
-        // ...setupShowDay()
-    ];
-    for(const animation of animations){
-        tl.add(animation, 0);
-    }
-    return tl;
-}
-
 function setupPageFlip({
+    box,
+    back,
+    mask,
+    feFlood,
+}, {
     backColor = 'white',
     paperTransparency = 0,
     fromAngle: a0 = Math.PI / 12,
     toAngle: a1 = Math.PI / 4,
-    duration = 1000,
 } = {}) {
-    const box = document.querySelector('.front').getBBox();
-    const{
+    const {
         width: w,
         height: h,
     } = box;
@@ -43,114 +28,106 @@ function setupPageFlip({
         ['height', w + h],
         ['transform-origin', origin],
     ];
-    const mask = document.querySelector('.mask');
-    for(const[k, v] of maskAttrs){
-        mask.setAttribute(k, v);
-    }
+    maskAttrs.forEach(([k, v]) => mask.setAttribute(k, v));
 
-    const back = document.querySelector('.back');
     back.setAttribute('transform-origin', origin);
 
-    const flood = document.querySelector('#flood > feFlood');
-    flood.setAttribute('flood-color', backColor);
-    flood.setAttribute('flood-opacity', 1 - paperTransparency);
+    feFlood.setAttribute('flood-color', backColor);
+    feFlood.setAttribute('flood-opacity', 1 - paperTransparency);
 
-    return[{
+    return [{
         targets: mask,
         rotate: [`${a0}rad`, `${a1}rad`],
-        duration,
     },
     {
         targets: back,
         rotate: [`${2 * a0}rad`, `${2 * a1}rad`],
         scaleY: [-1, -1],
-        duration,
-    },
-    ];
-}
-
-function setupPageFade(duration = 1000) {
-    return[{
-        targets: '.page',
-        opacity: [1, 0],
-        duration,
     }];
 }
 
+function setupAnimation(elements, {
+    duration = 1000,
+    ...options
+} = {}) {
+    const tl = anime.timeline({
+        autoplay: false,
+        duration,
+        easing: 'cubicBezier(0.25, 0.1, 0.25, 1.0)',
+    });
+    setupPageFlip(elements, options)
+        .forEach((anim) => tl.add(anim, 0));
 
-function SVGCCPageTurnEffect(filter, filterManager, elem) {
-    this.filter = filter;
-    this.filterManager = filterManager;
-    this.elem = elem;
-    this.initialized = false;
+    return tl;
 }
 
-SVGCCPageTurnEffect.prototype.initialize = function() {
-    if(this.initialized == false && this.elem.baseElement.ownerSVGElement){
-        var svg = SVG(this.elem.baseElement.ownerSVGElement);
-        var root = SVG(this.elem.baseElement.parentNode);
+function SVGCCPageTurnEffect(filter, filterManager, elem) {
+    filter.setAttribute('id', createElementID());
+    elem.globalData.defs.appendChild(filter);
 
-        var page = SVG(this.elem.baseElement).id('page');
-        svg.defs().add(this.elem.baseElement);
-        var mask = svg.mask().id('mask').add(svg.rect().fill('white').addClass('mask'));
-        svg.defs().add(mask);
-        svg.defs().add(SVG(`<filter id="flood">
-        <feFlood
-          flood-color="white"
-          flood-opacity="0.8"
-          result="flood"
-        />
-        <feComposite
-          in="flood"
-          in2="SourceGraphic"
-          operator="in"
-          result="back"
-        />
-        <feBlend
-          in="back"
-          in2="SourceGraphic"
-        />
-      </filter>`));
+    const feFlood = createNS('feFlood');
+    feFlood.setAttribute('result', 'flood');
+    filter.appendChild(feFlood);
 
-        var g = root.group();
-        this.elem.baseElement = g.node;
+    const feComposite = createNS('feComposite');
+    feComposite.setAttribute('in', 'flood');
+    feComposite.setAttribute('in2', 'SourceGraphic');
+    feComposite.setAttribute('operator', 'in');
+    feComposite.setAttribute('result', 'back');
+    filter.appendChild(feComposite);
 
-        g.addClass('page').maskWith(mask);
-        g.add(svg.group().addClass('front').add(svg.use(page).addClass('content')));
-        g.add(svg.group().addClass('back').add(svg.use(page).addClass('content')));
-        g.add(SVG(`<g class="mask-helper">
-        <filter id="invert-alpha">
-          <feColorMatrix
-            type="matrix"
-            values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 -1 1"
-          />
-        </filter>
-        <g filter="url(#invert-alpha)">
-          <rect
-            width="100%"
-            height="100%"
-            fill="rgba(255, 0, 0, 0.5)"
-          />
-          <rect
-            mask="url(#mask)"
-            width="100%"
-            height="100%"
-            fill="rgba(0, 0, 0, 1)"
-          />
-        </g>
-      </g>`));
-        // this.elem
+    const feBlend = createNS('feBlend');
+    feBlend.setAttribute('in', 'back');
+    feBlend.setAttribute('in2', 'SourceGraphic');
+    filter.appendChild(feBlend);
 
+    const mask = createNS('mask');
+    mask.setAttribute('id', createElementID());
+    const maskRect = createNS('rect');
+    maskRect.setAttribute('fill', 'white');
+    mask.appendChild(maskRect);
+    elem.globalData.defs.appendChild(mask);
+
+    const el = elem.getBaseElement();
+    el.setAttribute('mask', `url(#${mask.id})`);
+
+    const back = createNS('g');
+    back.setAttribute('filter', `url(#${filter.id})`);
+
+    this.initialize = function () {
+        const box = el.getBBox();
+
+        el.children.forEach((child) => {
+            child.setAttribute('id', createElementID());
+            const backContent = createNS('use');
+            backContent.setAttribute('href', `#${child.id}`);
+            back.appendChild(backContent);
+        });
+        el.appendChild(back);
+        this.timeline = setupAnimation({
+            mask: maskRect,
+            box,
+            back,
+            feFlood,
+        });
+        this.timeline.seek(0);
         this.initialized = true;
-    }
-};
+    };
+    this.elem = elem;
+}
 
-SVGCCPageTurnEffect.prototype.renderFrame = function(forceRender) {
-    if(!this.initialized){
+SVGCCPageTurnEffect.prototype.renderFrame = function (forceRender) {
+    if (!this.initialized) {
         this.initialize();
     }
-
-    if(forceRender){
-        timeline = setupAnimation();
+    let currentTime = 0;
+    if (forceRender) {
+        this.startTime = null;
+    } else {
+        if (!this.startTime) {
+            this.startTime = Date.now();
+        }
+        currentTime = Date.now() - this.startTime;
     }
+    this.timeline.seek(currentTime);
 };
