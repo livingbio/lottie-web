@@ -5,10 +5,7 @@ function setupPageFlip({
     box,
     back,
     mask,
-    feFlood,
 }, {
-    backColor = 'white',
-    paperTransparency = 0,
     fromAngle: a0 = Math.PI / 12,
     toAngle: a1 = Math.PI / 4,
 } = {}) {
@@ -31,9 +28,6 @@ function setupPageFlip({
     maskAttrs.forEach(([k, v]) => mask.setAttribute(k, v));
 
     back.setAttribute('transform-origin', origin);
-
-    feFlood.setAttribute('flood-color', backColor);
-    feFlood.setAttribute('flood-opacity', 1 - paperTransparency);
 
     return [{
         targets: mask,
@@ -61,11 +55,21 @@ function setupAnimation(elements, {
     return tl;
 }
 
+function rgbaDataToString ([r, g, b, a]) {
+    return `rgba(${r * 255}, ${g * 255}, ${b * 255}, ${a})`;
+}
+
 function SVGCCPageTurnEffect(filter, filterManager, elem) {
+    const options = filterManager.data.ef;
+
     filter.setAttribute('id', createElementID());
     elem.globalData.defs.appendChild(filter);
 
     const feFlood = createNS('feFlood');
+    const paperColor = rgbaDataToString(filterManager.data.ef[8].v.k);
+    const paperOpcaity = options[7].v.k / 100;
+    feFlood.setAttribute('flood-color', paperColor);
+    feFlood.setAttribute('flood-opacity', paperOpcaity);
     feFlood.setAttribute('result', 'flood');
     filter.appendChild(feFlood);
 
@@ -108,7 +112,6 @@ function SVGCCPageTurnEffect(filter, filterManager, elem) {
             mask: maskRect,
             box,
             back,
-            feFlood,
         });
         this.timeline.seek(0);
         this.initialized = true;
