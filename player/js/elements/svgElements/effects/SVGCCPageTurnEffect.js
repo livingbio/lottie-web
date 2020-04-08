@@ -19,12 +19,12 @@ function SVGCCPageTurnEffect(_, filterManager, elem) {
     let initialized = false;
 
     function initialize () {
-        el.children.forEach((child) => {
+        for (const child of el.children) {
             child.setAttribute('id', createElementID());
             const backContent = createNS('use');
             backContent.setAttribute('href', `#${child.id}`);
             back.appendChild(backContent);
-        });
+        }
         el.appendChild(back);
         initialized = true;
     }
