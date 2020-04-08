@@ -626,26 +626,38 @@ function wrapScriptWithModule(code, build) {
 
 function uglifyCode(code) {
 	return new Promise((resolve, reject) => {
-		try {
-			const result = UglifyJS.minify(code, {
-				output:
-				{
-					ascii_only: true
-				},
-				toplevel: true,
-				mangle: {
-					reserved: ['lottie']
-				}
-			});
-			if (result.error) {
-				reject(result.error)
-			} else {
-				resolve(result.code)
-			}
-		} catch (err) {
-			reject(err)
-		}
+		resolve(code)
 	})
+
+	// FIXME: disable minifier for now. 
+	//
+	// https://github.com/mishoo/UglifyJS2
+	// uglify-js only supports JavaScript (ECMAScript 5).
+	// To minify ECMAScript 2015 or above, transpile using tools like Babel.
+	// 
+	// The whole project setup is old, should switch completetly.
+
+	// return new Promise((resolve, reject) => {
+	// 	try {
+	// 		const result = UglifyJS.minify(code, {
+	// 			output:
+	// 			{
+	// 				ascii_only: true
+	// 			},
+	// 			toplevel: true,
+	// 			mangle: {
+	// 				reserved: ['lottie']
+	// 			}
+	// 		});
+	// 		if (result.error) {
+	// 			reject(result.error)
+	// 		} else {
+	// 			resolve(result.code)
+	// 		}
+	// 	} catch (err) {
+	// 		reject(err)
+	// 	}
+	// })
 }
 
 async function modularizeCode(code) {
