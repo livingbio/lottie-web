@@ -1,73 +1,58 @@
 /*global anime, createElementID*/
-// ref: https://github.com/livingbio/fitgames/issues/2#issuecomment-607055180
-
-function setupPageFlip({
-    box,
-    back,
-    mask,
-}, {
-    fromAngle: a0 = Math.PI / 12,
-    toAngle: a1 = Math.PI / 4,
-} = {}) {
-    const {
-        width: w,
-        height: h,
-    } = box;
-    const dx = (h + w * Math.tan(a0)) / (Math.tan(a1) - Math.tan(a0));
-    const dy = dx * Math.tan(a1) - h;
-    const x = box.x - dx;
-    const y = box.y - dy;
-    const origin = `${x} ${y}`;
-    const maskAttrs = [
-        ['x', x],
-        ['y', y],
-        ['width', dx + w + dy + h],
-        ['height', w + h],
-        ['transform-origin', origin],
-    ];
-    maskAttrs.forEach(([k, v]) => mask.setAttribute(k, v));
-
-    back.setAttribute('transform-origin', origin);
-
-    return [{
-        targets: mask,
-        rotate: [`${a0}rad`, `${a1}rad`],
-    },
-    {
-        targets: back,
-        rotate: [`${2 * a0}rad`, `${2 * a1}rad`],
-        scaleY: [-1, -1],
-    }];
-}
-
-function setupAnimation(elements, {
-    duration = 1000,
-    ...options
-} = {}) {
-    const tl = anime.timeline({
-        autoplay: false,
-        duration,
-        easing: 'cubicBezier(0.25, 0.1, 0.25, 1.0)',
-    });
-    setupPageFlip(elements, options)
-        .forEach((anim) => tl.add(anim, 0));
-
-    return tl;
-}
-
 function rgbaDataToString ([r, g, b, a]) {
     return `rgba(${r * 255}, ${g * 255}, ${b * 255}, ${a})`;
 }
 
-function SVGCCPageTurnEffect(filter, filterManager, elem) {
-    const options = filterManager.data.ef;
+function SVGCCPageTurnEffect(_, filterManager, elem) {
+    this.options = filterManager.data.ef;
+    this.defs = elem.globalData.defs;
 
+    const filter = this.createPaperBackFilter();
+    const { id, mask } = this.createMask();
+
+    const el = elem.getBaseElement();
+    el.setAttribute('mask', `url(#${id})`);
+
+    const back = createNS('g');
+    back.setAttribute('filter', `url(#${filter.id})`);
+
+    let initialized = false;
+
+    function initialize () {
+        el.children.forEach((child) => {
+            child.setAttribute('id', createElementID());
+            const backContent = createNS('use');
+            backContent.setAttribute('href', `#${child.id}`);
+            back.appendChild(backContent);
+        });
+        el.appendChild(back);
+        initialized = true;
+    }
+
+    const effectElements = filterManager.effectElements;
+    const { w, h } = elem.globalData.compSize;
+    const scale = `scale(${w + h})`;
+
+    this.renderFrame = function () {
+        if (!initialized) initialize();
+        const [x, y] = effectElements[1].p.v;
+        const xc = (x + w) / 2;
+        const yc = y / 2;
+
+        const rotate = Math.atan((x-w)/(-y));
+        mask.style.transform = `translate(${xc}px,${yc}px) ${scale} rotate(${rotate}rad)`;
+        back.style.transformOrigin = `${xc}px ${yc}px`;
+        back.style.transform = `scaleY(-1) rotate(-${2 * rotate}rad)`;
+    };
+}
+
+SVGCCPageTurnEffect.prototype.createPaperBackFilter = function () {
+    const filter = createNS('filter');
     filter.setAttribute('id', createElementID());
-    elem.globalData.defs.appendChild(filter);
 
     const feFlood = createNS('feFlood');
-    const paperColor = rgbaDataToString(filterManager.data.ef[8].v.k);
-    const paperOpcaity = options[7].v.k / 100;
+    const paperColor = rgbaDataToString(this.options[8].v.k);
+    const paperOpcaity = this.options[7].v.k / 100;
     feFlood.setAttribute('flood-color', paperColor);
     feFlood.setAttribute('flood-opacity', paperOpcaity);
     feFlood.setAttribute('result', 'flood');
@@ -85,52 +70,20 @@ function SVGCCPageTurnEffect(filter, filterManager, elem) {
     feBlend.setAttribute('in2', 'SourceGraphic');
     filter.appendChild(feBlend);
 
-    const mask = createNS('mask');
-    mask.setAttribute('id', createElementID());
-    const maskRect = createNS('rect');
-    maskRect.setAttribute('fill', 'white');
-    mask.appendChild(maskRect);
-    elem.globalData.defs.appendChild(mask);
-
-    const el = elem.getBaseElement();
-    el.setAttribute('mask', `url(#${mask.id})`);
-
-    const back = createNS('g');
-    back.setAttribute('filter', `url(#${filter.id})`);
-
-    this.initialize = function () {
-        const box = el.getBBox();
-
-        el.children.forEach((child) => {
-            child.setAttribute('id', createElementID());
-            const backContent = createNS('use');
-            backContent.setAttribute('href', `#${child.id}`);
-            back.appendChild(backContent);
-        });
-        el.appendChild(back);
-        this.timeline = setupAnimation({
-            mask: maskRect,
-            box,
-            back,
-        });
-        this.timeline.seek(0);
-        this.initialized = true;
-    };
-    this.elem = elem;
-}
-
-SVGCCPageTurnEffect.prototype.renderFrame = function (forceRender) {
-    if (!this.initialized) {
-        this.initialize();
-    }
-    let currentTime = 0;
-    if (forceRender) {
-        this.startTime = null;
-    } else {
-        if (!this.startTime) {
-            this.startTime = Date.now();
-        }
-        currentTime = Date.now() - this.startTime;
-    }
-    this.timeline.seek(currentTime);
+    this.defs.appendChild(filter);
+    return filter;
 };
+
+SVGCCPageTurnEffect.prototype.createMask = function () {
+    const maskContainer = createNS('mask');
+    maskContainer.setAttribute('id', createElementID());
+    const mask = createNS('polygon');
+    mask.setAttribute('fill', 'white');
+    mask.setAttribute('points', '-1,0 1,0 1,1 -1,1');
+    maskContainer.appendChild(mask);
+
+    this.defs.appendChild(maskContainer);
+    return { id: maskContainer.id, mask };
+};
+
+SVGCCPageTurnEffect.prototype.renderFrame = function () {};
