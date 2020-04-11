@@ -8,10 +8,10 @@ schemas = {}
 
 known_error = [
     # "#/effects/layerIndex",
-    "#/shapes/roundedCorners",
+    # "#/shapes/roundedCorners",
     # "#/layers/comp",
     "#/properties/const",
-    "#/properties/constKeyframed",
+    # "#/properties/constKeyframed",
     # "#/helpers/textBased",
 ]
 

@@ -20,7 +20,7 @@
     "export"
   ],
   "devDependencies": {
-    "@adobe/jsonschema2md": "^2.1.1",
+    "@adobe/jsonschema2md": "^2.1.2",
     "cheerio": "^1.0.0-rc.2",
     "uglify-js": "^3.4.9",
     "watch": "^1.0.2"
