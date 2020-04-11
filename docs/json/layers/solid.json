@@ -6,7 +6,7 @@
       "title": "Type",
       "description": "Type of layer: Solid.",
       "type": "number",
-      "value": 1
+      "const": 1
     },
     "ks": {
       "title": "Transform",
