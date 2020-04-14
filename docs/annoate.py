@@ -16,8 +16,8 @@ import jsonschema
 class Schema(object):
     def __init__(self, folder):
         self.folder = folder
-        nested_dict = lambda: defaultdict(nested_dict)
-        self.cache = nested_dict()
+        # nested_dict = lambda: defaultdict(nested_dict)
+        self.cache = {}
 
     def read(self, type):
         with open(f"{self.folder}{type[1:]}.json") as ifile:
@@ -43,8 +43,19 @@ class Schema(object):
     def add(self, path):
         assert path.startswith("#/")
 
-        parent = self.get(path.rsplit("/", 1)[0])
-        parent[path.rsplit("/", 1)[1]] = self.read(path)
+        node = self.cache
+
+        for p in path.split("/")[:-1]:
+            if p == "#":
+                node = self.cache
+            else:
+                if p not in node:
+                    node[p] = {}
+
+                node = node[p]
+
+        node[path.rsplit("/", 1)[1]] = self.read(path)
+
 
     def get(self, path):
         if path == "#":
@@ -73,7 +84,19 @@ class Schema(object):
         tmp = deepcopy(self.get(type))
         tmp.update(self.cache)
 
+        # FIXME: not work
         jsonschema.validate(data, tmp)
+
+        for key in data:
+            if key.startswith("$"): continue
+
+            _validate = tmp["properties"][key]
+
+            if isinstance(data[key], dict):
+                assert _validate['type'] == "object"
+            elif isinstance(data[key], list):
+                assert _validate['type'] == "array"
+
 
     def __choose_schema(self, data, node):
         # choose best match schema
@@ -99,9 +122,9 @@ class Schema(object):
             try:
                 self.validate(data, s["$ref"])
             except:
-                raise
-                # print('validate failed')
-                # continue
+                # raise
+                print('validate failed')
+                continue
 
             pps.append((r, s, set(props)))
 
@@ -191,5 +214,8 @@ def annotate(ifilepath, schemas):
 
 if __name__ == "__main__":
     schemas = analy("#/animation")
-    pprint(schemas.cache)
+
+    with open('schema.json', 'w') as ofile:
+        json.dump(schemas.cache, ofile, indent=4)
+
     annotate("../demo/adrock/data.json", schemas)
