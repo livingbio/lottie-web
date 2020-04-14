@@ -95,6 +95,14 @@ class Schema(object):
                 r = self.get(s["$ref"])
 
             props = r["properties"].keys()
+
+            try:
+                self.validate(data, s["$ref"])
+            except:
+                raise
+                # print('validate failed')
+                # continue
+
             pps.append((r, s, set(props)))
 
         r, s, p = max(pps, key=lambda k: len(k[2] & keys) / len(k[2] | keys))

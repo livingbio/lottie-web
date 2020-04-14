@@ -84,7 +84,7 @@
     "nm": {
       "title": "Name",
       "description": "After Effects Layer Name. Used for expressions.",
-      "type": "number"
+      "type": "string"
     },
     "hasMask": {
       "title": "Has Masks",
@@ -137,7 +137,7 @@
               "ap_": {
                 "title": "Animated Properties",
                 "description": "Text animator animated properties",
-                "properties": { 
+                "properties": {
                   "p_": {
                     "title": "Position",
                     "description": "Text animator Position",
@@ -229,7 +229,7 @@
                     ],
                     "type": "object"
                   },
-                  "stw_" : {
+                  "stw_": {
                     "title": "Stroke Width",
                     "description": "Text animator Stroke Width",
                     "oneOf": [
