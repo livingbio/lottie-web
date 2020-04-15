@@ -1,10 +1,13 @@
 import json
+import logging
 from collections import defaultdict
 from copy import deepcopy
 from glob import glob
-from os.path import join, realpath, basename
+from os.path import basename, join, realpath
 from pprint import pprint
-import fire 
+
+import fire
+
 
 class Schema(object):
     def __init__(self, folder):
@@ -46,7 +49,6 @@ class Schema(object):
 
         node[path.rsplit("/", 1)[1]] = self.read(path)
 
-
     def get(self, path):
         if path == "#":
             return self.cache
@@ -65,28 +67,76 @@ class Schema(object):
             return True
         except:
             return False
-    
-    def validate(self, data, type):
-        tmp = deepcopy(self.get(type))
-        tmp.update(self.cache)
 
-        for key in data:
-            if key.startswith("$"): 
-                continue
-            
-            if key not in tmp["properties"]:
-                # NOTE: some data properties not in schema
-                continue
-                
-            _validate = tmp["properties"][key]
+    def validate(self, data, node=None):
+        if node is None:
+            node = self.get("#")
 
-            if isinstance(data[key], dict):
-                assert _validate['type'] == "object"
-            elif isinstance(data[key], list):
-                assert _validate['type'] == "array"
+        if "$ref" in node:
+            return self.validate(data, self.get(node["$ref"]))
 
+        if "oneOf" in node:
+            for k in node["oneOf"]:
+                try:
+                    return self.validate(data, k)
+                except:
+                    pass
 
-    def __choose_schema(self, data, node):
+            raise Exception(f"non of {node['oneOf']} match {data}")
+
+        if "const" in node:
+            assert node["const"] == data
+            return True
+
+        assert "type" in node, f"node {node} doesn't contain type info"
+
+        if isinstance(data, dict):
+            assert node["type"] == "object"
+
+            for key in data:
+                if key.startswith("$"):
+                    continue
+
+                if key not in node["properties"]:
+                    logging.warn(f"{key} not in {node}")
+                    # NOTE: some data properties not in schema
+                    continue
+
+                assert self.validate(data[key], node["properties"][key])
+            return True
+        elif isinstance(data, list):
+            assert node["type"] == "array" and "items" in node
+            return all(self.validate(k, node["items"]) for k in data)
+        else:
+            if node["type"] == "number":
+                assert isinstance(data, (float, int))
+            elif node["type"] == "string":
+                assert isinstance(data, str)
+            elif node["type"] == "boolean":
+                assert isinstance(data, bool)
+            else:
+                raise Exception(
+                    f"data type {type(data)} expect {node['type']}")
+
+            return True
+
+        raise Exception("unknown")
+
+    def __choose_schema(self, data, node, fuzzy=True):
+        if fuzzy:
+            return self.__choose_schema_fuzzy(data, node)
+
+        for s in node["oneOf"]:
+            try:
+                self.validate(data, s)
+
+                return s.get("ref"), deepcopy(s)
+            except:
+                pass
+
+        raise Exception(f"Cannot Find Match Schema {node} for {data}")
+
+    def __choose_schema_fuzzy(self, data, node):
         # choose best match schema
         if "ty" in data:
             for s in node["oneOf"]:
@@ -106,12 +156,6 @@ class Schema(object):
                 r = self.get(s["$ref"])
 
             props = r["properties"].keys()
-
-            try:
-                self.validate(data, s["$ref"])
-            except:
-                continue
-
             pps.append((r, s, set(props)))
 
         r, s, p = max(pps, key=lambda k: len(k[2] & keys) / len(k[2] | keys))
@@ -150,7 +194,8 @@ class Schema(object):
             type = node["properties"][key]["type"]
 
             if type == "object":
-                node["properties"][key] = self.match(data[key], node["properties"][key])
+                node["properties"][key] = self.match(
+                    data[key], node["properties"][key])
             elif type == "array" and "items" in node["properties"][key]:
                 node["properties"][key]["items"] = [
                     self.match(k, node["properties"][key]["items"]) for k in data[key]
@@ -170,7 +215,6 @@ def analy(root):
         type = queue.pop()
         schemas.add(type)
 
-
         for ref in schemas.search("$ref", schemas.get(type)):
             if schemas.has(ref):
                 continue
@@ -188,7 +232,6 @@ def annotate(ifilepath, opath=None):
     with open(ifilepath) as ifile:
         icontent = json.load(ifile)
 
-    schemas.validate(icontent, "#/animation")
     resolved_schema = schemas.match(icontent)
 
     opath = opath or ifilepath.rstrip(".json") + ".schema.json"
@@ -197,7 +240,7 @@ def annotate(ifilepath, opath=None):
         json.dump(resolved_schema, ofile, indent=2)
 
     icontent["$schema"] = "./" + basename(opath)
-    
+
     with open(ifilepath, 'w') as ofile:
         json.dump(icontent, ofile, indent=2)
 

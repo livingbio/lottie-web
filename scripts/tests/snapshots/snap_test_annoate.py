@@ -2688,6 +2688,9 @@ snapshots['test_analy 1'] = {
                     'k': {
                         'description': 'Property Value',
                         'extended_name': 'Value',
+                        'items': {
+                            'type': 'number'
+                        },
                         'type': 'array'
                     },
                     'x': {
@@ -2977,26 +2980,66 @@ snapshots['test_analy 1'] = {
                 '$schema': 'http://json-schema.org/draft-04/schema',
                 'properties': {
                     'i': {
-                        'description': 'Bezier curve interpolation in value.',
-                        'extended_name': 'In Value',
-                        'properties': {
-                            'x': {
-                                'description': 'bezier x axis',
-                                'extended_name': 'X axis',
-                                'type': 'number'
+                        'oneOf': [
+                            {
+                                'description': 'Bezier curve interpolation in value.',
+                                'extended_name': 'In Value',
+                                'properties': {
+                                    'x': {
+                                        'description': 'bezier x axis',
+                                        'extended_name': 'X axis',
+                                        'type': 'number'
+                                    },
+                                    'y': {
+                                        'description': 'bezier y axis',
+                                        'extended_name': 'Y axis',
+                                        'type': 'number'
+                                    }
+                                },
+                                'type': 'object'
                             },
-                            'y': {
-                                'description': 'bezier y axis',
-                                'extended_name': 'Y axis',
-                                'type': 'number'
+                            {
+                                'description': 'Bezier curve interpolation in value.',
+                                'extended_name': 'In Value',
+                                'properties': {
+                                    'x': {
+                                        'description': 'bezier x axis',
+                                        'extended_name': 'X axis',
+                                        'items': {
+                                            'type': 'number'
+                                        },
+                                        'type': 'array'
+                                    },
+                                    'y': {
+                                        'description': 'bezier y axis',
+                                        'extended_name': 'Y axis',
+                                        'items': {
+                                            'type': 'number'
+                                        },
+                                        'type': 'array'
+                                    }
+                                },
+                                'type': 'object'
                             }
-                        },
+                        ],
                         'type': 'object'
                     },
                     's': {
-                        'description': 'Start value of keyframe segment.',
-                        'extended_name': 'Start',
-                        'type': 'number'
+                        'oneOf': [
+                            {
+                                'description': 'Start value of keyframe segment.',
+                                'extended_name': 'Start',
+                                'type': 'number'
+                            },
+                            {
+                                'description': 'Start value of keyframe segment.',
+                                'extended_name': 'Start',
+                                'items': {
+                                    'type': 'number'
+                                },
+                                'type': 'array'
+                            }
+                        ]
                     },
                     't': {
                         'description': 'Start time of keyframe segment.',
@@ -4289,6 +4332,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4299,128 +4353,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -4429,6 +4367,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4453,6 +4399,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4516,6 +4470,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4526,128 +4491,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -4656,6 +4505,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4680,6 +4537,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4743,6 +4608,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4753,128 +4629,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -4883,6 +4643,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4907,6 +4675,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4970,6 +4749,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -4980,128 +4770,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -5110,6 +4784,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5134,6 +4816,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5197,6 +4887,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5207,128 +4908,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -5337,6 +4922,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5361,6 +4954,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5424,6 +5025,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5434,128 +5046,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -5564,6 +5060,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5588,6 +5092,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5651,6 +5166,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5661,128 +5187,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -5791,6 +5201,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5815,6 +5233,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5878,6 +5304,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -5888,128 +5325,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -6018,6 +5339,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6042,6 +5371,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6105,6 +5442,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6115,128 +5463,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -6245,6 +5477,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6269,6 +5509,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6332,6 +5583,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6342,128 +5604,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -6472,6 +5618,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6496,6 +5650,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6559,6 +5721,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6569,128 +5742,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -6699,6 +5756,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6723,6 +5788,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6786,6 +5859,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6796,128 +5880,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -6926,6 +5894,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -6950,6 +5926,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7013,6 +6000,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7023,128 +6021,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -7153,6 +6035,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7177,6 +6067,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7240,6 +6138,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7250,128 +6159,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -7380,6 +6173,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7404,6 +6205,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7467,6 +6276,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7477,128 +6297,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -7607,6 +6311,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7631,6 +6343,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7694,6 +6417,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7704,128 +6438,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -7834,6 +6452,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7858,6 +6484,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7921,6 +6555,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -7931,128 +6576,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -8061,6 +6590,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8085,6 +6622,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8148,6 +6693,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8158,128 +6714,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -8288,6 +6728,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8312,6 +6760,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8375,6 +6831,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8385,128 +6852,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -8515,6 +6866,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8539,6 +6898,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8602,6 +6969,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8612,128 +6990,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -8742,6 +7004,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8766,6 +7036,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8829,6 +7107,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8839,128 +7128,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -8969,6 +7142,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -8993,6 +7174,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9056,6 +7248,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9066,128 +7269,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -9196,6 +7283,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9220,6 +7315,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9283,6 +7386,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9293,128 +7407,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -9423,6 +7421,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9447,6 +7453,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9510,6 +7524,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9520,128 +7545,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -9650,6 +7559,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9674,6 +7591,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9737,6 +7665,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9747,128 +7686,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -9877,6 +7700,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9901,6 +7732,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9964,6 +7803,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -9974,128 +7824,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -10104,6 +7838,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10128,6 +7870,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10191,6 +7941,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10201,128 +7962,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -10331,6 +7976,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10355,6 +8008,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10418,6 +8082,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10428,128 +8103,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -10558,6 +8117,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10582,6 +8149,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10645,6 +8220,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10655,128 +8241,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -10785,6 +8255,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10809,6 +8287,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10872,6 +8358,17 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -10882,128 +8379,12 @@ snapshots['test_annotate 1'] = {
                                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                                     'properties': {
                                                         'k': {
-                                                            'description': 'Property Value keyframes',
-                                                            'extended_name': 'Keyframes',
-                                                            'items': [
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        'i': {
-                                                                            'description': 'Bezier curve interpolation in value.',
-                                                                            'extended_name': 'In Value',
-                                                                            'properties': {
-                                                                                'x': {
-                                                                                    'description': 'bezier x axis',
-                                                                                    'extended_name': 'X axis',
-                                                                                    'type': 'number'
-                                                                                },
-                                                                                'y': {
-                                                                                    'description': 'bezier y axis',
-                                                                                    'extended_name': 'Y axis',
-                                                                                    'type': 'number'
-                                                                                }
-                                                                            },
-                                                                            'type': 'object'
-                                                                        },
-                                                                        's': {
-                                                                            'description': 'Start value of keyframe segment.',
-                                                                            'extended_name': 'Start',
-                                                                            'type': 'number'
-                                                                        },
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                },
-                                                                {
-                                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                                    'properties': {
-                                                                        't': {
-                                                                            'description': 'Start time of keyframe segment.',
-                                                                            'extended_name': 'Time',
-                                                                            'type': 'number'
-                                                                        }
-                                                                    },
-                                                                    'title': '#/properties/valueKeyframe',
-                                                                    'type': 'object'
-                                                                }
-                                                            ],
-                                                            'type': 'array'
+                                                            'description': 'Property Value',
+                                                            'extended_name': 'Value',
+                                                            'type': 'number'
                                                         }
                                                     },
-                                                    'title': '#/properties/valueKeyframed',
+                                                    'title': '#/properties/value',
                                                     'type': 'object'
                                                 },
                                                 'p': {
@@ -11012,6 +8393,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -11036,6 +8425,14 @@ snapshots['test_annotate 1'] = {
                                                         'k': {
                                                             'description': 'Property Value',
                                                             'extended_name': 'Value',
+                                                            'items': [
+                                                                {
+                                                                    'type': 'number'
+                                                                },
+                                                                {
+                                                                    'type': 'number'
+                                                                }
+                                                            ],
                                                             'type': 'array'
                                                         }
                                                     },
@@ -11129,6 +8526,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11153,6 +8561,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11177,6 +8596,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11245,6 +8675,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11269,6 +8710,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11293,6 +8745,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11361,6 +8824,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11385,6 +8859,14 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11409,6 +8891,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11477,6 +8970,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11501,6 +9005,26 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11525,6 +9049,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -11588,411 +9123,20 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
                                     'title': '#/properties/multiDimensional',
                                     'type': 'object'
                                 },
@@ -12014,391 +9158,24 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
                                     'title': '#/properties/multiDimensional',
                                     'type': 'object'
                                 },
-                                'o': {
+                                'r': {
                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                     'properties': {
                                         'k': {
@@ -12410,87 +9187,26 @@ snapshots['test_annotate 1'] = {
                                     'title': '#/properties/value',
                                     'type': 'object'
                                 },
-                                'p': {
+                                's': {
                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                     'properties': {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
                                     'title': '#/properties/multiDimensional',
                                     'type': 'object'
                                 }
@@ -12556,173 +9272,20 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
                                     'title': '#/properties/multiDimensional',
                                     'type': 'object'
                                 },
@@ -12744,386 +9307,24 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
                                     'title': '#/properties/multiDimensional',
                                     'type': 'object'
                                 },
-                                'o': {
+                                'r': {
                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                     'properties': {
                                         'k': {
@@ -13135,232 +9336,26 @@ snapshots['test_annotate 1'] = {
                                     'title': '#/properties/value',
                                     'type': 'object'
                                 },
-                                'p': {
+                                's': {
                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                     'properties': {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
                                     'title': '#/properties/multiDimensional',
                                     'type': 'object'
                                 }
@@ -13426,971 +9421,20 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'o': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'number'
-                                        }
-                                    },
-                                    'title': '#/properties/value',
-                                    'type': 'object'
-                                },
-                                'p': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
-                                    'type': 'object'
-                                },
-                                's': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                }
-                            },
-                            'title': '#/helpers/transform',
-                            'type': 'object'
-                        },
-                        'nm': {
-                            'description': 'After Effects Layer Name. Used for expressions.',
-                            'title': 'Name',
-                            'type': 'string'
-                        },
-                        'op': {
-                            'description': 'Out Point of layer. Sets the final frame of the layer.',
-                            'title': 'Out Point',
-                            'type': 'number'
-                        },
-                        'parent': {
-                            'description': 'Layer Parent. Uses ind of parent.',
-                            'title': 'Parent',
-                            'type': 'number'
-                        },
-                        'st': {
-                            'description': 'Start Time of layer. Sets the start time of the layer.',
-                            'title': 'Start Time',
-                            'type': 'number'
-                        },
-                        'ty': {
-                            'const': 4,
-                            'description': 'Type of layer: Shape.',
-                            'title': 'Type',
-                            'type': 'number'
-                        }
-                    },
-                    'title': '#/layers/shape',
-                    'type': 'object'
-                },
-                {
-                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                    'properties': {
-                        'ddd': {
-                            'default': 0,
-                            'description': '3d layer flag',
-                            'title': '3d Layer',
-                            'type': 'number'
-                        },
-                        'ind': {
-                            'description': 'Layer index in AE. Used for parenting and expressions.',
-                            'title': 'Index',
-                            'type': 'number'
-                        },
-                        'ip': {
-                            'description': 'In Point of layer. Sets the initial frame of the layer.',
-                            'title': 'In Point',
-                            'type': 'number'
-                        },
-                        'ks': {
-                            '$schema': 'http://json-schema.org/draft-04/schema#',
-                            'properties': {
-                                'a': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value',
-                                            'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
                                     'title': '#/properties/multiDimensional',
                                     'type': 'object'
                                 },
@@ -14412,172 +9456,33 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
-                                            'type': 'array'
-                                        }
-                                    },
-                                    'title': '#/properties/multiDimensional',
-                                    'type': 'object'
-                                },
-                                'r': {
-                                    '$schema': 'http://json-schema.org/draft-04/schema#',
-                                    'properties': {
-                                        'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
                                             'items': [
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 },
                                                 {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
+                                                    'type': 'number'
                                                 }
                                             ],
                                             'type': 'array'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
                                     'type': 'object'
                                 },
                                 's': {
@@ -14586,6 +9491,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14654,6 +9570,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14678,6 +9605,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14702,6 +9640,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14770,6 +9719,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14794,6 +9754,14 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14818,6 +9786,308 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14886,6 +10156,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14910,6 +10191,14 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -14934,6 +10223,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15002,6 +10302,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15026,6 +10337,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15050,6 +10372,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15118,6 +10451,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15142,6 +10486,32 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15166,6 +10536,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15234,6 +10615,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15258,6 +10650,32 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15282,6 +10700,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15350,6 +10779,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15374,6 +10814,14 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15398,6 +10846,1627 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                }
+                            },
+                            'title': '#/helpers/transform',
+                            'type': 'object'
+                        },
+                        'nm': {
+                            'description': 'After Effects Layer Name. Used for expressions.',
+                            'title': 'Name',
+                            'type': 'string'
+                        },
+                        'op': {
+                            'description': 'Out Point of layer. Sets the final frame of the layer.',
+                            'title': 'Out Point',
+                            'type': 'number'
+                        },
+                        'parent': {
+                            'description': 'Layer Parent. Uses ind of parent.',
+                            'title': 'Parent',
+                            'type': 'number'
+                        },
+                        'st': {
+                            'description': 'Start Time of layer. Sets the start time of the layer.',
+                            'title': 'Start Time',
+                            'type': 'number'
+                        },
+                        'ty': {
+                            'const': 4,
+                            'description': 'Type of layer: Shape.',
+                            'title': 'Type',
+                            'type': 'number'
+                        }
+                    },
+                    'title': '#/layers/shape',
+                    'type': 'object'
+                },
+                {
+                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                    'properties': {
+                        'ddd': {
+                            'default': 0,
+                            'description': '3d layer flag',
+                            'title': '3d Layer',
+                            'type': 'number'
+                        },
+                        'ind': {
+                            'description': 'Layer index in AE. Used for parenting and expressions.',
+                            'title': 'Index',
+                            'type': 'number'
+                        },
+                        'ip': {
+                            'description': 'In Point of layer. Sets the initial frame of the layer.',
+                            'title': 'In Point',
+                            'type': 'number'
+                        },
+                        'ks': {
+                            '$schema': 'http://json-schema.org/draft-04/schema#',
+                            'properties': {
+                                'a': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'o': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                'p': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
+                                            'type': 'array'
+                                        }
+                                    },
+                                    'title': '#/properties/multiDimensional',
+                                    'type': 'object'
+                                },
+                                'r': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
+                                        }
+                                    },
+                                    'title': '#/properties/value',
+                                    'type': 'object'
+                                },
+                                's': {
+                                    '$schema': 'http://json-schema.org/draft-04/schema#',
+                                    'properties': {
+                                        'k': {
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15466,6 +12535,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15490,6 +12570,38 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15500,60 +12612,12 @@ snapshots['test_annotate 1'] = {
                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                     'properties': {
                                         'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
-                                            'items': [
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                }
-                                            ],
-                                            'type': 'array'
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
+                                    'title': '#/properties/value',
                                     'type': 'object'
                                 },
                                 's': {
@@ -15562,6 +12626,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15635,6 +12710,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15645,60 +12731,12 @@ snapshots['test_annotate 1'] = {
                                     '$schema': 'http://json-schema.org/draft-04/schema#',
                                     'properties': {
                                         'k': {
-                                            'description': 'Property Value keyframes',
-                                            'extended_name': 'Keyframes',
-                                            'items': [
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        'i': {
-                                                            'description': 'Bezier curve interpolation in value.',
-                                                            'extended_name': 'In Value',
-                                                            'properties': {
-                                                                'x': {
-                                                                    'description': 'bezier x axis',
-                                                                    'extended_name': 'X axis',
-                                                                    'type': 'number'
-                                                                },
-                                                                'y': {
-                                                                    'description': 'bezier y axis',
-                                                                    'extended_name': 'Y axis',
-                                                                    'type': 'number'
-                                                                }
-                                                            },
-                                                            'type': 'object'
-                                                        },
-                                                        's': {
-                                                            'description': 'Start value of keyframe segment.',
-                                                            'extended_name': 'Start',
-                                                            'type': 'number'
-                                                        },
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                },
-                                                {
-                                                    '$schema': 'http://json-schema.org/draft-04/schema',
-                                                    'properties': {
-                                                        't': {
-                                                            'description': 'Start time of keyframe segment.',
-                                                            'extended_name': 'Time',
-                                                            'type': 'number'
-                                                        }
-                                                    },
-                                                    'title': '#/properties/valueKeyframe',
-                                                    'type': 'object'
-                                                }
-                                            ],
-                                            'type': 'array'
+                                            'description': 'Property Value',
+                                            'extended_name': 'Value',
+                                            'type': 'number'
                                         }
                                     },
-                                    'title': '#/properties/valueKeyframed',
+                                    'title': '#/properties/value',
                                     'type': 'object'
                                 },
                                 'p': {
@@ -15707,6 +12745,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -15731,6 +12780,14 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -16013,6 +13070,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -16037,6 +13105,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },
@@ -16061,6 +13140,17 @@ snapshots['test_annotate 1'] = {
                                         'k': {
                                             'description': 'Property Value',
                                             'extended_name': 'Value',
+                                            'items': [
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                },
+                                                {
+                                                    'type': 'number'
+                                                }
+                                            ],
                                             'type': 'array'
                                         }
                                     },

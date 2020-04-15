@@ -5,7 +5,8 @@
     "k": {
       "description": "Property Value",
       "extended_name": "Value",
-      "type": "array"
+      "type": "array",
+      "items": {"type": "number"}
     },
     "x": {
       "description": "Property Expression. An AE expression that modifies the value.",

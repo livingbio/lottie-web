@@ -3,9 +3,21 @@
   "type": "object",
   "properties": {
     "s": {
-      "description": "Start value of keyframe segment.",
-      "extended_name": "Start",
-      "type": "number"
+      "oneOf": [
+        {
+          "description": "Start value of keyframe segment.",
+          "extended_name": "Start",
+          "type": "number"
+        },
+        {
+          "description": "Start value of keyframe segment.",
+          "extended_name": "Start",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        }
+      ]
     },
     "t": {
       "description": "Start time of keyframe segment.",
@@ -13,21 +25,49 @@
       "type": "number"
     },
     "i": {
-      "description": "Bezier curve interpolation in value.",
-      "extended_name": "In Value",
-      "type": "object",
-      "properties": {
-        "x": {
-          "description": "bezier x axis",
-          "extended_name": "X axis",
-          "type": "number"
+      "oneOf": [
+        {
+          "description": "Bezier curve interpolation in value.",
+          "extended_name": "In Value",
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "bezier x axis",
+              "extended_name": "X axis",
+              "type": "number"
+            },
+            "y": {
+              "description": "bezier y axis",
+              "extended_name": "Y axis",
+              "type": "number"
+            }
+          }
         },
-        "y": {
-          "description": "bezier y axis",
-          "extended_name": "Y axis",
-          "type": "number"
+        {
+          "description": "Bezier curve interpolation in value.",
+          "extended_name": "In Value",
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "array",
+              "description": "bezier x axis",
+              "extended_name": "X axis",
+              "items": {
+                "type": "number"
+              }
+            },
+            "y": {
+              "type": "array",
+              "description": "bezier y axis",
+              "extended_name": "Y axis",
+              "items": {
+                "type": "number"
+              }
+            }
+          }
         }
-      }
+      ],
+      "type": "object"
     }
   }
 }
