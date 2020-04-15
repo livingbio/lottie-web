@@ -194,12 +194,12 @@ def annotate(ifilepath, opath=None):
     opath = opath or ifilepath.rstrip(".json") + ".schema.json"
 
     with open(opath, "w") as ofile:
-        json.dump(resolved_schema, ofile, indent=4)
+        json.dump(resolved_schema, ofile, indent=2)
 
     icontent["$schema"] = "./" + basename(opath)
     
     with open(ifilepath, 'w') as ofile:
-        json.dump(icontent, ofile, indent=4)
+        json.dump(icontent, ofile, indent=2)
 
 
 if __name__ == "__main__":
