@@ -1,3 +1,4 @@
 jsonschema
 snapshottest
 pytest
+fire

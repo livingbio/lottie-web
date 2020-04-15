@@ -4,7 +4,7 @@ from copy import deepcopy
 from glob import glob
 from os.path import join, realpath, basename
 from pprint import pprint
-
+import fire 
 
 class Schema(object):
     def __init__(self, folder):
@@ -182,11 +182,12 @@ def analy(root):
     return schemas
 
 
-def annotate(ifilepath, schemas, opath=None):
+def annotate(ifilepath, opath=None):
+    schemas = analy("#/animation")
+
     with open(ifilepath) as ifile:
         icontent = json.load(ifile)
 
-    # NOTE: really?
     schemas.validate(icontent, "#/animation")
     resolved_schema = schemas.match(icontent)
 
@@ -202,9 +203,4 @@ def annotate(ifilepath, schemas, opath=None):
 
 
 if __name__ == "__main__":
-    schemas = analy("#/animation")
-
-    with open('schema.json', 'w') as ofile:
-        json.dump(schemas.cache, ofile, indent=4)
-
-    annotate("../demo/adrock/data.json", schemas)
+    fire.Fire(annotate)
