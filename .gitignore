@@ -3,7 +3,7 @@ player/exports/
 player/tests/
 node_modules/
 node_modules/
-tests/
+# tests/
 esprima/
 bodymovinCert.p12
 ZXPSignCmd.exe
