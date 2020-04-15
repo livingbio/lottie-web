@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.js": "./static/js/main.68dd7537.chunk.js",
+    "runtime~main.js": "./static/js/runtime~main.95dfe61c.js",
+    "static/js/2.fc61f83c.chunk.js": "./static/js/2.fc61f83c.chunk.js",
+    "static/js/3.9bdc757d.chunk.js": "./static/js/3.9bdc757d.chunk.js",
+    "index.html": "./index.html",
+    "precache-manifest.a3bec807f3094df69601eb0479040d91.js": "./precache-manifest.a3bec807f3094df69601eb0479040d91.js",
+    "service-worker.js": "./service-worker.js",
+    "static/media/Android.d5cb753b.svg": "./static/media/Android.d5cb753b.svg",
+    "static/media/Checkmark.273f58f7.svg": "./static/media/Checkmark.273f58f7.svg",
+    "static/media/MobilePhone.a49f6224.svg": "./static/media/MobilePhone.a49f6224.svg",
+    "static/media/PaintFill.68363bd3.svg": "./static/media/PaintFill.68363bd3.svg",
+    "static/media/Refresh.e217b45e.svg": "./static/media/Refresh.e217b45e.svg",
+    "static/media/RefreshCircle.147874b5.svg": "./static/media/RefreshCircle.147874b5.svg",
+    "static/media/RightArrow.3467493d.svg": "./static/media/RightArrow.3467493d.svg",
+    "static/media/SpeechBubble.37186be5.svg": "./static/media/SpeechBubble.37186be5.svg",
+    "static/media/iOS.f9c73d55.svg": "./static/media/iOS.f9c73d55.svg"
+  }
+}
