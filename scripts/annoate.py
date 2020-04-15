@@ -2,29 +2,20 @@ import json
 from collections import defaultdict
 from copy import deepcopy
 from glob import glob
-from os.path import join, realpath
+from os.path import join, realpath, basename
 from pprint import pprint
-
-import jsonschema
-
-# def all_defined_types():
-#     for p in glob(f"{folder}/**/*.json"):
-#         p = "#/" + p.split("json/")[1].replace(".json", "")
-#         yield p
 
 
 class Schema(object):
     def __init__(self, folder):
         self.folder = folder
-        # nested_dict = lambda: defaultdict(nested_dict)
-        self.cache = {}
+        self.cache = {"definations": {}}
 
     def read(self, type):
         with open(f"{self.folder}{type[1:]}.json") as ifile:
             return json.load(ifile)
 
     def search(self, key, node=None):
-        print(f"{key} {node}")
         if node is None:
             node = self.cache
 
@@ -33,7 +24,6 @@ class Schema(object):
                 yield node[key]
 
             for k in node:
-                # print(k)
                 yield from self.search(key, node[k])
 
         elif isinstance(node, list):
@@ -47,7 +37,7 @@ class Schema(object):
 
         for p in path.split("/")[:-1]:
             if p == "#":
-                node = self.cache
+                node = self.cache["definations"]
             else:
                 if p not in node:
                     node[p] = {}
@@ -63,33 +53,31 @@ class Schema(object):
 
         assert path.startswith("#/")
 
-        node = self.cache
+        node = self.cache["definations"]
         for p in path.lstrip("#/").split("/"):
             node = node[p]
 
         return node
 
     def has(self, path):
-        assert path.startswith("#/")
-
-        node = self.cache
-        for p in path.lstrip("#/").split("/"):
-            if p not in node:
-                return False
-            node = node[p]
-
-        return True
-
+        try:
+            self.get(path)
+            return True
+        except:
+            return False
+    
     def validate(self, data, type):
         tmp = deepcopy(self.get(type))
         tmp.update(self.cache)
 
-        # FIXME: not work
-        jsonschema.validate(data, tmp)
-
         for key in data:
-            if key.startswith("$"): continue
-
+            if key.startswith("$"): 
+                continue
+            
+            if key not in tmp["properties"]:
+                # NOTE: some data properties not in schema
+                continue
+                
             _validate = tmp["properties"][key]
 
             if isinstance(data[key], dict):
@@ -122,8 +110,6 @@ class Schema(object):
             try:
                 self.validate(data, s["$ref"])
             except:
-                # raise
-                print('validate failed')
                 continue
 
             pps.append((r, s, set(props)))
@@ -184,11 +170,9 @@ def analy(root):
         type = queue.pop()
         schemas.add(type)
 
-        print(f"load {type}")
 
         for ref in schemas.search("$ref", schemas.get(type)):
             if schemas.has(ref):
-                print("skip")
                 continue
 
             assert isinstance(ref, str)
@@ -198,7 +182,7 @@ def analy(root):
     return schemas
 
 
-def annotate(ifilepath, schemas):
+def annotate(ifilepath, schemas, opath=None):
     with open(ifilepath) as ifile:
         icontent = json.load(ifile)
 
@@ -206,10 +190,15 @@ def annotate(ifilepath, schemas):
     schemas.validate(icontent, "#/animation")
     resolved_schema = schemas.match(icontent)
 
-    pprint(resolved_schema)
+    opath = opath or ifilepath.rstrip(".json") + ".schema.json"
 
-    with open(ifilepath + ".schema.json", "w") as ofile:
+    with open(opath, "w") as ofile:
         json.dump(resolved_schema, ofile, indent=4)
+
+    icontent["$schema"] = "./" + basename(opath)
+    
+    with open(ifilepath, 'w') as ofile:
+        json.dump(icontent, ofile, indent=4)
 
 
 if __name__ == "__main__":
