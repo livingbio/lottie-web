@@ -18,35 +18,75 @@
     "i": {
       "description": "Bezier curve interpolation in value.",
       "extended_name": "In Value",
-      "properties": {
-        "x": {
-          "description": "bezier x axis. Array of numbers.",
-          "extended_name": "X axis",
-          "type": "array"
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "bezier x axis. Array of numbers.",
+              "extended_name": "X axis",
+              "type": "array"
+            },
+            "y": {
+              "description": "bezier y axis. Array of numbers.",
+              "extended_name": "Y axis",
+              "type": "array"
+            }
+          }
         },
-        "y": {
-          "description": "bezier y axis. Array of numbers.",
-          "extended_name": "Y axis",
-          "type": "array"
+        {
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "bezier x axis. Array of numbers.",
+              "extended_name": "X axis",
+              "type": "number"
+            },
+            "y": {
+              "description": "bezier y axis. Array of numbers.",
+              "extended_name": "Y axis",
+              "type": "number"
+            }
+          }
         }
-      },
+      ],
       "type": "object"
     },
     "o": {
       "description": "Bezier curve interpolation out value.",
       "extended_name": "Out Value",
-      "properties": {
-        "x": {
-          "description": "bezier x axis. Array of numbers.",
-          "extended_name": "X axis",
-          "type": "array"
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "bezier x axis. Array of numbers.",
+              "extended_name": "X axis",
+              "type": "array"
+            },
+            "y": {
+              "description": "bezier y axis. Array of numbers.",
+              "extended_name": "Y axis",
+              "type": "array"
+            }
+          }
         },
-        "y": {
-          "description": "bezier y axis. Array of numbers.",
-          "extended_name": "Y axis",
-          "type": "array"
+        {
+          "type": "object",
+          "properties": {
+            "x": {
+              "description": "bezier x axis. Array of numbers.",
+              "extended_name": "X axis",
+              "type": "number"
+            },
+            "y": {
+              "description": "bezier y axis. Array of numbers.",
+              "extended_name": "Y axis",
+              "type": "number"
+            }
+          }
         }
-      },
+      ],
       "type": "object"
     }
   }

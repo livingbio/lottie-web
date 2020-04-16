@@ -34,13 +34,13 @@ def analy(root, folder="../docs/json"):
     return schema
 
 
-def annotate(ifilepath, opath=None):
+def annotate(ifilepath, opath=None, strict=False):
     schema = analy("#/animation")
 
     with open(ifilepath) as ifile:
         icontent = json.load(ifile)
 
-    resolved_schema = schema.validate(icontent, "#/animation", strict=False)
+    resolved_schema = schema.validate(icontent, "#/animation", strict=strict)
     opath = opath or ifilepath.rstrip(".json") + ".schema.json"
 
     with open(opath, "w") as ofile:
@@ -52,5 +52,5 @@ def annotate(ifilepath, opath=None):
         json.dump(icontent, ofile, indent=2)
 
 
-# if __name__ == "__main__":
-#     fire.Fire(annotate)
+if __name__ == "__main__":
+    fire.Fire(annotate)
