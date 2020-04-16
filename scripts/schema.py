@@ -64,6 +64,15 @@ class Schema(object):
             return False
 
     def validate(self, data, path, node=None, depth=None, strict=False):
+        def score(node):
+            if isinstance(node, dict):
+                if "$match" in node:
+                    return 1 + sum(score(v) for v in node.values())
+                return sum(score(v) for v in node.values())
+            elif isinstance(node, list):
+                return sum(score(v) for v in node)
+            return 0
+
         if depth is None:
             depth = 99999
 
@@ -75,52 +84,47 @@ class Schema(object):
             return node
 
         node = deepcopy(node)
+        match = False
 
         if "$ref" in node:
             return self.validate(data, node["$ref"], depth=depth - 1, strict=strict)
 
         if "oneOf" in node:
-            for k in node["oneOf"]:
-                try:
-                    return self.validate(
-                        data, path, node=k, depth=depth - 1, strict=strict
-                    )
-                except:
-                    pass
+            return max(
+                (
+                    self.validate(data, path, node=k, depth=depth - 1, strict=strict)
+                    for k in node["oneOf"]
+                ),
+                key=score,
+            )
 
-            raise Exception(f"non of {node['oneOf']} match {data}")
+        assert (
+            "type" in node or "const" in node
+        ), f"node {path} doesn't contain type info"
 
-        if "const" in node:
-            assert node["const"] == data
-            return node
-
-        assert "type" in node, f"node {path} doesn't contain type info"
-
-        if isinstance(data, dict):
-            assert node["type"] == "object", f"node {path} != {node['type']}"
-
+        if isinstance(data, dict) and node["type"] == "object":
+            properties = {}
             for key in data:
                 if key.startswith("$"):
                     continue
 
                 if key not in node["properties"]:
                     logging.warn(f"{key} not in {path}")
-
-                    assert not strict, f"{key} not belong to {path}"
                     # NOTE: some data properties not in schema
+                    assert not strict, f"{key} not belong to {path}"
                     continue
 
-                node["properties"][key] = self.validate(
+                properties[key] = self.validate(
                     data[key],
                     path=f"{path}.{key}",
                     node=node["properties"][key],
                     depth=depth - 1,
                     strict=strict,
                 )
-            return node
-        elif isinstance(data, list):
-            assert node["type"] == "array" and "items" in node
 
+            node["properties"] = properties
+            match = True
+        elif isinstance(data, list) and node["type"] == "array" and "items" in node:
             node["items"] = [
                 self.validate(
                     k,
@@ -131,40 +135,21 @@ class Schema(object):
                 )
                 for ind, k in enumerate(data)
             ]
-            return node
-
+            match = True
         else:
-            if node["type"] == "number":
-                assert isinstance(data, (float, int))
-            elif node["type"] == "string":
-                assert isinstance(data, str)
-            elif node["type"] == "boolean":
-                assert isinstance(data, bool)
-            else:
-                raise Exception(f"data type {type(data)} != {node['type']}")
+            if "const" in node:
+                if node["const"] == data:
+                    match = True
+            elif node["type"] == "number" and isinstance(data, (float, int)):
+                match = True
+            elif node["type"] == "string" and isinstance(data, str):
+                match = True
+            elif node["type"] == "boolean" and isinstance(data, bool):
+                match = True
 
-            return node
+        assert not strict or match, f"{data} not match {path}"
 
-        raise Exception(f"unknown {data} {path}")
+        if match:
+            node["$match"] = True
 
-    def _choose_schema(self, data, nodes, fuzzy=False, depth=None):
-        if fuzzy and depth is None:
-            depth = 1
-
-        candidates = []
-
-        for s in nodes:
-            try:
-                self.validate(data, s.get("$path", ""), s, depth, strict=not fuzzy)
-                candidates.append((s.get("$path", ""), s))
-            except:
-                pass
-
-        assert candidates, f"No Candidate {data} {nodes}"
-
-        if len(candidates) == 1:
-            return candidates[0]
-
-        assert fuzzy, f"there are more than one candidate {data} {nodes} {candidates}"
-
-        return self._choose_schema(data, nodes, fuzzy, depth + 1)
+        return node
