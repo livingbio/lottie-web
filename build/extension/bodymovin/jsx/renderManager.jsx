@@ -1,5 +1,5 @@
 /*jslint vars: true , plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global app, File, bm_dataManager, Folder, $ */
+/*global bm_layerElement,bm_projectManager, bm_eventDispatcher, bm_sourceHelper, bm_compsManager, bm_textShapeHelper, bm_markerHelper, app, File, bm_dataManager*/
 
 $.__bodymovin.bm_renderManager = (function () {
     'use strict';
@@ -10,11 +10,10 @@ $.__bodymovin.bm_renderManager = (function () {
     var layerTypes = $.__bodymovin.layerTypes;
     var bm_layerElement = $.__bodymovin.bm_layerElement;
     var bm_ProjectHelper = $.__bodymovin.bm_ProjectHelper;
-    var bm_fileManager = $.__bodymovin.bm_fileManager;
-    
+
     var ob = {}, pendingLayers = [], pendingComps = [], destinationPath, fsDestinationPath, currentCompID, totalLayers, currentLayer, currentCompSettings, hasExpressionsFlag;
     var currentExportedComps = [];
-    var version_number = '5.6.7';
+    var version_number = '5.5.7';
 
     function getParentData(layers, id) {
         var i = 0, len = layers.length;
@@ -25,9 +24,9 @@ $.__bodymovin.bm_renderManager = (function () {
             i += 1;
         }
     }
-    
+
     function restoreParents(layers) {
-        
+
         var layerData, parentData, i, len = layers.length, hasChangedState = false;
         for (i = 0; i < len; i += 1) {
             layerData = layers[i];
@@ -56,7 +55,7 @@ $.__bodymovin.bm_renderManager = (function () {
         }
     }
 
-    /*function removeHiddenContent(shapes) {
+    function removeHiddenContent(shapes) {
         if(shapes) {
             var i = 0, len = shapes.length;
             while(i < len) {
@@ -70,8 +69,8 @@ $.__bodymovin.bm_renderManager = (function () {
                 i += 1;
             }
         }
-    }*/
-    
+    }
+
     function createLayers(comp, layers, framerate, deepTraversing) {
         var i, len = comp.layers.length, layerInfo, layerData, prevLayerData;
         for (i = 0; i < len; i += 1) {
@@ -128,15 +127,6 @@ $.__bodymovin.bm_renderManager = (function () {
     }
 
     function render(comp, destination, fsDestination, compSettings) {
-
-        $.__bodymovin.bm_sourceHelper.reset();
-        $.__bodymovin.bm_textShapeHelper.reset();
-
-        if(!bm_fileManager.createTemporaryFolder()) {
-            return;
-        };
-
-        ////
         app.beginUndoGroup("Render Bodymovin Animation");
         currentExportedComps = [];
         hasExpressionsFlag = false;
@@ -147,11 +137,29 @@ $.__bodymovin.bm_renderManager = (function () {
         bm_eventDispatcher.sendEvent('bm:render:update', {type: 'update', message: 'Starting Render', compId: currentCompID, progress: 0});
         destinationPath = destination;
         fsDestinationPath = fsDestination;
+        $.__bodymovin.bm_sourceHelper.reset();
+        $.__bodymovin.bm_textShapeHelper.reset();
         bm_layerElement.reset();
         pendingLayers.length = 0;
         pendingComps.length = 0;
+
+        var generator = 'LottieFiles AE ' + (compSettings.hasOwnProperty('generatorVersion') ? compSettings.generatorVersion : '');
+        var author = compSettings.hasOwnProperty('author') ? compSettings.author : '';
+        var keywords = compSettings.hasOwnProperty('keywords') ? compSettings.keywords : '';
+        var description = compSettings.hasOwnProperty('description') ? compSettings.description : '';
+        var themeColor = compSettings.hasOwnProperty('themeColor') ? compSettings.themeColor : '';
+
+        var metaData = {
+          g: generator,
+          a: author,
+          k: keywords,
+          d: description,
+          tc: themeColor
+        };
+
         var exportData = {
             v : version_number,
+            meta: metaData,
             fr : comp.frameRate,
             ip : comp.workAreaStart * comp.frameRate,
             op : (comp.workAreaStart + comp.workAreaDuration) * comp.frameRate,
@@ -164,7 +172,7 @@ $.__bodymovin.bm_renderManager = (function () {
             fonts : [],
             layers : [],
             markers : []
-            
+
         };
         currentExportedComps.push(currentCompID);
         ob.renderData.exportData = exportData;
@@ -190,13 +198,12 @@ $.__bodymovin.bm_renderManager = (function () {
     }
 
     function exportCompMarkers(exportData, comp) {
-        
+
         if(comp.markerProperty && comp.markerProperty.numKeys >= 1) {
             var markerProperty = comp.markerProperty;
             var markersList = exportData.markers;
             var len = markerProperty.numKeys, markerElement;
-            var markerData;
-            for (var i = 0; i < len; i += 1) {
+            for (i = 0; i < len; i += 1) {
                 markerData = {};
                 markerElement = markerProperty.keyValue(i + 1);
                 markerData.tm = markerProperty.keyTime(i + 1) * exportData.fr;
@@ -236,7 +243,7 @@ $.__bodymovin.bm_renderManager = (function () {
             }
         }
     }
-    
+
     function reset() {
         pendingLayers.length = 0;
         pendingComps.length = 0;
@@ -245,23 +252,18 @@ $.__bodymovin.bm_renderManager = (function () {
     }
 
     function dataSaved() {
-        bm_eventDispatcher.sendEvent('bm:render:update', {type: 'update', message: 'Render finished ', compId: currentCompID, progress: 1, isFinished: true, fsPath: fsDestinationPath});
+        bm_eventDispatcher.sendEvent('bm:render:update', {type: 'update', message: 'Render finished ', compId: currentCompID, progress: 1, isFinished: true, fsPath: fsDestinationPath, json: ob.renderData.exportData});
         reset();
         $.__bodymovin.bm_textShapeHelper.removeComps();
         bm_compsManager.renderComplete();
         app.endUndoGroup();
     }
-    
+
     function saveData() {
         bm_eventDispatcher.sendEvent('bm:render:update', {type: 'update', message: 'Saving data ', compId: currentCompID, progress: 1});
-        try {
-            bm_dataManager.saveData(ob.renderData.exportData, destinationPath, currentCompSettings, dataSaved);
-        } catch(err) {
-            bm_eventDispatcher.sendEvent('bm:alert', {message: 'Could not export files <br /> Is Preferences > Scripting & Expressions > Allow Scripts to Write Files and Access Network enabled?'});
-            bm_eventDispatcher.sendEvent('bm:render:update', {type: 'update', message: 'Render Failed ', compId: currentCompID, progress: 1, isFinished: false, fsPath: fsDestinationPath});
-        }
+        bm_dataManager.saveData(ob.renderData.exportData, destinationPath, currentCompSettings, dataSaved);
     }
-    
+
     function clearUnrenderedLayers(layers) {
         var i, len = layers.length;
         for (i = 0; i < len; i += 1) {
@@ -274,8 +276,8 @@ $.__bodymovin.bm_renderManager = (function () {
             }
         }
     }
-    
-    /*function clearNames(layers) {
+
+    function clearNames(layers) {
         if (hasExpressionsFlag) {
             return;
         }
@@ -287,16 +289,16 @@ $.__bodymovin.bm_renderManager = (function () {
                 clearNames(layers[i].layers);
             }
         }
-        
-    }*/
-    
+
+    }
+
     function removeExtraData() {
         clearUnrenderedLayers(ob.renderData.exportData.layers);
         bm_ProjectHelper.end();
         /* Todo check if "clearNames" it changes filesize significantly */
         //clearNames(ob.renderData.exportData.layers);
     }
-    
+
     function renderNextLayer() {
         if (bm_compsManager.cancelled) {
             return;
@@ -311,10 +313,10 @@ $.__bodymovin.bm_renderManager = (function () {
             }*/
         } else {
             removeExtraData();
-            $.__bodymovin.bm_sourceHelper.exportImages(destinationPath, ob.renderData.exportData.assets, currentCompID, currentCompSettings.original_names, currentCompSettings.original_assets);
+            $.__bodymovin.bm_sourceHelper.exportImages(destinationPath, ob.renderData.exportData.assets, currentCompID, currentCompSettings.original_names);
         }
     }
-    
+
     function checkFonts() {
         var fonts = $.__bodymovin.bm_sourceHelper.getFonts();
         var exportData;
@@ -344,7 +346,7 @@ $.__bodymovin.bm_renderManager = (function () {
             }
         }
     }
-    
+
     function setChars(chars) {
         if (bm_compsManager.cancelled) {
             return;
@@ -356,7 +358,7 @@ $.__bodymovin.bm_renderManager = (function () {
         }
         setCharsData(chars)
     }
-    
+
     function setFontData(fontData) {
         var exportData = ob.renderData.exportData;
         exportData.fonts = fontData;
@@ -364,21 +366,21 @@ $.__bodymovin.bm_renderManager = (function () {
         //$.__bodymovin.bm_textShapeHelper.exportChars(fontData);
         saveData();
     }
-    
+
     function setCharsData(charData) {
         var exportData = ob.renderData.exportData;
         exportData.chars = charData;
         saveData();
     }
-    
+
     function imagesReady() {
         checkFonts();
     }
-    
+
     function renderLayerComplete() {
         app.scheduleTask('$.__bodymovin.bm_renderManager.renderNextLayer();', 20, false);
     }
-    
+
     function hasExpressions() {
         hasExpressionsFlag = true;
     }
@@ -389,7 +391,7 @@ $.__bodymovin.bm_renderManager = (function () {
     }
 
     function shouldCompressImages() {
-        return currentCompSettings.should_compress && !currentCompSettings.original_assets;
+        return currentCompSettings.should_compress;
     }
 
     function getCompressionQuality() {
@@ -419,7 +421,7 @@ $.__bodymovin.bm_renderManager = (function () {
     function shouldIncludeNotSupportedProperties() {
         return currentCompSettings.not_supported_properties;
     }
-    
+
     ob.renderData = {
         exportData : {
             assets : []
@@ -441,6 +443,6 @@ $.__bodymovin.bm_renderManager = (function () {
     ob.shouldExportOldFormat = shouldExportOldFormat;
     ob.shouldSkipDefaultProperties = shouldSkipDefaultProperties;
     ob.shouldIncludeNotSupportedProperties = shouldIncludeNotSupportedProperties;
-    
+
     return ob;
 }());

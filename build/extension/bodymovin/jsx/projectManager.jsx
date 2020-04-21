@@ -1,12 +1,11 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global app, $, Folder */
+/*global app, bm_eventDispatcher */
 
 $.__bodymovin.bm_projectManager = (function () {
     'use strict';
     var bm_eventDispatcher = $.__bodymovin.bm_eventDispatcher;
     var bm_generalUtils = $.__bodymovin.bm_generalUtils;
     var bm_XMPHelper = $.__bodymovin.bm_XMPHelper;
-    var bm_fileManager = $.__bodymovin.bm_fileManager;
     var commands = {};
     var projectId = '';
     var project;
@@ -61,8 +60,6 @@ $.__bodymovin.bm_projectManager = (function () {
             projectId = storedProjectId;
             bm_eventDispatcher.sendEvent('bm:project:id', {id:projectId});
         }
-        
-        bm_fileManager.removeOldTemporaryFolder();
     }
     
     function getCompositions() {
@@ -91,30 +88,13 @@ $.__bodymovin.bm_projectManager = (function () {
             }
         }
     }
-
-    function getFile(path) {
-        var extensionPath = $.fileName.split('/').slice(0, -1).join('/') + '/';
-        var folder = new Folder(extensionPath);
-        folder = folder.parent;
-        var file = new File(folder.absoluteURI + '/' + path)
-        return file;
-    }
-
-    function getProjectPath() {
-        if (app.project && app.project.file && app.project.file.parent) {
-            var projectFolder = app.project.file.parent;
-            bm_eventDispatcher.sendEvent('bm:project:path', {path: projectFolder.fsName});
-        }
-    }
     
     var ob = {
         checkProject: checkProject,
         getCompositions: getCompositions,
         getCompositionById: getCompositionById,
         searchCommands: searchCommands,
-        getCommandID: getCommandID,
-        getFile: getFile, 
-        getProjectPath: getProjectPath, 
+        getCommandID: getCommandID
     };
     return ob;
 }());

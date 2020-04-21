@@ -1,5 +1,5 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global $, Folder, File */
+/*global bm_projectManager, bm_eventDispatcher, Folder, File */
 
 $.__bodymovin.bm_compsManager = (function () {
     'use strict';
@@ -10,7 +10,6 @@ $.__bodymovin.bm_compsManager = (function () {
     
     
     function getCompositionData(comp) {
-        //
         var i = 0, len = compositions.length, compData;
         while (i < len) {
             if (compositions[i].id === comp.id) {
@@ -22,16 +21,14 @@ $.__bodymovin.bm_compsManager = (function () {
         if (!compData) {
             compData = {
                 id: comp.id,
-                name: comp.name,
-                width: comp.width, 
-                height: comp.height
+                name: comp.name
             };
         }
         
         return compData;
     }
     
-    function searchCompositionDestination(id, absoluteURI, fileName) {
+    function searchCompositionDestination(id, absoluteURI, standalone) {
         /*var i = 0, len = compositions.length, compData;
         while (i < len) {
             if (compositions[i].id === id) {
@@ -44,9 +41,9 @@ $.__bodymovin.bm_compsManager = (function () {
         if (absoluteURI) {
             uri = absoluteURI;
         } else {
-            uri = Folder.desktop.absoluteURI + '/' + fileName;
+            uri = Folder.desktop.absoluteURI + '/data';
+            uri += standalone ? '.js' : '.json';
         }
-
         var f = new File(uri);
         var saveFileData = f.saveDlg();
         if (saveFileData !== null) {
@@ -81,6 +78,10 @@ $.__bodymovin.bm_compsManager = (function () {
         }
         bm_eventDispatcher.sendEvent('bm:compositions:list', compositions);
     }
+    
+    function complete() {
+        bm_eventDispatcher.sendEvent('bm:render:complete', currentComposition.id);
+    }
 
     function renderComposition(compositionData) {
         ob.cancelled = false;
@@ -95,7 +96,12 @@ $.__bodymovin.bm_compsManager = (function () {
             }
             i += 1;
         }
-
+        /*if (!comp) {
+            bm_eventDispatcher.sendEvent('bm:render:complete');
+            return;
+        }
+        bm_eventDispatcher.sendEvent('bm:render:complete', currentComposition.id);
+        return;*/
         bm_eventDispatcher.sendEvent('bm:render:start', currentComposition.id);
         var destination = currentComposition.absoluteURI;
         var fsDestination = currentComposition.destination;

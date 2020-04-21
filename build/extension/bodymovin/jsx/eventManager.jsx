@@ -29,14 +29,9 @@ $.__bodymovin.bm_eventDispatcher = (function () {
         sendEvent('console:log', data);
     }
     
-    function alert(message) {
-        sendEvent('bm:alert', {message: message});
-    }
-    
     var ob = {
         sendEvent : sendEvent,
-        log : log,
-        alert : alert,
+        log : log
     };
     return ob;
 }());

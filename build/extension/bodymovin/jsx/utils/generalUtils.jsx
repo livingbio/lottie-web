@@ -1,6 +1,7 @@
 /*jslint vars: true , plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global app, $, PropertyValueType*/
+/*global app, $, PropertyValueType, bm_eventDispatcher*/
 $.__bodymovin.bm_generalUtils = (function () {
+    'use strict';
     var bm_eventDispatcher = $.__bodymovin.bm_eventDispatcher;
     var ob = {};
     ob.Gtlym = {};
@@ -70,7 +71,7 @@ $.__bodymovin.bm_generalUtils = (function () {
                 if (property.propertyValueType !== PropertyValueType.NO_VALUE && property.value !== undefined) {
                     ob.value = property.value.toString();
                 } else {
-                    ob.value = '--- No Value: ---';
+                    ob.value = '--- No Value:' + ' ---';
                 }
             }
         }
@@ -137,7 +138,7 @@ $.__bodymovin.bm_generalUtils = (function () {
         }
         return ob;
     }
-
+    
     ob.random = random;
     ob.roundNumber = roundNumber;
     ob.setTimeout = setTimeout;

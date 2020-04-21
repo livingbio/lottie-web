@@ -2,6 +2,7 @@
 /*global $, esprima, escodegen*/
 
 $.__bodymovin.bm_expressionHelper = (function () {
+    'use strict';
     var esprima = $.__bodymovin.esprima;
     var variableDeclaration_helper = $.__bodymovin.bm_variableDeclarationHelper;
     var valueAssignment_helper = $.__bodymovin.bm_valueAssignmentHelper;
@@ -74,8 +75,6 @@ $.__bodymovin.bm_expressionHelper = (function () {
                 return '$bm_div';
             case '%':
                 return '$bm_mod';
-            default:
-                return '$bm_sum';
 
         }
     }
@@ -88,9 +87,8 @@ $.__bodymovin.bm_expressionHelper = (function () {
             case '/':
             case '%':
                 return true;
-            default:
-                return false;
         }
+        return false;
     }
 
     function convertBinaryExpression(expression) {
@@ -310,8 +308,6 @@ $.__bodymovin.bm_expressionHelper = (function () {
                     handleCallExpression(declarations[i].init);
                 } else if (declarations[i].init.type === 'ConditionalExpression') {
                     handleConditionalExpression(declarations[i].init);
-                } else if (declarations[i].init.type === 'LogicalExpression') {
-                    handleLogicalExpression(declarations[i].init);
                 }
             }
         }
@@ -348,56 +344,6 @@ $.__bodymovin.bm_expressionHelper = (function () {
                 handleConditionalExpression(assignmentExpression.right);
             } else  if (assignmentExpression.right.type === 'ArrayExpression') {
                 handleSequenceExpressions(assignmentExpression.right.elements);
-            } else  if (assignmentExpression.right.type === 'FunctionExpression') {
-                handleFunctionDeclaration(assignmentExpression.right);
-            } else  if (assignmentExpression.right.type === 'LogicalExpression') {
-                handleLogicalExpression(assignmentExpression.right);
-            }
-        }
-    }
-
-    function handleLogicalExpression(logicalExpression) {
-        if (logicalExpression.right){
-            if (logicalExpression.right.type === 'BinaryExpression') {
-                logicalExpression.right = convertBinaryExpression(logicalExpression.right);
-            } else if (logicalExpression.right.type === 'UnaryExpression') {
-                logicalExpression.right = convertUnaryExpression(logicalExpression.right);
-            } else if (logicalExpression.right.type === 'CallExpression') {
-                handleCallExpression(logicalExpression.right);
-            } else  if (logicalExpression.right.type === 'MemberExpression') {
-                handleMemberExpression(logicalExpression.right);
-            } else  if (logicalExpression.right.type === 'ConditionalExpression') {
-                handleConditionalExpression(logicalExpression.right);
-            } else  if (logicalExpression.right.type === 'ConditionalExpression') {
-                handleConditionalExpression(logicalExpression.right);
-            } else  if (logicalExpression.right.type === 'ArrayExpression') {
-                handleSequenceExpressions(logicalExpression.right.elements);
-            } else  if (logicalExpression.right.type === 'FunctionExpression') {
-                handleFunctionDeclaration(logicalExpression.right);
-            } else  if (logicalExpression.right.type === 'LogicalExpression') {
-                handleLogicalExpression(logicalExpression.right);
-            }
-        }
-
-        if (logicalExpression.left){
-            if (logicalExpression.left.type === 'BinaryExpression') {
-                logicalExpression.left = convertBinaryExpression(logicalExpression.left);
-            } else if (logicalExpression.left.type === 'UnaryExpression') {
-                logicalExpression.left = convertUnaryExpression(logicalExpression.left);
-            } else if (logicalExpression.left.type === 'CallExpression') {
-                handleCallExpression(logicalExpression.left);
-            } else  if (logicalExpression.left.type === 'MemberExpression') {
-                handleMemberExpression(logicalExpression.left);
-            } else  if (logicalExpression.left.type === 'ConditionalExpression') {
-                handleConditionalExpression(logicalExpression.left);
-            } else  if (logicalExpression.left.type === 'ConditionalExpression') {
-                handleConditionalExpression(logicalExpression.left);
-            } else  if (logicalExpression.left.type === 'ArrayExpression') {
-                handleSequenceExpressions(logicalExpression.left.elements);
-            } else  if (logicalExpression.left.type === 'FunctionExpression') {
-                handleFunctionDeclaration(logicalExpression.left);
-            } else  if (logicalExpression.left.type === 'LogicalExpression') {
-                handleLogicalExpression(logicalExpression.left);
             }
         }
     }
@@ -407,29 +353,25 @@ $.__bodymovin.bm_expressionHelper = (function () {
             conditionalExpression.test = convertBinaryExpression(conditionalExpression.test);
         }
         if(conditionalExpression.consequent){
-            if (conditionalExpression.consequent.type === 'AssignmentExpression') {
+            if (conditionalExpression.consequent.type=== 'AssignmentExpression') {
                 handleAssignmentExpression(conditionalExpression.consequent);
-            } else if (conditionalExpression.consequent.type === 'BinaryExpression') {
+            } else if (conditionalExpression.consequent.type=== 'BinaryExpression') {
                 conditionalExpression.consequent = convertBinaryExpression(conditionalExpression.consequent);
-            } else if (conditionalExpression.consequent.type === 'SequenceExpression') {
+            } else if (conditionalExpression.consequent.type=== 'SequenceExpression') {
                 handleSequenceExpressions(conditionalExpression.consequent.expressions);
-            } else if (conditionalExpression.consequent.type === 'CallExpression') {
+            } else if (conditionalExpression.consequent.type=== 'CallExpression') {
                 handleCallExpression(conditionalExpression.consequent);
-            } else if (conditionalExpression.consequent.type === 'LogicalExpression') {
-                handleLogicalExpression(conditionalExpression.consequent);
             }
         }
         if(conditionalExpression.alternate){
-            if (conditionalExpression.alternate.type === 'AssignmentExpression') {
+            if (conditionalExpression.alternate.type=== 'AssignmentExpression') {
                 handleAssignmentExpression(conditionalExpression.alternate);
-            } else if (conditionalExpression.alternate.type === 'BinaryExpression') {
+            } else if (conditionalExpression.alternate.type=== 'BinaryExpression') {
                 conditionalExpression.alternate = convertBinaryExpression(conditionalExpression.alternate);
-            } else if (conditionalExpression.alternate.type === 'SequenceExpression') {
+            } else if (conditionalExpression.alternate.type=== 'SequenceExpression') {
                 handleSequenceExpressions(conditionalExpression.alternate.expressions);
-            } else if (conditionalExpression.alternate.type === 'CallExpression') {
+            } else if (conditionalExpression.alternate.type=== 'CallExpression') {
                 handleCallExpression(conditionalExpression.alternate);
-            } else if (conditionalExpression.alternate.type === 'LogicalExpression') {
-                handleLogicalExpression(conditionalExpression.alternate);
             }
         }
     }
@@ -451,8 +393,6 @@ $.__bodymovin.bm_expressionHelper = (function () {
                 handleMemberExpression(expressions[i]);
             } else  if (expressions[i].type === 'ArrayExpression') {
                 handleSequenceExpressions(expressions[i].elements);
-            } else  if (expressions[i].type === 'LogicalExpression') {
-                handleLogicalExpression(expressions[i]);
             }
         }
     }
@@ -470,8 +410,6 @@ $.__bodymovin.bm_expressionHelper = (function () {
             handleConditionalExpression(expressionStatement.expression);
         } else if (expressionStatement.expression.type === 'SequenceExpression') {
             handleSequenceExpressions(expressionStatement.expression.expressions);
-        } else if (expressionStatement.expression.type === 'LogicalExpression') {
-            handleLogicalExpression(expressionStatement.expression);
         }
     }
 
@@ -491,17 +429,13 @@ $.__bodymovin.bm_expressionHelper = (function () {
         var j, jLen;
         for(i = 0; i < len; i += 1) {
             if (body[i].type === 'ExpressionStatement') {
-                if (body[i].expression.type === 'CallExpression') {
+                if(body[i].expression.type === 'CallExpression') {
                     jLen = body[i].expression.arguments.length;
                     for (j = 0; j < jLen; j += 1) {
                         if(body[i].expression.arguments[j].type === 'AssignmentExpression') {
                             body[i].expression.arguments[j] = body[i].expression.arguments[j].right;
                         }
                     } 
-                } else if (body[i].expression.type === 'AssignmentExpression') {
-                    handleAssignmentExpression(body[i].expression);
-                } else if (body[i].expression.type === 'LogicalExpression') {
-                    handleLogicalExpression(body[i].expression);
                 }
             } else if (body[i].type === 'FunctionDeclaration') {
                 if (body[i].body && body[i].body.type === 'BlockStatement') {
@@ -543,7 +477,7 @@ $.__bodymovin.bm_expressionHelper = (function () {
         returnOb.k = eval(expression)
     }
 
-    /*function separateBodyDeclaredFunctions(body) {
+    function separateBodyDeclaredFunctions(body) {
         var i, len = body.length;
         separate_functions.bodies.length = 0;
         separate_functions.names.length = 0;
@@ -556,7 +490,7 @@ $.__bodymovin.bm_expressionHelper = (function () {
                 len -= 1;
             }
         }
-    }*/
+    }
 
     function checkExpression(prop, returnOb) {
         if (prop.expressionEnabled && !prop.expressionError) {
