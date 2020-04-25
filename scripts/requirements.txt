@@ -1,0 +1,4 @@
+jsonschema
+snapshottest
+pytest
+fire
