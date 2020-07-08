@@ -9,7 +9,7 @@ var ProjectInterface = (function (){
             var i = 0, len = this.compositions.length;
             while(i<len){
                 if(this.compositions[i].data && this.compositions[i].data.nm === name){
-                    if(this.compositions[i].prepareFrame) {
+                    if(this.compositions[i].prepareFrame && this.compositions[i].data.xt) {
                         this.compositions[i].prepareFrame(this.currentFrame);
                     }
                     return this.compositions[i].compInterface;
@@ -26,5 +26,5 @@ var ProjectInterface = (function (){
 
 
         return _thisProjectFunction;
-    }
+    };
 }());

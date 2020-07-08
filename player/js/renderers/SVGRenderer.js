@@ -2,20 +2,64 @@ function SVGRenderer(animationItem, config){
     this.animationItem = animationItem;
     this.layers = null;
     this.renderedFrame = -1;
-    this.globalData = {
-        frameNum: -1
-    };
+    this.svgElement = createNS('svg');
+    var ariaLabel = '';
+    if (config && config.title) {
+        var titleElement = createNS('title');
+        var titleId = createElementID();
+        titleElement.setAttribute('id', titleId);
+        titleElement.textContent = config.title;
+        this.svgElement.appendChild(titleElement);
+        ariaLabel += titleId;
+    }
+    if (config && config.description) {
+        var descElement = createNS('desc');
+        var descId = createElementID();
+        descElement.setAttribute('id', descId);
+        descElement.textContent = config.description;
+        this.svgElement.appendChild(descElement);
+        ariaLabel += ' ' + descId;
+    }
+    if (ariaLabel) {
+        this.svgElement.setAttribute('aria-labelledby', ariaLabel)
+    }
+    var defs = createNS( 'defs');
+    this.svgElement.appendChild(defs);
+    var maskElement = createNS('g');
+    this.svgElement.appendChild(maskElement);
+    this.layerElement = maskElement;
     this.renderConfig = {
         preserveAspectRatio: (config && config.preserveAspectRatio) || 'xMidYMid meet',
-        progressiveLoad: (config && config.progressiveLoad) || false
+        imagePreserveAspectRatio: (config && config.imagePreserveAspectRatio) || 'xMidYMid slice',
+        progressiveLoad: (config && config.progressiveLoad) || false,
+        hideOnTransparent: (config && config.hideOnTransparent === false) ? false : true,
+        viewBoxOnly: (config && config.viewBoxOnly) || false,
+        viewBoxSize: (config && config.viewBoxSize) || false,
+        className: (config && config.className) || '',
+        id: (config && config.id) || '',
+        focusable: config && config.focusable,
+        filterSize: {
+            width: config && config.filterSize && config.filterSize.width || '100%',
+            height: config && config.filterSize && config.filterSize.height || '100%',
+            x: config && config.filterSize && config.filterSize.x || '0%',
+            y: config && config.filterSize && config.filterSize.y || '0%',
+        }
+    };
+
+    this.globalData = {
+        _mdf: false,
+        frameNum: -1,
+        defs: defs,
+        renderConfig: this.renderConfig
     };
     this.elements = [];
     this.pendingElements = [];
     this.destroyed = false;
+    this.rendererType = 'svg';
 
 }
 
-extendPrototype(BaseRenderer,SVGRenderer);
+extendPrototype([BaseRenderer],SVGRenderer);
 
 SVGRenderer.prototype.createAudio = function (data) {
     throw new Error('You\'re using a audio object. Try the html renderer.');
@@ -28,78 +72,81 @@ SVGRenderer.prototype.createVideo = function (data) {
 
 };
 
-SVGRenderer.prototype.createBase = function (data) {
-    return new SVGBaseElement(data, this.layerElement,this.globalData,this);
+SVGRenderer.prototype.createNull = function (data) {
+    return new NullElement(data,this.globalData,this);
 };
 
 SVGRenderer.prototype.createShape = function (data) {
-    return new IShapeElement(data, this.layerElement,this.globalData,this);
+    return new SVGShapeElement(data,this.globalData,this);
 };
 
 SVGRenderer.prototype.createText = function (data) {
-    return new SVGTextElement(data, this.layerElement,this.globalData,this);
+    return new SVGTextElement(data,this.globalData,this);
 
 };
 
 SVGRenderer.prototype.createImage = function (data) {
-    return new IImageElement(data, this.layerElement,this.globalData,this);
+    return new IImageElement(data,this.globalData,this);
 };
 
 SVGRenderer.prototype.createComp = function (data) {
-    return new ICompElement(data, this.layerElement,this.globalData,this);
+    return new SVGCompElement(data,this.globalData,this);
 
 };
 
 SVGRenderer.prototype.createSolid = function (data) {
-    return new ISolidElement(data, this.layerElement,this.globalData,this);
+    return new ISolidElement(data,this.globalData,this);
 };
 
 SVGRenderer.prototype.configAnimation = function(animData){
-    this.layerElement = document.createElementNS(svgNS,'svg');
-    this.layerElement.setAttribute('xmlns','http://www.w3.org/2000/svg');
-    this.layerElement.setAttribute('width',animData.w);
-    this.layerElement.setAttribute('height',animData.h);
-    this.layerElement.setAttribute('viewBox','0 0 '+animData.w+' '+animData.h);
-    this.layerElement.setAttribute('preserveAspectRatio',this.renderConfig.preserveAspectRatio);
-    this.layerElement.style.width = '100%';
-    this.layerElement.style.height = '100%';
+    this.svgElement.setAttribute('xmlns','http://www.w3.org/2000/svg');
+    if(this.renderConfig.viewBoxSize) {
+        this.svgElement.setAttribute('viewBox',this.renderConfig.viewBoxSize);
+    } else {
+        this.svgElement.setAttribute('viewBox','0 0 '+animData.w+' '+animData.h);
+    }
+
+    if(!this.renderConfig.viewBoxOnly) {
+        this.svgElement.setAttribute('width',animData.w);
+        this.svgElement.setAttribute('height',animData.h);
+        this.svgElement.style.width = '100%';
+        this.svgElement.style.height = '100%';
+        this.svgElement.style.transform = 'translate3d(0,0,0)';
+    }
+    if (this.renderConfig.className) {
+        this.svgElement.setAttribute('class', this.renderConfig.className);
+    }
+    if (this.renderConfig.id) {
+        this.svgElement.setAttribute('id', this.renderConfig.id);
+    }
+    if (this.renderConfig.focusable !== undefined) {
+        this.svgElement.setAttribute('focusable', this.renderConfig.focusable);
+    }
+    this.svgElement.setAttribute('preserveAspectRatio',this.renderConfig.preserveAspectRatio);
     //this.layerElement.style.transform = 'translate3d(0,0,0)';
     //this.layerElement.style.transformOrigin = this.layerElement.style.mozTransformOrigin = this.layerElement.style.webkitTransformOrigin = this.layerElement.style['-webkit-transform'] = "0px 0px 0px";
-    this.animationItem.wrapper.appendChild(this.layerElement);
+    this.animationItem.wrapper.appendChild(this.svgElement);
     //Mask animation
-    var defs = document.createElementNS(svgNS, 'defs');
-    this.globalData.defs = defs;
-    this.layerElement.appendChild(defs);
-    this.globalData.getAssetData = this.animationItem.getAssetData.bind(this.animationItem);
-    this.globalData.getAssetsPath = this.animationItem.getAssetsPath.bind(this.animationItem);
+    var defs = this.globalData.defs;
+
+    this.setupGlobalData(animData, defs);
     this.globalData.progressiveLoad = this.renderConfig.progressiveLoad;
-    this.globalData.frameId = 0;
-    this.globalData.nm = animData.nm;
-    this.globalData.compSize = {
-        w: animData.w,
-        h: animData.h
-    };
     this.data = animData;
-    this.globalData.frameRate = animData.fr;
-    var maskElement = document.createElementNS(svgNS, 'clipPath');
-    var rect = document.createElementNS(svgNS,'rect');
+
+    var maskElement = createNS( 'clipPath');
+    var rect = createNS('rect');
     rect.setAttribute('width',animData.w);
     rect.setAttribute('height',animData.h);
     rect.setAttribute('x',0);
     rect.setAttribute('y',0);
-    var maskId = 'animationMask_'+randomString(10);
+    var maskId = createElementID();
     maskElement.setAttribute('id', maskId);
     maskElement.appendChild(rect);
-    var maskedElement = document.createElementNS(svgNS,'g');
-    maskedElement.setAttribute("clip-path", "url(#"+maskId+")");
-    this.layerElement.appendChild(maskedElement);
+    this.layerElement.setAttribute("clip-path", "url(" + locationHref + "#"+maskId+")");
+
     defs.appendChild(maskElement);
-    this.layerElement = maskedElement;
     this.layers = animData.layers;
-    this.globalData.fontManager = new FontManager();
-    this.globalData.fontManager.addChars(animData.chars);
-    this.globalData.fontManager.addFonts(animData.fonts,defs);
-    this.elements = Array.apply(null,{length:animData.layers.length});
+    this.elements = createSizedArray(animData.layers.length);
 };
 
 
@@ -165,7 +212,7 @@ SVGRenderer.prototype.checkPendingElements  = function(){
 };
 
 SVGRenderer.prototype.renderFrame = function(num){
-    if(this.renderedFrame == num || this.destroyed){
+    if(this.renderedFrame === num || this.destroyed){
         return;
     }
     if(num === null){
@@ -173,12 +220,12 @@ SVGRenderer.prototype.renderFrame = function(num){
     }else{
         this.renderedFrame = num;
     }
-    //clearPoints();
-    /*console.log('-------');
-    console.log('FRAME ',num);*/
+    // console.log('-------');
+    // console.log('FRAME ',num);
     this.globalData.frameNum = num;
     this.globalData.frameId += 1;
     this.globalData.projectInterface.currentFrame = num;
+    this.globalData._mdf = false;
     var i, len = this.layers.length;
     if(!this.completeLayers){
         this.checkLayers(num);
@@ -188,9 +235,11 @@ SVGRenderer.prototype.renderFrame = function(num){
             this.elements[i].prepareFrame(num - this.layers[i].st);
         }
     }
-    for (i = len - 1; i >= 0; i--) {
-        if(this.completeLayers || this.elements[i]){
-            this.elements[i].renderFrame();
+    if(this.globalData._mdf) {
+        for (i = 0; i < len; i += 1) {
+            if(this.completeLayers || this.elements[i]){
+                this.elements[i].renderFrame();
+            }
         }
     }
 };
@@ -221,18 +270,4 @@ SVGRenderer.prototype.hide = function(){
 
 SVGRenderer.prototype.show = function(){
     this.layerElement.style.display = 'block';
-};
-
-SVGRenderer.prototype.searchExtraCompositions = function(assets){
-    var i, len = assets.length;
-    var floatingContainer = document.createElementNS(svgNS,'g');
-    for(i=0;i<len;i+=1){
-        if(assets[i].xt){
-            var comp = this.createComp(assets[i],floatingContainer,this.globalData.comp,null);
-            comp.initExpressions();
-            //comp.compInterface = CompExpressionInterface(comp);
-            //Expressions.addLayersInterface(comp.elements, this.globalData.projectInterface);
-            this.globalData.projectInterface.registerComposition(comp);
-        }
-    }
 };

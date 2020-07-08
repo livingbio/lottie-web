@@ -19,12 +19,13 @@
     },
     "ty": {
       "title": "Type",
-      "description": "Effect type. Value:20.",
-      "type": "number"
+      "description": "Effect type.",
+      "type": "number",
+      "const": 20
     },
     "ef": {
       "title": "Effects",
-      "description": "ffect List of properties.",
+      "description": "Effect List of properties.",
       "type": "array",
       "items": [
         {

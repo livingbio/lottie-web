@@ -1,55 +1,24 @@
-function IImageElement(data,parentContainer,globalData,comp,placeholder){
+function IImageElement(data,globalData,comp){
     this.assetData = globalData.getAssetData(data.refId);
-    this._parent.constructor.call(this,data,parentContainer,globalData,comp,placeholder);
+    this.initElement(data,globalData,comp);
+    this.sourceRect = {top:0,left:0,width:this.assetData.w,height:this.assetData.h};
 }
-createElement(SVGBaseElement, IImageElement);
 
-IImageElement.prototype.createElements = function(){
+extendPrototype([BaseElement,TransformElement,SVGBaseElement,HierarchyElement,FrameElement,RenderableDOMElement], IImageElement);
+
+IImageElement.prototype.createContent = function(){
 
     var assetPath = this.globalData.getAssetsPath(this.assetData);
 
-    this._parent.createElements.call(this);
-
-    this.innerElem = document.createElementNS(svgNS,'image');
+    this.innerElem = createNS('image');
     this.innerElem.setAttribute('width',this.assetData.w+"px");
     this.innerElem.setAttribute('height',this.assetData.h+"px");
-    this.innerElem.setAttribute('preserveAspectRatio','xMidYMid slice');
+    this.innerElem.setAttribute('preserveAspectRatio',this.assetData.pr || this.globalData.renderConfig.imagePreserveAspectRatio);
     this.innerElem.setAttributeNS('http://www.w3.org/1999/xlink','href',assetPath);
     this.innerElem.style.border =  '1px solid transparent';
-    this.maskedElement = this.innerElem;
     this.layerElement.appendChild(this.innerElem);
-    if(this.data.ln){
-        this.layerElement.setAttribute('id',this.data.ln);
-    }
-    if(this.data.cl){
-        this.layerElement.setAttribute('class',this.data.cl);
-    }
-
 };
 
-IImageElement.prototype.hide = function(){
-    if(!this.hidden){
-        this.layerElement.style.display = 'none';
-        this.hidden = true;
-    }
-};
-
-IImageElement.prototype.renderFrame = function(parentMatrix){
-    var renderParent = this._parent.renderFrame.call(this,parentMatrix);
-    if(renderParent===false){
-        this.hide();
-        return;
-    }
-    if(this.hidden){
-        this.hidden = false;
-        this.layerElement.style.display = 'block';
-    }
-    if(this.firstFrame){
-        this.firstFrame = false;
-    }
-};
-
-IImageElement.prototype.destroy = function(){
-    this._parent.destroy.call(this._parent);
-    this.innerElem =  null;
-};
+IImageElement.prototype.sourceRectAtTime = function() {
+	return this.sourceRect;
+}

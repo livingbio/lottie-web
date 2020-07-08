@@ -14,20 +14,20 @@ var blitter = 10;
 
 var BMMath = {};
 (function(){
-    var propertyNames = Object.getOwnPropertyNames(Math);
+    var propertyNames = ["abs", "acos", "acosh", "asin", "asinh", "atan", "atanh", "atan2", "ceil", "cbrt", "expm1", "clz32", "cos", "cosh", "exp", "floor", "fround", "hypot", "imul", "log", "log1p", "log2", "log10", "max", "min", "pow", "random", "round", "sign", "sin", "sinh", "sqrt", "tan", "tanh", "trunc", "E", "LN10", "LN2", "LOG10E", "LOG2E", "PI", "SQRT1_2", "SQRT2"];
     var i, len = propertyNames.length;
     for(i=0;i<len;i+=1){
         BMMath[propertyNames[i]] = Math[propertyNames[i]];
     }
 }());
 
-function ProjectInterface(){return {}};
+function ProjectInterface(){return {};}
 
 BMMath.random = Math.random;
 BMMath.abs = function(val){
     var tOfVal = typeof val;
     if(tOfVal === 'object' && val.length){
-        var absArr = Array.apply(null,{length:val.length});
+        var absArr = createSizedArray(val.length);
         var i, len = val.length;
         for(i=0;i<len;i+=1){
             absArr[i] = Math.abs(val[i]);
@@ -36,7 +36,7 @@ BMMath.abs = function(val){
     }
     return Math.abs(val);
 
-}
+};
 var defaultCurveSegments = 150;
 var degToRads = Math.PI/180;
 var roundCorner = 0.5519;
@@ -52,14 +52,6 @@ function roundValues(flag){
 }
 roundValues(false);
 
-function roundTo2Decimals(val){
-    return Math.round(val*10000)/10000;
-}
-
-function roundTo3Decimals(val){
-    return Math.round(val*100)/100;
-}
-
 function styleDiv(element){
     element.style.position = 'absolute';
     element.style.top = 0;
@@ -70,113 +62,74 @@ function styleDiv(element){
     element.style.transformStyle = element.style.webkitTransformStyle = element.style.mozTransformStyle = "preserve-3d";
 }
 
-function styleUnselectableDiv(element){
-    element.style.userSelect = 'none';
-    element.style.MozUserSelect = 'none';
-    element.style.webkitUserSelect = 'none';
-    element.style.oUserSelect = 'none';
-
+function BMEnterFrameEvent(type, currentTime, totalTime, frameMultiplier){
+    this.type = type;
+    this.currentTime = currentTime;
+    this.totalTime = totalTime;
+    this.direction = frameMultiplier < 0 ? -1 : 1;
 }
 
-function BMEnterFrameEvent(n,c,t,d){
-    this.type = n;
-    this.currentTime = c;
-    this.totalTime = t;
-    this.direction = d < 0 ? -1:1;
+function BMCompleteEvent(type, frameMultiplier){
+    this.type = type;
+    this.direction = frameMultiplier < 0 ? -1 : 1;
 }
 
-function BMCompleteEvent(n,d){
-    this.type = n;
-    this.direction = d < 0 ? -1:1;
+function BMCompleteLoopEvent(type, totalLoops, currentLoop, frameMultiplier){
+    this.type = type;
+    this.currentLoop = currentLoop;
+    this.totalLoops = totalLoops;
+    this.direction = frameMultiplier < 0 ? -1 : 1;
 }
 
-function BMCompleteLoopEvent(n,c,t,d){
-    this.type = n;
-    this.currentLoop = c;
-    this.totalLoops = t;
-    this.direction = d < 0 ? -1:1;
+function BMSegmentStartEvent(type, firstFrame, totalFrames){
+    this.type = type;
+    this.firstFrame = firstFrame;
+    this.totalFrames = totalFrames;
 }
 
-function BMSegmentStartEvent(n,f,t){
-    this.type = n;
-    this.firstFrame = f;
-    this.totalFrames = t;
+function BMDestroyEvent(type, target){
+    this.type = type;
+    this.target = target;
 }
 
-function BMDestroyEvent(n,t){
-    this.type = n;
-    this.target = t;
+function BMRenderFrameErrorEvent(nativeError, currentTime) {
+    this.type = 'renderFrameError';
+    this.nativeError = nativeError;
+    this.currentTime = currentTime;
 }
 
-function _addEventListener(eventName, callback){
+function BMConfigErrorEvent(nativeError) {
+    this.type = 'configError';
+    this.nativeError = nativeError;
+}
 
-    if (!this._cbs[eventName]){
-        this._cbs[eventName] = [];
+function BMAnimationConfigErrorEvent(type, nativeError) {
+    this.type = type;
+    this.nativeError = nativeError;
+    this.currentTime = currentTime;
+}
+
+var createElementID = (function(){
+    var _count = 0;
+    return function createID() {
+        return '__lottie_element_' + ++_count
     }
-    this._cbs[eventName].push(callback);
-
-	return function() {
-		this.removeEventListener(eventName, callback);
-	}.bind(this);
-}
-
-function _removeEventListener(eventName,callback){
-
-    if (!callback){
-        this._cbs[eventName] = null;
-    }else if(this._cbs[eventName]){
-        var i = 0, len = this._cbs[eventName].length;
-        while(i<len){
-            if(this._cbs[eventName][i] === callback){
-                this._cbs[eventName].splice(i,1);
-                i -=1;
-                len -= 1;
-            }
-            i += 1;
-        }
-        if(!this._cbs[eventName].length){
-            this._cbs[eventName] = null;
-        }
-    }
-
-}
-
-function _triggerEvent(eventName, args){
-    if (this._cbs[eventName]) {
-        var len = this._cbs[eventName].length;
-        for (var i = 0; i < len; i++){
-            this._cbs[eventName][i](args);
-        }
-    }
-}
-
-function randomString(length, chars){
-    if(chars === undefined){
-        chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-    }
-    var i;
-    var result = '';
-    for (i = length; i > 0; --i) result += chars[Math.round(Math.random() * (chars.length - 1))];
-    return result;
-}
+}())
 
 function HSVtoRGB(h, s, v) {
     var r, g, b, i, f, p, q, t;
-    if (arguments.length === 1) {
-        s = h.s, v = h.v, h = h.h;
-    }
     i = Math.floor(h * 6);
     f = h * 6 - i;
     p = v * (1 - s);
     q = v * (1 - f * s);
     t = v * (1 - (1 - f) * s);
     switch (i % 6) {
-        case 0: r = v, g = t, b = p; break;
-        case 1: r = q, g = v, b = p; break;
-        case 2: r = p, g = v, b = t; break;
-        case 3: r = p, g = q, b = v; break;
-        case 4: r = t, g = p, b = v; break;
-        case 5: r = v, g = p, b = q; break;
+        case 0: r = v; g = t; b = p; break;
+        case 1: r = q; g = v; b = p; break;
+        case 2: r = p; g = v; b = t; break;
+        case 3: r = p; g = q; b = v; break;
+        case 4: r = t; g = p; b = v; break;
+        case 5: r = v; g = p; b = q; break;
     }
     return [ r,
         g,
@@ -184,9 +137,6 @@ function HSVtoRGB(h, s, v) {
 }
 
 function RGBtoHSV(r, g, b) {
-    if (arguments.length === 1) {
-        g = r.g, b = r.b, r = r.r;
-    }
     var max = Math.max(r, g, b), min = Math.min(r, g, b),
         d = max - min,
         h,
@@ -243,11 +193,6 @@ function addHueToRGB(color,offset) {
     return HSVtoRGB(hsv[0],hsv[1],hsv[2]);
 }
 
-function componentToHex(c) {
-    var hex = c.toString(16);
-    return hex.length == 1 ? '0' + hex : hex;
-}
-
 var rgbToHex = (function(){
     var colorMap = [];
     var i;
@@ -270,82 +215,3 @@ var rgbToHex = (function(){
         return '#' + colorMap[r] + colorMap[g] + colorMap[b];
     };
 }());
-
-function fillToRgba(hex,alpha){
-    if(!cachedColors[hex]){
-        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        cachedColors[hex] = parseInt(result[1], 16)+','+parseInt(result[2], 16)+','+parseInt(result[3], 16);
-    }
-    return 'rgba('+cachedColors[hex]+','+alpha+')';
-}
-
-var fillColorToString = (function(){
-
-    var colorMap = [];
-    return function(colorArr,alpha){
-        if(alpha !== undefined){
-            colorArr[3] = alpha;
-        }
-        if(!colorMap[colorArr[0]]){
-            colorMap[colorArr[0]] = {};
-        }
-        if(!colorMap[colorArr[0]][colorArr[1]]){
-            colorMap[colorArr[0]][colorArr[1]] = {};
-        }
-        if(!colorMap[colorArr[0]][colorArr[1]][colorArr[2]]){
-            colorMap[colorArr[0]][colorArr[1]][colorArr[2]] = {};
-        }
-        if(!colorMap[colorArr[0]][colorArr[1]][colorArr[2]][colorArr[3]]){
-            colorMap[colorArr[0]][colorArr[1]][colorArr[2]][colorArr[3]] = 'rgba(' + colorArr.join(',')+')';
-        }
-        return colorMap[colorArr[0]][colorArr[1]][colorArr[2]][colorArr[3]];
-    };
-}());
-
-function RenderedFrame(tr,o) {
-    this.tr = tr;
-    this.o = o;
-}
-
-function LetterProps(o,sw,sc,fc,m,p){
-    this.o = o;
-    this.sw = sw;
-    this.sc = sc;
-    this.fc = fc;
-    this.m = m;
-    this.props = p;
-}
-
-function iterateDynamicProperties(num){
-    var i, len = this.dynamicProperties;
-    for(i=0;i<len;i+=1){
-        this.dynamicProperties[i].getValue(num);
-    }
-}
-
-function reversePath(paths){
-    var newI = [], newO = [], newV = [];
-    var i, len, newPaths = {};
-    var init = 0;
-    if (paths.c) {
-        newI[0] = paths.o[0];
-        newO[0] = paths.i[0];
-        newV[0] = paths.v[0];
-        init = 1;
-    }
-    len = paths.i.length;
-    var cnt = len - 1;
-
-    for (i = init; i < len; i += 1) {
-        newI.push(paths.o[cnt]);
-        newO.push(paths.i[cnt]);
-        newV.push(paths.v[cnt]);
-        cnt -= 1;
-    }
-
-    newPaths.i = newI;
-    newPaths.o = newO;
-    newPaths.v = newV;
-
-    return newPaths;
-}

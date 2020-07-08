@@ -5,38 +5,34 @@ var AnimationItem = function () {
     this.isLoaded = false;
     this.currentFrame = 0;
     this.currentRawFrame = 0;
+    this.firstFrame = 0;
     this.totalFrames = 0;
     this.frameRate = 0;
     this.frameMult = 0;
     this.playSpeed = 1;
     this.playDirection = 1;
-    this.pendingElements = 0;
     this.playCount = 0;
-    this.prerenderFramesFlag = true;
     this.animationData = {};
-    this.layers = [];
     this.assets = [];
     this.isPaused = true;
     this.autoplay = false;
     this.loop = true;
     this.renderer = null;
-    this.animationID = randomString(10);
-    this.scaleMode = 'fit';
+    this.animationID = createElementID();
     this.assetsPath = '';
     this.timeCompleted = 0;
     this.segmentPos = 0;
-    this.subframeEnabled = subframeEnabled;
+    this.isSubframeEnabled = subframeEnabled;
     this.segments = [];
-    this.pendingSegment = false;
     this._idle = true;
+    this._completedLoop = false;
     this.projectInterface = ProjectInterface();
+    this.imagePreloader = new ImagePreloader();
 };
 
+extendPrototype([BaseEvent], AnimationItem);
+
 AnimationItem.prototype.setParams = function(params) {
-    var self = this;
-    if(params.context){
-        this.context = params.context;
-    }
     if(params.wrapper || params.container){
         this.wrapper = params.wrapper || params.container;
     }
@@ -48,62 +44,46 @@ AnimationItem.prototype.setParams = function(params) {
         case 'svg':
             this.renderer = new SVGRenderer(this, params.rendererSettings);
             break;
-        case 'hybrid':
-        case 'html':
         default:
             this.renderer = new HybridRenderer(this, params.rendererSettings);
             break;
     }
+    this.imagePreloader.setCacheType(animType);
     this.renderer.setProjectInterface(this.projectInterface);
     this.animType = animType;
-
-    if(params.loop === '' || params.loop === null){
-    }else if(params.loop === false){
-        this.loop = false;
-    }else if(params.loop === true){
+    if (params.loop === ''
+        || params.loop === null
+        || params.loop === undefined
+        || params.loop === true)
+    {
         this.loop = true;
-    }else{
+    } else if (params.loop === false) {
+        this.loop = false;
+    } else {
         this.loop = parseInt(params.loop);
     }
     this.autoplay = 'autoplay' in params ? params.autoplay : true;
     this.name = params.name ? params.name :  '';
-    this.prerenderFramesFlag = 'prerender' in params ? params.prerender : true;
     this.autoloadSegments = params.hasOwnProperty('autoloadSegments') ? params.autoloadSegments :  true;
-    if(params.animationData){
-        self.configAnimation(params.animationData);
-    }else if(params.path){
-        if(params.path.substr(-4) != 'json'){
-            if (params.path.substr(-1, 1) != '/') {
-                params.path += '/';
-            }
-            params.path += 'data.json';
-        }
+    this.assetsPath = params.assetsPath;
+    this.initialSegment = params.initialSegment;
+    if (params.animationData) {
+        this.configAnimation(params.animationData);
+    } else if(params.path){
 
-        var xhr = new XMLHttpRequest();
-        if(params.path.lastIndexOf('\\') != -1){
+        if( params.path.lastIndexOf('\\') !== -1){
             this.path = params.path.substr(0,params.path.lastIndexOf('\\')+1);
-        }else{
+        } else {
             this.path = params.path.substr(0,params.path.lastIndexOf('/')+1);
         }
-        this.assetsPath = params.assetsPath;
         this.fileName = params.path.substr(params.path.lastIndexOf('/')+1);
         this.fileName = this.fileName.substr(0,this.fileName.lastIndexOf('.json'));
-        xhr.open('GET', params.path, true);
-        xhr.send();
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4) {
-                if(xhr.status == 200){
-                    self.configAnimation(JSON.parse(xhr.responseText));
-                }else{
-                    try{
-                        var response = JSON.parse(xhr.responseText);
-                        self.configAnimation(response);
-                    }catch(err){
-                    }
-                }
-            }
-        };
+
+        assetLoader.load(params.path, this.configAnimation.bind(this), function() {
+            this.trigger('data_failed');
+        }.bind(this));
     }
+
 };
 
 AnimationItem.prototype.setData = function (wrapper, animationData) {
@@ -141,7 +121,6 @@ AnimationItem.prototype.includeLayers = function(data) {
     if(data.op > this.animationData.op){
         this.animationData.op = data.op;
         this.totalFrames = Math.floor(data.op - this.animationData.ip);
-        this.animationData.tf = this.totalFrames;
     }
     var layers = this.animationData.layers;
     var i, len = layers.length;
@@ -167,15 +146,12 @@ AnimationItem.prototype.includeLayers = function(data) {
             this.animationData.assets.push(data.assets[i]);
         }
     }
-    //this.totalFrames = 50;
-    //this.animationData.tf = 50;
     this.animationData.__complete = false;
     dataManager.completeData(this.animationData,this.renderer.globalData.fontManager);
     this.renderer.includeLayers(data.layers);
     if(expressionsPlugin){
         expressionsPlugin.initExpressions(this);
     }
-    this.renderer.renderFrame(null);
     this.loadNextSegment();
 };
 
@@ -183,115 +159,95 @@ AnimationItem.prototype.loadNextSegment = function() {
     var segments = this.animationData.segments;
     if(!segments || segments.length === 0 || !this.autoloadSegments){
         this.trigger('data_ready');
-        this.timeCompleted = this.animationData.tf;
+        this.timeCompleted = this.totalFrames;
         return;
     }
     var segment = segments.shift();
     this.timeCompleted = segment.time * this.frameRate;
-    var xhr = new XMLHttpRequest();
-    var self = this;
     var segmentPath = this.path+this.fileName+'_' + this.segmentPos + '.json';
     this.segmentPos += 1;
-    xhr.open('GET', segmentPath, true);
-    xhr.send();
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4) {
-            if(xhr.status == 200){
-                self.includeLayers(JSON.parse(xhr.responseText));
-            }else{
-                try{
-                    var response = JSON.parse(xhr.responseText);
-                    self.includeLayers(response);
-                }catch(err){
-                }
-            }
-        }
-    };
+    assetLoader.load(segmentPath, this.includeLayers.bind(this), function() {
+        this.trigger('data_failed');
+    }.bind(this));
 };
 
 AnimationItem.prototype.loadSegments = function() {
     var segments = this.animationData.segments;
     if(!segments) {
-        this.timeCompleted = this.animationData.tf;
+        this.timeCompleted = this.totalFrames;
     }
     this.loadNextSegment();
 };
 
-AnimationItem.prototype.configAnimation = function (animData) {
-    if(this.renderer && this.renderer.destroyed){
-        return;
-    }
-    //console.log(JSON.parse(JSON.stringify(animData)));
-    //animData.w = Math.round(animData.w/blitter);
-    //animData.h = Math.round(animData.h/blitter);
-    this.animationData = animData;
-    this.totalFrames = Math.floor(this.animationData.op - this.animationData.ip);
-    this.animationData.tf = this.totalFrames;
-    this.renderer.configAnimation(animData);
-    if(!animData.assets){
-        animData.assets = [];
-    }
-    if(animData.comps) {
-        animData.assets = animData.assets.concat(animData.comps);
-        animData.comps = null;
-    }
-    this.renderer.searchExtraCompositions(animData.assets);
-
-    this.layers = this.animationData.layers;
-    this.assets = this.animationData.assets;
-    this.frameRate = this.animationData.fr;
-    this.firstFrame = Math.round(this.animationData.ip);
-    this.frameMult = this.animationData.fr / 1000;
-    this.trigger('config_ready');
-    this.imagePreloader = new ImagePreloader();
-    this.imagePreloader.setAssetsPath(this.assetsPath);
-    this.imagePreloader.setPath(this.path);
-    this.imagePreloader.loadAssets(animData.assets);
-    this.loadSegments();
-    this.updaFrameModifier();
-    if(this.renderer.globalData.fontManager){
-        this.waitForFontsLoaded();
-    }else{
-        dataManager.completeData(this.animationData,this.renderer.globalData.fontManager);
-        this.checkLoaded();
-    }
-};
-
-AnimationItem.prototype.waitForFontsLoaded = (function(){
-    function checkFontsLoaded(){
-        if(this.renderer.globalData.fontManager.loaded){
-            dataManager.completeData(this.animationData,this.renderer.globalData.fontManager);
-            //this.renderer.buildItems(this.animationData.layers);
-            this.checkLoaded();
-        }else{
-            setTimeout(checkFontsLoaded.bind(this),20);
-        }
-    }
-
-    return function(){
-        checkFontsLoaded.bind(this)();
-    }
-}());
-
-AnimationItem.prototype.addPendingElement = function () {
-    this.pendingElements += 1;
+AnimationItem.prototype.imagesLoaded = function() {
+    this.trigger('loaded_images');
+    this.checkLoaded()
 }
 
-AnimationItem.prototype.elementLoaded = function () {
-    this.pendingElements--;
-    this.checkLoaded();
+AnimationItem.prototype.preloadImages = function() {
+    this.imagePreloader.setAssetsPath(this.assetsPath);
+    this.imagePreloader.setPath(this.path);
+    this.imagePreloader.loadAssets(this.animationData.assets, this.imagesLoaded.bind(this));
+}
+
+AnimationItem.prototype.configAnimation = function (animData) {
+    if(!this.renderer){
+        return;
+    }
+    try {
+        this.animationData = animData;
+
+        if (this.initialSegment) {
+            this.totalFrames = Math.floor(this.initialSegment[1] - this.initialSegment[0]);
+            this.firstFrame = Math.round(this.initialSegment[0]);
+        } else {
+            this.totalFrames = Math.floor(this.animationData.op - this.animationData.ip);
+            this.firstFrame = Math.round(this.animationData.ip);
+        }
+        this.renderer.configAnimation(animData);
+        if(!animData.assets){
+            animData.assets = [];
+        }
+
+        this.assets = this.animationData.assets;
+        this.frameRate = this.animationData.fr;
+        this.frameMult = this.animationData.fr / 1000;
+        this.renderer.searchExtraCompositions(animData.assets);
+        this.trigger('config_ready');
+        this.preloadImages();
+        this.loadSegments();
+        this.updaFrameModifier();
+        this.waitForFontsLoaded();
+    } catch(error) {
+        this.triggerConfigError(error);
+    }
 };
 
+AnimationItem.prototype.waitForFontsLoaded = function(){
+    if(!this.renderer) {
+        return;
+    }
+    if(this.renderer.globalData.fontManager.isLoaded){
+        this.checkLoaded();
+    }else{
+        setTimeout(this.waitForFontsLoaded.bind(this),20);
+    }
+}
+
 AnimationItem.prototype.checkLoaded = function () {
-    if (this.pendingElements === 0) {
+    if (!this.isLoaded 
+        && this.renderer.globalData.fontManager.isLoaded
+        && (this.imagePreloader.loaded() || this.renderer.rendererType !== 'canvas')
+    ) {
+        this.isLoaded = true;
+        dataManager.completeData(this.animationData, this.renderer.globalData.fontManager);
         if(expressionsPlugin){
             expressionsPlugin.initExpressions(this);
         }
         this.renderer.initItems();
-        setTimeout(function(){
+        setTimeout(function() {
             this.trigger('DOMLoaded');
-        }.bind(this),0);
-        this.isLoaded = true;
+        }.bind(this), 0);
         this.gotoFrame();
         if(this.autoplay){
             this.play();
@@ -304,15 +260,11 @@ AnimationItem.prototype.resize = function () {
 };
 
 AnimationItem.prototype.setSubframe = function(flag){
-    this.subframeEnabled = flag ? true : false;
-}
+    this.isSubframeEnabled = !!flag;
+};
 
 AnimationItem.prototype.gotoFrame = function () {
-    if(this.subframeEnabled){
-        this.currentFrame = this.currentRawFrame;
-    }else{
-        this.currentFrame = Math.floor(this.currentRawFrame);
-    }
+    this.currentFrame = this.isSubframeEnabled ? this.currentRawFrame : ~~this.currentRawFrame;
 
     if(this.timeCompleted !== this.totalFrames && this.currentFrame > this.timeCompleted){
         this.currentFrame = this.timeCompleted;
@@ -325,8 +277,11 @@ AnimationItem.prototype.renderFrame = function () {
     if(this.isLoaded === false){
         return;
     }
-    //console.log('this.currentFrame:',this.currentFrame + this.firstFrame);
-    this.renderer.renderFrame(this.currentFrame + this.firstFrame);
+    try {
+        this.renderer.renderFrame(this.currentFrame + this.firstFrame);
+    } catch(error) {
+        this.triggerRenderFrameError(error);
+    }
 };
 
 AnimationItem.prototype.playAudioVideo = function (elements,action,goToTime) {
@@ -466,9 +421,9 @@ AnimationItem.prototype.stop = function (name) {
         return;
     }
     this.pause();
-    this.currentFrame = this.currentRawFrame = 0;
     this.playCount = 0;
-    this.gotoFrame();
+    this._completedLoop = false;
+    this.setCurrentRawFrameValue(0);
     var i, len = this.layers.length, data;
     for (i = len - 1; i >= 0; i--) {
         data = this.layers[i];
@@ -609,32 +564,54 @@ AnimationItem.prototype.goToAndPlay = function (value, isFrame, name) {
 };
 
 AnimationItem.prototype.advanceTime = function (value) {
-    if(this.pendingSegment){
-        this.pendingSegment = false;
-        this.adjustSegment(this.segments.shift());
-        if(this.isPaused){
-            this.play();
-        }
-        return;
-    }
     if (this.isPaused === true || this.isLoaded === false) {
         return;
     }
-    this.setCurrentRawFrameValue(this.currentRawFrame + value * this.frameModifier);
-};
-
-AnimationItem.prototype.updateAnimation = function (perc) {
-    this.setCurrentRawFrameValue(this.totalFrames * perc);
-};
-
-AnimationItem.prototype.moveFrame = function (value, name) {
-    if(name && this.name != name){
-        return;
+    var nextValue = this.currentRawFrame + value * this.frameModifier;
+    var _isComplete = false;
+    // Checking if nextValue > totalFrames - 1 for addressing non looping and looping animations.
+    // If animation won't loop, it should stop at totalFrames - 1. If it will loop it should complete the last frame and then loop.
+    if (nextValue >= this.totalFrames - 1 && this.frameModifier > 0) {
+        if (!this.loop || this.playCount === this.loop) {
+            if (!this.checkSegments(nextValue >  this.totalFrames ? nextValue % this.totalFrames : 0)) {
+                _isComplete = true;
+                nextValue = this.totalFrames - 1;
+            }
+        } else if (nextValue >= this.totalFrames) {
+            this.playCount += 1;
+            if (!this.checkSegments(nextValue % this.totalFrames)) {
+                this.setCurrentRawFrameValue(nextValue % this.totalFrames);
+                this._completedLoop = true;
+                this.trigger('loopComplete');
+            }
+        } else {
+            this.setCurrentRawFrameValue(nextValue);
+        }
+    } else if(nextValue < 0) {
+        if (!this.checkSegments(nextValue % this.totalFrames)) {
+            if (this.loop && !(this.playCount-- <= 0 && this.loop !== true)) {
+                this.setCurrentRawFrameValue(this.totalFrames + (nextValue % this.totalFrames));
+                if(!this._completedLoop) {
+                    this._completedLoop = true;
+                } else {
+                    this.trigger('loopComplete');
+                }
+            } else {
+                _isComplete = true;
+                nextValue = 0;
+            }
+        }
+    } else {
+        this.setCurrentRawFrameValue(nextValue);
     }
-    this.setCurrentRawFrameValue(this.currentRawFrame+value);
+    if (_isComplete) {
+        this.setCurrentRawFrameValue(nextValue);
+        this.pause();
+        this.trigger('complete');
+    }
 };
 
-AnimationItem.prototype.adjustSegment = function(arr){
+AnimationItem.prototype.adjustSegment = function(arr, offset){
     this.playCount = 0;
     if(arr[1] < arr[0]){
         if(this.frameModifier > 0){
@@ -644,9 +621,9 @@ AnimationItem.prototype.adjustSegment = function(arr){
                 this.setDirection(-1);
             }
         }
-        this.totalFrames = arr[0] - arr[1];
+        this.timeCompleted = this.totalFrames = arr[0] - arr[1];
         this.firstFrame = arr[1];
-        this.setCurrentRawFrameValue(this.totalFrames - 0.01);
+        this.setCurrentRawFrameValue(this.totalFrames - 0.001 - offset);
     } else if(arr[1] > arr[0]){
         if(this.frameModifier < 0){
             if(this.playSpeed < 0){
@@ -655,9 +632,9 @@ AnimationItem.prototype.adjustSegment = function(arr){
                 this.setDirection(1);
             }
         }
-        this.totalFrames = arr[1] - arr[0];
+        this.timeCompleted = this.totalFrames = arr[1] - arr[0];
         this.firstFrame = arr[0];
-        this.setCurrentRawFrameValue(0);
+        this.setCurrentRawFrameValue(0.001 + offset);
     }
     this.trigger('segmentStart');
 };
@@ -667,108 +644,67 @@ AnimationItem.prototype.setSegment = function (init,end) {
         if (this.currentRawFrame + this.firstFrame < init) {
             pendingFrame = init;
         } else if (this.currentRawFrame + this.firstFrame > end) {
-            pendingFrame = end - init - 0.01;
+            pendingFrame = end - init;
         }
     }
 
     this.firstFrame = init;
-    this.totalFrames = end - init;
+    this.timeCompleted = this.totalFrames = end - init;
     if(pendingFrame !== -1) {
         this.goToAndStop(pendingFrame,true);
     }
-}
+};
 
-AnimationItem.prototype.playSegments = function (arr,forceFlag) {
-    if(typeof arr[0] === 'object'){
+AnimationItem.prototype.playSegments = function (arr, forceFlag) {
+    if (forceFlag) {
+        this.segments.length = 0;
+    }
+    if (typeof arr[0] === 'object') {
         var i, len = arr.length;
-        for(i=0;i<len;i+=1){
+        for (i = 0; i < len; i += 1) {
             this.segments.push(arr[i]);
         }
-    }else{
+    } else {
         this.segments.push(arr);
     }
-    if(forceFlag){
-        this.adjustSegment(this.segments.shift());
+    if (this.segments.length && forceFlag) {
+        this.adjustSegment(this.segments.shift(), 0);
     }
-    if(this.isPaused){
+    if (this.isPaused) {
         this.play();
     }
 };
 
 AnimationItem.prototype.resetSegments = function (forceFlag) {
     this.segments.length = 0;
-    this.segments.push([this.animationData.ip*this.frameRate,Math.floor(this.animationData.op - this.animationData.ip+this.animationData.ip*this.frameRate)]);
-    if(forceFlag){
-        this.adjustSegment(this.segments.shift());
+    this.segments.push([this.animationData.ip,this.animationData.op]);
+    //this.segments.push([this.animationData.ip*this.frameRate,Math.floor(this.animationData.op - this.animationData.ip+this.animationData.ip*this.frameRate)]);
+    if (forceFlag) {
+        this.checkSegments(0);
     }
 };
-AnimationItem.prototype.checkSegments = function(){
-    if(this.segments.length){
-        this.pendingSegment = true;
+AnimationItem.prototype.checkSegments = function(offset) {
+    if (this.segments.length) {
+        this.adjustSegment(this.segments.shift(), offset);
+        return true;
     }
-}
-
-AnimationItem.prototype.remove = function (name) {
-    if(name && this.name != name){
-        return;
-    }
-    this.renderer.destroy();
+    return false;
 };
 
 AnimationItem.prototype.destroy = function (name) {
-    if((name && this.name != name) || (this.renderer && this.renderer.destroyed)){
+    if ((name && this.name != name) || !this.renderer) {
         return;
     }
     this.renderer.destroy();
+    this.imagePreloader.destroy();
     this.trigger('destroy');
     this._cbs = null;
     this.onEnterFrame = this.onLoopComplete = this.onComplete = this.onSegmentStart = this.onDestroy = null;
+    this.renderer = null;
 };
 
 AnimationItem.prototype.setCurrentRawFrameValue = function(value){
     this.currentRawFrame = value;
-    //console.log(this.totalFrames);
-    if (this.currentRawFrame >= this.totalFrames) {
-        this.checkSegments();
-        if(this.loop === false){
-            this.currentRawFrame = this.totalFrames - 0.01;
-            this.gotoFrame();
-            this.pause();
-            this.trigger('complete');
-            return;
-        }else{
-            this.trigger('loopComplete');
-            this.playCount += 1;
-            if((this.loop !== true && this.playCount == this.loop) || this.pendingSegment){
-                this.currentRawFrame = this.totalFrames - 0.01;
-                this.gotoFrame();
-                this.pause();
-                this.trigger('complete');
-                return;
-            } else {
-                this.currentRawFrame = this.currentRawFrame % this.totalFrames;
-            }
-        }
-    } else if (this.currentRawFrame < 0) {
-        this.checkSegments();
-        this.playCount -= 1;
-        if(this.playCount < 0){
-            this.playCount = 0;
-        }
-        if(this.loop === false  || this.pendingSegment){
-            this.currentRawFrame = 0;
-            this.gotoFrame();
-            this.pause();
-            this.trigger('complete');
-            return;
-        }else{
-            this.trigger('loopComplete');
-            this.currentRawFrame = (this.totalFrames + this.currentRawFrame) % this.totalFrames;
-            this.gotoFrame();
-            return;
-        }
-    }
-
     this.gotoFrame();
 };
 
@@ -792,7 +728,9 @@ AnimationItem.prototype.getPath = function () {
 
 AnimationItem.prototype.getAssetsPath = function (assetData) {
     var path = '';
-    if(this.assetsPath){
+    if(assetData.e) {
+        path = assetData.p;
+    } else if(this.assetsPath){
         var imagePath = assetData.p;
         if(imagePath.indexOf('images/') !== -1){
             imagePath = imagePath.split('/')[1];
@@ -824,15 +762,15 @@ AnimationItem.prototype.show = function () {
     this.renderer.show();
 };
 
-AnimationItem.prototype.getAssets = function () {
-    return this.assets;
+AnimationItem.prototype.getDuration = function (isFrame) {
+    return isFrame ? this.totalFrames : this.totalFrames / this.frameRate;
 };
 
 AnimationItem.prototype.trigger = function(name){
     if(this._cbs && this._cbs[name]){
         switch(name){
             case 'enterFrame':
-                this.triggerEvent(name,new BMEnterFrameEvent(name,this.currentFrame,this.totalFrames,this.frameMult));
+                this.triggerEvent(name,new BMEnterFrameEvent(name,this.currentFrame,this.totalFrames,this.frameModifier));
                 break;
             case 'loopComplete':
                 this.triggerEvent(name,new BMCompleteLoopEvent(name,this.loop,this.playCount,this.frameMult));
@@ -867,6 +805,22 @@ AnimationItem.prototype.trigger = function(name){
     }
 };
 
-AnimationItem.prototype.addEventListener = _addEventListener;
-AnimationItem.prototype.removeEventListener = _removeEventListener;
-AnimationItem.prototype.triggerEvent = _triggerEvent;
+AnimationItem.prototype.triggerRenderFrameError = function(nativeError) {
+
+    var error = new BMRenderFrameErrorEvent(nativeError, this.currentFrame);
+    this.triggerEvent('error', error);
+
+    if (this.onError) {
+        this.onError.call(this, error);
+    }
+}
+
+AnimationItem.prototype.triggerConfigError = function(nativeError) {
+
+    var error = new BMConfigErrorEvent(nativeError, this.currentFrame);
+    this.triggerEvent('error', error);
+
+    if (this.onError) {
+        this.onError.call(this, error);
+    }
+}

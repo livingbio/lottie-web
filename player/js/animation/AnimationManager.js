@@ -3,8 +3,9 @@ var animationManager = (function(){
     var registeredAnimations = [];
     var initTime = 0;
     var len = 0;
-    var idled = true;
     var playingAnimationsNum = 0;
+    var _stopped = true;
+    var _isFrozen = false;
 
     function removeElement(ev){
         var i = 0;
@@ -15,7 +16,7 @@ var animationManager = (function(){
                 i -= 1;
                 len -= 1;
                 if(!animItem.isPaused){
-                    subtractPlayingCount();   
+                    subtractPlayingCount();
                 }
             }
             i += 1;
@@ -39,6 +40,15 @@ var animationManager = (function(){
         return animItem;
     }
 
+    function getRegisteredAnimations() {
+        var i, len = registeredAnimations.length;
+        var animations = [];
+        for(i = 0; i < len; i += 1) {
+            animations.push(registeredAnimations[i].animation);
+        }
+        return animations;
+    }
+
     function addPlayingCount(){
         playingAnimationsNum += 1;
         activate();
@@ -46,9 +56,6 @@ var animationManager = (function(){
 
     function subtractPlayingCount(){
         playingAnimationsNum -= 1;
-        if(playingAnimationsNum === 0){
-            idled = true;
-        }
     }
 
     function setupAnimation(animItem, element){
@@ -87,31 +94,23 @@ var animationManager = (function(){
             registeredAnimations[i].animation.play(animation);
         }
     }
-
-    function moveFrame (value, animation) {
-        initTime = Date.now();
-        var i;
-        for(i=0;i<len;i+=1){
-            registeredAnimations[i].animation.moveFrame(value,animation);
-        }
-    }
-
     function resume(nowTime) {
-
         var elapsedTime = nowTime - initTime;
         var i;
         for(i=0;i<len;i+=1){
             registeredAnimations[i].animation.advanceTime(elapsedTime);
         }
         initTime = nowTime;
-        if(!idled) {
-            requestAnimationFrame(resume);
+        if(playingAnimationsNum && !_isFrozen) {
+            window.requestAnimationFrame(resume);
+        } else {
+            _stopped = true;
         }
     }
 
     function first(nowTime){
         initTime = nowTime;
-        requestAnimationFrame(resume);
+        window.requestAnimationFrame(resume);
     }
 
     function pause(animation) {
@@ -157,7 +156,8 @@ var animationManager = (function(){
     }
 
     function searchAnimations(animationData, standalone, renderer){
-        var animElements = document.getElementsByClassName('bodymovin');
+        var animElements = [].concat([].slice.call(document.getElementsByClassName('lottie')),
+                  [].slice.call(document.getElementsByClassName('bodymovin')));
         var i, len = animElements.length;
         for(i=0;i<len;i+=1){
             if(renderer){
@@ -171,7 +171,7 @@ var animationManager = (function(){
             }
             var body = document.getElementsByTagName('body')[0];
             body.innerHTML = '';
-            var div = document.createElement('div');
+            var div = createTag('div');
             div.style.width = '100%';
             div.style.height = '100%';
             div.setAttribute('data-bm-type',renderer);
@@ -187,35 +187,40 @@ var animationManager = (function(){
         }
     }
 
-    function start(){
-        requestAnimationFrame(first);
-    }
-
     function activate(){
-        if(idled){
-            idled = false;
-            requestAnimationFrame(first);
+        if(!_isFrozen && playingAnimationsNum){
+            if(_stopped) {
+                window.requestAnimationFrame(first);
+                _stopped = false;
+            }
         }
     }
 
-    //start();
+    function freeze() {
+        _isFrozen = true;
+    }
 
-    setTimeout(start,0);
+    function unfreeze() {
+        _isFrozen = false;
+        activate();
+    }
 
     moduleOb.registerAnimation = registerAnimation;
     moduleOb.loadAnimation = loadAnimation;
     moduleOb.setSpeed = setSpeed;
     moduleOb.setDirection = setDirection;
     moduleOb.play = play;
-    moduleOb.moveFrame = moveFrame;
     moduleOb.pause = pause;
     moduleOb.stop = stop;
     moduleOb.mute = mute;
     moduleOb.togglePause = togglePause;
     moduleOb.searchAnimations = searchAnimations;
     moduleOb.resize = resize;
-    moduleOb.start = start;
+    //moduleOb.start = start;
     moduleOb.goToAndStop = goToAndStop;
     moduleOb.destroy = destroy;
+    moduleOb.freeze = freeze;
+    moduleOb.unfreeze = unfreeze;
+    moduleOb.getRegisteredAnimations = getRegisteredAnimations;
     return moduleOb;
 }());
