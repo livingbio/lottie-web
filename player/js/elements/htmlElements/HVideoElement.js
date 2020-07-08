@@ -2,7 +2,7 @@ function HVideoElement(data,parentContainer,globalData,comp, placeholder){
     this.assetData = globalData.getAssetData(data.refId);
     this._parent.constructor.call(this,data,parentContainer,globalData,comp, placeholder);
 }
-createElement(HBaseElement, HVideoElement);
+// createElement(HBaseElement, HVideoElement);
 
 HVideoElement.prototype.createElements = function(){
     // this.isMasked = this.checkMasks();

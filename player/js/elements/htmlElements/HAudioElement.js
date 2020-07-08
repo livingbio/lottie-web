@@ -2,7 +2,7 @@ function HAudioElement(data,parentContainer,globalData,comp, placeholder){
     this.assetData = globalData.getAssetData(data.refId);
     this._parent.constructor.call(this,data,parentContainer,globalData,comp, placeholder);
 }
-createElement(HBaseElement, HAudioElement);
+// createElement(HBaseElement, HAudioElement);
 
 HAudioElement.prototype.createElements = function(){
 

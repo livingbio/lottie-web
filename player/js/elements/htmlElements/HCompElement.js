@@ -27,7 +27,7 @@ function checkVideoLayer(layers){
             // console.log(layers[i]);
         }}
 }
-createElement(HBaseElement, HCompElement);
+// createElement(HBaseElement, HCompElement);
 
 extendPrototype([HybridRenderer, ICompElement, HBaseElement], HCompElement);
 HCompElement.prototype._createBaseContainerElements = HCompElement.prototype.createContainerElements;
