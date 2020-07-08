@@ -5874,6 +5874,10 @@ BaseRenderer.prototype.createItem = function(layer){
             return this.createShape(layer);
         case 5:
             return this.createText(layer);
+        case 6:
+            return this.createAudio(layer);
+        case 9:
+            return this.createVideo(layer);
         case 13:
             return this.createCamera(layer);
     }
@@ -6032,6 +6036,17 @@ function SVGRenderer(animationItem, config){
 }
 
 extendPrototype([BaseRenderer],SVGRenderer);
+
+SVGRenderer.prototype.createAudio = function (data) {
+    throw new Error('You\'re using a audio object. Try the html renderer.');
+};
+
+SVGRenderer.prototype.createVideo = function (data) {
+// console.log(data);
+//     throw new Error('You\'re using a video object. Try the html renderer.');
+    return new IVideoElement(data, this.layerElement,this.globalData,this);
+
+};
 
 SVGRenderer.prototype.createNull = function (data) {
     return new NullElement(data,this.globalData,this);
@@ -6654,6 +6669,15 @@ HybridRenderer.prototype.createText = function (data) {
         return new SVGTextElement(data, this.globalData, this);
     }
     return new HTextElement(data, this.globalData, this);
+};
+
+HybridRenderer.prototype.createVideo = function (data) {
+    return new HVideoElement(data, this.layerElement,this.globalData,this);
+};
+
+
+HybridRenderer.prototype.createAudio = function (data) {
+    return new HAudioElement(data, this.layerElement,this.globalData,this);
 };
 
 HybridRenderer.prototype.createCamera = function (data) {
@@ -8375,7 +8399,7 @@ IImageElement.prototype.createContent = function(){
     this.innerElem.setAttribute('height',this.assetData.h+"px");
     this.innerElem.setAttribute('preserveAspectRatio',this.assetData.pr || this.globalData.renderConfig.imagePreserveAspectRatio);
     this.innerElem.setAttributeNS('http://www.w3.org/1999/xlink','href',assetPath);
-    
+    this.innerElem.style.border =  '1px solid transparent';
     this.layerElement.appendChild(this.innerElem);
 };
 
@@ -10508,6 +10532,27 @@ function HCompElement(data,globalData,comp){
     this.tm = data.tm ? PropertyFactory.getProp(this,data.tm,0,globalData.frameRate,this) : {_placeholder:true};
 }
 
+var isvideo = false
+
+function checkVideoLayer(layers){
+    // console.log(layers)
+
+    if (layers) {
+        for (var i = layers.length - 1; i >= 0; i--) {
+            if (layers[i].layers != undefined){
+                checkVideoLayer(layers[i].layers)
+            }
+
+            if(layers[i].ty == 9) {
+                isvideo = true;
+                // console.log(layers[i]);
+            }
+
+            // console.log(layers[i]);
+        }}
+}
+createElement(HBaseElement, HCompElement);
+
 extendPrototype([HybridRenderer, ICompElement, HBaseElement], HCompElement);
 HCompElement.prototype._createBaseContainerElements = HCompElement.prototype.createContainerElements;
 
@@ -11027,7 +11072,9 @@ HImageElement.prototype.createContent = function(){
         this.layerElement.appendChild(this.imageElem);
         this.baseElement.setAttribute('width',this.assetData.w);
         this.baseElement.setAttribute('height',this.assetData.h);
+        this.imageElem.style.border = '1px solid transparent';
     } else {
+        img.style.border = '1px solid transparent';
         this.layerElement.appendChild(img);
     }
     img.src = assetPath;
@@ -11320,6 +11367,13 @@ var animationManager = (function(){
         }
     }
 
+    function mute(animation) {
+        var i;
+        for(i=0;i<len;i+=1){
+            registeredAnimations[i].animation.mute(animation);
+        }
+    }
+
     function destroy(animation) {
         var i;
         for(i=(len-1);i>=0;i-=1){
@@ -11384,6 +11438,7 @@ var animationManager = (function(){
     moduleOb.play = play;
     moduleOb.pause = pause;
     moduleOb.stop = stop;
+    moduleOb.mute = mute;
     moduleOb.togglePause = togglePause;
     moduleOb.searchAnimations = searchAnimations;
     moduleOb.resize = resize;
@@ -11682,6 +11737,59 @@ AnimationItem.prototype.renderFrame = function () {
     }
 };
 
+AnimationItem.prototype.playAudioVideo = function (elements,action,goToTime) {
+
+    if (elements) {
+
+        if (elements instanceof Array) {
+
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[0].elements != "object") {
+
+                    if (elements[i].baseElement.getElementsByTagName('video').length != 0) {
+                        if (action == 'play') {
+                            videoCount = elements[i].baseElement.getElementsByTagName('video').length
+                            for (a = 0; a < videoCount; a++) {
+                                elements[i].baseElement.getElementsByTagName('video')[a].play();
+                            }
+                        }
+                        else if (action == 'pause') {
+                            videoCount = elements[i].baseElement.getElementsByTagName('video').length;
+                            for (a = 0; a < videoCount; a++) {
+                                elements[i].baseElement.getElementsByTagName('video')[a].pause();
+                            }
+                        }
+                        else if (action == 'goToTime') {
+                            videoCount = elements[i].baseElement.getElementsByTagName('video').length;
+                            for (a = 0; a < videoCount; a++) {
+                                elements[i].baseElement.getElementsByTagName('video')[a].currentTime = goToTime;
+                                // if (elements[i].baseElement.getElementsByTagName('video')[0].readyState >= elements[i].baseElement.getElementsByTagName('video')[0].HAVE_METADATA)
+                            }
+                        }
+                    }
+                    else if (elements[i].baseElement.getElementsByTagName('audio').length != 0) {
+
+                        if (action == 'play') {
+                            elements[i].baseElement.getElementsByTagName('audio')[0].play();
+                        }
+                        //
+                        else if (action == 'pause') {
+                            elements[i].baseElement.getElementsByTagName('audio')[0].pause();
+                        }
+                        else if (action == 'goToTime') {
+                            elements[i].baseElement.getElementsByTagName('audio')[0].currentTime = goToTime;
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    }
+}
+
+
 AnimationItem.prototype.play = function (name) {
     if(name && this.name != name){
         return;
@@ -11689,6 +11797,31 @@ AnimationItem.prototype.play = function (name) {
     if(this.isPaused === true){
         this.isPaused = false;
         if(this._idle){
+
+            //video/audio support
+            for (i = this.layers.length - 1; i >= 0; i--) {
+
+                data = this.layers[i];
+
+                // ip = start time all video by FPS
+                // st = start specific time by FPS
+                // op = end time all video by FPS
+
+                if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st))
+                {
+                    if(this.isPaused === false) {
+
+                        if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+                            if (this.projectInterface.compositions[0].elements[i].elements[0]) {
+
+                                this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements,'play',null);
+
+                            }
+                        }
+                    }
+                }
+            }
+
             this._idle = false;
             this.trigger('_active');
         }
@@ -11696,13 +11829,32 @@ AnimationItem.prototype.play = function (name) {
 };
 
 AnimationItem.prototype.pause = function (name) {
-    if(name && this.name != name){
+    if (name && this.name != name) {
         return;
     }
-    if(this.isPaused === false){
+    if (this.isPaused === false) {
         this.isPaused = true;
-        this._idle = true;
-        this.trigger('_idle');
+        if (!this.pendingSegment) {
+
+            var i, len = this.layers.length, data;
+
+            for (i = len - 1; i >= 0; i--) {
+                data = this.layers[i];
+                // ip = start time all video by FPS
+                // st = start specific time by FPS
+                if (data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
+                    if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+
+                        if (this.projectInterface.compositions[0].elements[i].elements[0]) {
+                            this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'pause', null);
+                        }
+                    }
+                }
+
+                this._idle = true;
+                this.trigger('_idle');
+            }
+        }
     }
 };
 
@@ -11725,9 +11877,129 @@ AnimationItem.prototype.stop = function (name) {
     this.playCount = 0;
     this._completedLoop = false;
     this.setCurrentRawFrameValue(0);
+    var i, len = this.layers.length, data;
+    for (i = len - 1; i >= 0; i--) {
+        data = this.layers[i];
+        if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
+            //we want to find the relative time of the video (in the current layer) so we take the value and minus the in point time
+            //after that we dvide by 24 to get seconds instead of frames.
+            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+                var goToTime = 0;
+                if (this.projectInterface.compositions[0].elements[i].elements[0]) {
+                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'pause', null);
+                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'goToTime', goToTime);
+                }
+
+            }
+        }
+    }
 };
 
+
+// mute function
+AnimationItem.prototype.mute = function (name) {
+
+    if(name && this.name != name){
+        return;
+    }
+
+    for (i = this.layers.length - 1; i >= 0; i--) {
+        data = this.layers[i];
+
+        if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
+            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+
+                if (this.isMute === false || this.isMute == null) {
+
+                    this.muteAdudio(this.projectInterface.compositions[0].elements[i].elements,'mute',false,null);
+
+                    this.isMute = true;
+                    break;
+                }
+                //TODO CHECK with two audio's playing together
+                else if (this.isMute === true) {
+
+                    this.muteAdudio(this.projectInterface.compositions[0].elements[i].elements,'mute',true,null);
+
+                    this.isMute = false;
+                    break;
+                }
+            }
+        }
+    }
+};
+
+AnimationItem.prototype.muteAdudio = function (elements,action,mute,volume) {
+
+    if (elements instanceof Array) {
+        for (i = 0; i < elements.length; i++) {
+            if (elements[i].elements != "object") {
+
+                if (elements[i].baseElement.getElementsByTagName('audio').length != 0) {
+                    if (action == 'mute') {
+
+                        if (mute === false) {
+                            elements[i].baseElement.getElementsByTagName('audio')[0].muted = true;
+                            elements[i].baseElement.getElementsByTagName('audio')[0].volume = 0;
+                        }
+
+                        else if (mute === true) {
+                            elements[i].baseElement.getElementsByTagName('audio')[0].muted = false;
+                            elements[i].baseElement.getElementsByTagName('audio')[0].volume = 1;
+                        }
+                    }
+                    if (action == 'setVolume') {
+                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = volume;
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+
+// set volume function 0-1 (decimal option)
+AnimationItem.prototype.setVolumeRange = function (value) {
+
+    for (i = this.layers.length - 1; i >= 0; i--) {
+        data = this.layers[i];
+
+        if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
+            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+                this.muteAdudio(this.projectInterface.compositions[0].elements[i].elements,'setVolume',true,value);
+
+            }
+        }
+    }
+};
+
+
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
+
+    var i, len = this.layers.length, data;
+    for (i = len - 1; i >= 0; i--) {
+        data = this.layers[i];
+        if (data.ip - data.st <= (value - this.layers[i].st) && data.op - data.st > (value - this.layers[i].st)) {
+            //we want to find the relative time of the video (in the current layer) so we take the value and minus the in point time
+            //after that we dvide by 24 to get seconds instead of frames.
+
+            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+
+                var goToTime = (value - data.ip) /24;
+                if (this.projectInterface.compositions[0].elements[i].elements[0]) {
+                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'pause', null);
+                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'goToTime', goToTime);
+                }
+
+            }
+        }
+    }
+
     if(name && this.name != name){
         return;
     }
@@ -14557,6 +14829,7 @@ function getFactory(name) {
 
 lottie.play = animationManager.play;
 lottie.pause = animationManager.pause;
+lottie.mute = animationManager.mute;
 lottie.setLocationHref = setLocationHref;
 lottie.togglePause = animationManager.togglePause;
 lottie.setSpeed = animationManager.setSpeed;
