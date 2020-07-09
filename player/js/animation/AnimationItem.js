@@ -285,54 +285,39 @@ AnimationItem.prototype.renderFrame = function () {
 };
 
 AnimationItem.prototype.playAudioVideo = function (elements,action,goToTime) {
+    if (elements instanceof Array) {
+        for (var i = 0; i < elements.length; i++) {
+            var videoCount = elements[i].baseElement.getElementsByTagName('video').length;
+            var audioCount = elements[i].baseElement.getElementsByTagName('audio').length;
+            var v, a;
 
-    if (elements) {
-
-        if (elements instanceof Array) {
-
-            for (var i = 0; i < elements.length; i++) {
-                if (elements[0].elements != "object") {
-
-                    if (elements[i].baseElement.getElementsByTagName('video').length != 0) {
-                        if (action == 'play') {
-                            videoCount = elements[i].baseElement.getElementsByTagName('video').length
-                            for (a = 0; a < videoCount; a++) {
-                                elements[i].baseElement.getElementsByTagName('video')[a].play();
-                            }
-                        }
-                        else if (action == 'pause') {
-                            videoCount = elements[i].baseElement.getElementsByTagName('video').length;
-                            for (a = 0; a < videoCount; a++) {
-                                elements[i].baseElement.getElementsByTagName('video')[a].pause();
-                            }
-                        }
-                        else if (action == 'goToTime') {
-                            videoCount = elements[i].baseElement.getElementsByTagName('video').length;
-                            for (a = 0; a < videoCount; a++) {
-                                elements[i].baseElement.getElementsByTagName('video')[a].currentTime = goToTime;
-                                // if (elements[i].baseElement.getElementsByTagName('video')[0].readyState >= elements[i].baseElement.getElementsByTagName('video')[0].HAVE_METADATA)
-                            }
-                        }
+            switch (action) {
+                case 'play':
+                    for (v = 0; v < videoCount; v++) {
+                        elements[i].baseElement.getElementsByTagName('video')[v].play();
                     }
-                    else if (elements[i].baseElement.getElementsByTagName('audio').length != 0) {
-
-                        if (action == 'play') {
-                            elements[i].baseElement.getElementsByTagName('audio')[0].play();
-                        }
-                        //
-                        else if (action == 'pause') {
-                            elements[i].baseElement.getElementsByTagName('audio')[0].pause();
-                        }
-                        else if (action == 'goToTime') {
-                            elements[i].baseElement.getElementsByTagName('audio')[0].currentTime = goToTime;
-                        }
+                    for (a = 0; a < audioCount; a++) {
+                        elements[i].baseElement.getElementsByTagName('audio')[a].play();
                     }
-                }
-
+                    break;
+                case 'pause':
+                    for (v = 0; v < videoCount; v++) {
+                        elements[i].baseElement.getElementsByTagName('video')[v].pause();
+                    }
+                    for (a = 0; a < audioCount; a++) {
+                        elements[i].baseElement.getElementsByTagName('audio')[a].pause();
+                    }
+                    break;
+                case 'goToTime':
+                    for (v = 0; v < videoCount; v++) {
+                        elements[i].baseElement.getElementsByTagName('video')[v].currentTime = goToTime;
+                    }
+                    for (a = 0; a < audioCount; a++) {
+                        elements[i].baseElement.getElementsByTagName('audio')[a].currentTime = goToTime;
+                    }
+                    break;
             }
-
         }
-
     }
 }
 
@@ -354,17 +339,9 @@ AnimationItem.prototype.play = function (name) {
                 // st = start specific time by FPS
                 // op = end time all video by FPS
 
-                if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st))
-                {
+                if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
                     if(this.isPaused === false) {
-
-                        if (typeof this.renderer.elements[i].elements == "object") {
-                            if (this.renderer.elements[i].elements[0]) {
-
-                                this.playAudioVideo(this.renderer.elements[i].elements,'play',null);
-
-                            }
-                        }
+                        this.playAudioVideo(this.renderer.elements,'play',null);
                     }
                 }
             }
@@ -390,12 +367,7 @@ AnimationItem.prototype.pause = function (name) {
                 // ip = start time all video by FPS
                 // st = start specific time by FPS
                 if (data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-                    if (typeof this.renderer.elements[i].elements == "object") {
-
-                        if (this.renderer.elements[i].elements[0]) {
-                            this.playAudioVideo(this.renderer.elements[i].elements, 'pause', null);
-                        }
-                    }
+                    this.playAudioVideo(this.renderer.elements, 'pause', null);
                 }
 
                 this._idle = true;
@@ -428,14 +400,9 @@ AnimationItem.prototype.stop = function (name) {
     for (i = len - 1; i >= 0; i--) {
         data = this.renderer.layers[i];
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.renderer.elements[i].elements == "object") {
-                var goToTime = 0;
-                if (this.renderer.elements[i].elements[0]) {
-                    this.playAudioVideo(this.renderer.elements[i].elements, 'pause', null);
-                    this.playAudioVideo(this.renderer.elements[i].elements, 'goToTime', goToTime);
-                }
-
-            }
+            var goToTime = 0;
+            this.playAudioVideo(this.renderer.elements, 'pause', null);
+            this.playAudioVideo(this.renderer.elements, 'goToTime', goToTime);
         }
     }
 };
@@ -452,11 +419,11 @@ AnimationItem.prototype.mute = function (name) {
         data = this.renderer.layers[i];
 
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.renderer.elements[i].elements == "object") {
+            if (typeof this.renderer.elements[i] == "object") {
 
                 if (this.isMute === false || this.isMute == null) {
 
-                    this.muteAdudio(this.renderer.elements[i].elements,'mute',false,null);
+                    this.muteAdudio(this.renderer.elements[i],'mute',false,null);
 
                     this.isMute = true;
                     break;
@@ -464,7 +431,7 @@ AnimationItem.prototype.mute = function (name) {
                 //TODO CHECK with two audio's playing together
                 else if (this.isMute === true) {
 
-                    this.muteAdudio(this.renderer.elements[i].elements,'mute',true,null);
+                    this.muteAdudio(this.renderer.elements[i],'mute',true,null);
 
                     this.isMute = false;
                     break;
@@ -515,9 +482,8 @@ AnimationItem.prototype.setVolumeRange = function (value) {
         data = this.renderer.layers[i];
 
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.renderer.elements[i].elements == "object") {
-                this.muteAdudio(this.renderer.elements[i].elements,'setVolume',true,value);
-
+            if (typeof this.renderer.elements[i] == "object") {
+                this.muteAdudio(this.renderer.elements[i],'setVolume',true,value);
             }
         }
     }
@@ -532,16 +498,9 @@ AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
         if (data.ip - data.st <= (value - this.renderer.layers[i].st) && data.op - data.st > (value - this.renderer.layers[i].st)) {
             //we want to find the relative time of the video (in the current layer) so we take the value and minus the in point time
             //after that we divide by this.frameRate to get seconds instead of frames.
-
-            if (typeof this.renderer.elements[i].elements == "object") {
-
-                var goToTime = (value - data.ip) / this.frameRate;
-                if (this.renderer.elements[i].elements[0]) {
-                    this.playAudioVideo(this.renderer.elements[i].elements, 'pause', null);
-                    this.playAudioVideo(this.renderer.elements[i].elements, 'goToTime', goToTime);
-                }
-
-            }
+            var goToTime = (value - data.ip) / this.frameRate;
+            this.playAudioVideo(this.renderer.elements, 'pause', null);
+            this.playAudioVideo(this.renderer.elements, 'goToTime', goToTime);
         }
     }
 
