@@ -12589,7 +12589,7 @@ GroupEffect.prototype.init = function(data,element){
     lottiejs.freeze = animationManager.freeze;
     lottiejs.unfreeze = animationManager.unfreeze;
     lottiejs.getRegisteredAnimations = animationManager.getRegisteredAnimations;
-    lottiejs.version = '5.7.0';
+    lottiejs.version = '5.7.1a0';
 
     var renderer = '';
     return lottiejs;

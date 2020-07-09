@@ -11466,7 +11466,7 @@ lottie.freeze = animationManager.freeze;
 lottie.unfreeze = animationManager.unfreeze;
 lottie.getRegisteredAnimations = animationManager.getRegisteredAnimations;
 lottie.__getFactory = getFactory;
-lottie.version = '5.7.0';
+lottie.version = '5.7.1a0';
 
 function checkReady() {
     if (document.readyState === "complete") {
