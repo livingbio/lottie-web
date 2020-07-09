@@ -3,7 +3,7 @@ function HAudioElement(data,globalData,comp){
     this.initElement(data,globalData,comp);
 }
 
-extendPrototype([HBaseElement], HAudioElement);
+extendPrototype([BaseElement,TransformElement,HBaseElement,HSolidElement,HierarchyElement,FrameElement,RenderableElement], HAudioElement);
 
 HAudioElement.prototype.createContent = function(){
 

@@ -3,7 +3,7 @@ function IVideoElement(data,globalData,comp){
     this.initElement(data,globalData,comp);
 }
 
-extendPrototype([SVGBaseElement], IVideoElement);
+extendPrototype([BaseElement,TransformElement,SVGBaseElement,HierarchyElement,FrameElement,RenderableDOMElement], IVideoElement);
 
 IVideoElement.prototype.createContent = function(){
 

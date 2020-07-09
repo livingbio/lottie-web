@@ -3,7 +3,7 @@ function HVideoElement(data,globalData,comp){
     this.initElement(data,globalData,comp);
 }
 
-extendPrototype([HBaseElement], HVideoElement);
+extendPrototype([BaseElement,TransformElement,HBaseElement,HSolidElement,HierarchyElement,FrameElement,RenderableElement], HVideoElement);
 
 HVideoElement.prototype.createContent = function(){
     // this.isMasked = this.checkMasks();
