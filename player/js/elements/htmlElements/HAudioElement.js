@@ -41,7 +41,6 @@ HAudioElement.prototype.hide = function(){
             this.baseElement.getElementsByTagName('audio')[0].currentTime = 0;
 
         }
-        // isPlaying = false;
 
         this.layerElement.style.display = 'none';
         this.hidden = true;

@@ -146,15 +146,11 @@ HVideoElement.prototype.createContent = function(){
 
 HVideoElement.prototype.hide = function(){
     if(!this.hidden){
-
         //we need to pause & reset video position in case we play this video again (like in loop)
-
         if(this.baseElement.getElementsByTagName('video').length !=0) {
             this.baseElement.getElementsByTagName('video')[0].pause();
             this.baseElement.getElementsByTagName('video')[0].currentTime = 0;
         }
-
-        // isPlaying = false;
 
         this.layerElement.style.display = 'none';
         this.hidden = true;
