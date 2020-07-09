@@ -18,9 +18,7 @@ HImageElement.prototype.createContent = function(){
         this.layerElement.appendChild(this.imageElem);
         this.baseElement.setAttribute('width',this.assetData.w);
         this.baseElement.setAttribute('height',this.assetData.h);
-        this.imageElem.style.border = '1px solid transparent';
     } else {
-        img.style.border = '1px solid transparent';
         this.layerElement.appendChild(img);
     }
     img.src = assetPath;

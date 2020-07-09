@@ -419,52 +419,40 @@ AnimationItem.prototype.mute = function (name) {
         data = this.renderer.layers[i];
 
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.renderer.elements[i] == "object") {
-
-                if (this.isMute === false || this.isMute == null) {
-
-                    this.muteAdudio(this.renderer.elements[i],'mute',false,null);
-
-                    this.isMute = true;
-                    break;
-                }
-                //TODO CHECK with two audio's playing together
-                else if (this.isMute === true) {
-
-                    this.muteAdudio(this.renderer.elements[i],'mute',true,null);
-
-                    this.isMute = false;
-                    break;
-                }
+            if (this.isMute === false || this.isMute == null) {
+                this.muteAudio(this.renderer.elements,'mute',false,null);
+                this.isMute = true;
+                break;
             }
-        }
+            //TODO CHECK with two audio's playing together
+            else if (this.isMute === true) {
+                this.muteAudio(this.renderer.elements,'mute',true,null);
+                this.isMute = false;
+                break;
+            }
+    }
     }
 };
 
-AnimationItem.prototype.muteAdudio = function (elements,action,mute,volume) {
+AnimationItem.prototype.muteAudio = function (elements,action,mute,volume) {
 
     if (elements instanceof Array) {
         for (i = 0; i < elements.length; i++) {
-            if (elements[i].elements != "object") {
-
-                if (elements[i].baseElement.getElementsByTagName('audio').length != 0) {
-                    if (action == 'mute') {
-
-                        if (mute === false) {
-                            elements[i].baseElement.getElementsByTagName('audio')[0].muted = true;
-                            elements[i].baseElement.getElementsByTagName('audio')[0].volume = 0;
-                        }
-
-                        else if (mute === true) {
-                            elements[i].baseElement.getElementsByTagName('audio')[0].muted = false;
-                            elements[i].baseElement.getElementsByTagName('audio')[0].volume = 1;
-                        }
-                    }
-                    if (action == 'setVolume') {
-                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = volume;
+            if (elements[i].baseElement.getElementsByTagName('audio').length != 0) {
+                if (action == 'mute') {
+                    if (mute === false) {
+                        elements[i].baseElement.getElementsByTagName('audio')[0].muted = true;
+                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = 0;
                     }
 
+                    else if (mute === true) {
+                        elements[i].baseElement.getElementsByTagName('audio')[0].muted = false;
+                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = 1;
+                    }
+                } else if (action == 'setVolume') {
+                    elements[i].baseElement.getElementsByTagName('audio')[0].volume = volume;
                 }
+
             }
         }
     }
@@ -482,9 +470,7 @@ AnimationItem.prototype.setVolumeRange = function (value) {
         data = this.renderer.layers[i];
 
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.renderer.elements[i] == "object") {
-                this.muteAdudio(this.renderer.elements[i],'setVolume',true,value);
-            }
+            this.muteAudio(this.renderer.elements,'setVolume',true,value);
         }
     }
 };
