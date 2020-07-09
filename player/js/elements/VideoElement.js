@@ -1,6 +1,7 @@
 function IVideoElement(data,globalData,comp){
     this.assetData = globalData.getAssetData(data.refId);
     this.initElement(data,globalData,comp);
+    this.sourceRect = {top:0,left:0,width:this.assetData.w,height:this.assetData.h};
 }
 
 extendPrototype([BaseElement,TransformElement,SVGBaseElement,HierarchyElement,FrameElement,RenderableDOMElement], IVideoElement);
@@ -85,7 +86,7 @@ IVideoElement.prototype.hide = function(){
             this.baseElement.getElementsByTagName('video')[0].currentTime = 0;
         }
 
-        isPlaying = false;
+        // isPlaying = false;
 
         this.layerElement.style.display = 'none';
         this.hidden = true;
@@ -127,3 +128,7 @@ IVideoElement.prototype.destroy = function(){
     this._parent.destroy.call(this._parent);
     this.innerElem =  null;
 };
+
+IVideoElement.prototype.sourceRectAtTime = function() {
+    return this.sourceRect;
+}

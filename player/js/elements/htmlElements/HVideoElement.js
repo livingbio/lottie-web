@@ -154,7 +154,7 @@ HVideoElement.prototype.hide = function(){
             this.baseElement.getElementsByTagName('video')[0].currentTime = 0;
         }
 
-        isPlaying = false;
+        // isPlaying = false;
 
         this.layerElement.style.display = 'none';
         this.hidden = true;
