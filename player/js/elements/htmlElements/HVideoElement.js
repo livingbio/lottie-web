@@ -1,10 +1,11 @@
-function HVideoElement(data,parentContainer,globalData,comp, placeholder){
+function HVideoElement(data,globalData,comp){
     this.assetData = globalData.getAssetData(data.refId);
-    this._parent.constructor.call(this,data,parentContainer,globalData,comp, placeholder);
+    this.initElement(data,globalData,comp);
 }
-// createElement(HBaseElement, HVideoElement);
 
-HVideoElement.prototype.createElements = function(){
+extendPrototype([HBaseElement], HVideoElement);
+
+HVideoElement.prototype.createContent = function(){
     // this.isMasked = this.checkMasks();
     var assetPath = this.globalData.getAssetsPath(this.assetData);
 

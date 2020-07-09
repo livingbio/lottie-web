@@ -1,14 +1,13 @@
-function IVideoElement(data,parentContainer,globalData,comp,placeholder){
+function IVideoElement(data,globalData,comp){
     this.assetData = globalData.getAssetData(data.refId);
-    this._parent.constructor.call(this,data,parentContainer,globalData,comp,placeholder);
+    this.initElement(data,globalData,comp);
 }
-// createElement(SVGBaseElement, IVideoElement);
 
-IVideoElement.prototype.createElements = function(){
+extendPrototype([SVGBaseElement], IVideoElement);
+
+IVideoElement.prototype.createContent = function(){
 
     var assetPath = this.globalData.getAssetsPath(this.assetData);
-
-    this._parent.createElements.call(this);
 
     this.innerElem = createNS('foreignObject');
     this.innerElem.setAttribute('width',this.assetData.w+"px");

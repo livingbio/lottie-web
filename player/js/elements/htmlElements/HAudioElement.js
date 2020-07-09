@@ -1,10 +1,11 @@
-function HAudioElement(data,parentContainer,globalData,comp, placeholder){
+function HAudioElement(data,globalData,comp){
     this.assetData = globalData.getAssetData(data.refId);
-    this._parent.constructor.call(this,data,parentContainer,globalData,comp, placeholder);
+    this.initElement(data,globalData,comp);
 }
-// createElement(HBaseElement, HAudioElement);
 
-HAudioElement.prototype.createElements = function(){
+extendPrototype([HBaseElement], HAudioElement);
+
+HAudioElement.prototype.createContent = function(){
 
     var assetPath = this.globalData.getAssetsPath(this.assetData);
 
