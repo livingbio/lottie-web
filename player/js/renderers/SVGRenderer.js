@@ -66,10 +66,8 @@ SVGRenderer.prototype.createAudio = function (data) {
 };
 
 SVGRenderer.prototype.createVideo = function (data) {
-// console.log(data);
 //     throw new Error('You\'re using a video object. Try the html renderer.');
-    return new IVideoElement(data, this.layerElement,this.globalData,this);
-
+    return new IVideoElement(data,this.globalData,this);
 };
 
 SVGRenderer.prototype.createNull = function (data) {

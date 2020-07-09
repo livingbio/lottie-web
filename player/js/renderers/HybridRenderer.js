@@ -90,12 +90,12 @@ HybridRenderer.prototype.createText = function (data) {
 };
 
 HybridRenderer.prototype.createVideo = function (data) {
-    return new HVideoElement(data, this.layerElement,this.globalData,this);
+    return new HVideoElement(data,this.globalData,this);
 };
 
 
 HybridRenderer.prototype.createAudio = function (data) {
-    return new HAudioElement(data, this.layerElement,this.globalData,this);
+    return new HAudioElement(data,this.globalData,this);
 };
 
 HybridRenderer.prototype.createCamera = function (data) {
