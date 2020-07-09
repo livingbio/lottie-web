@@ -325,6 +325,10 @@ const scripts = [
 		builds: defaultBuilds
 	},
 	{
+		src: 'js/elements/VideoElement.js',
+		builds: defaultBuilds
+	},
+	{
 		src: 'js/elements/svgElements/SVGCompElement.js',
 		builds: ['full','svg','svg_light','html','html_light']
 	},
@@ -430,6 +434,14 @@ const scripts = [
 	},
 	{
 		src: 'js/elements/htmlElements/HImageElement.js',
+		builds: ['full','html','html_light']
+	},
+	{
+		src: 'js/elements/htmlElements/HVideoElement.js',
+		builds: ['full','html','html_light']
+	},
+	{
+		src: 'js/elements/htmlElements/HAudioElement.js',
 		builds: ['full','html','html_light']
 	},
 	{
