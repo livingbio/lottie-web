@@ -10,7 +10,7 @@ IVideoElement.prototype.createElements = function(){
 
     this._parent.createElements.call(this);
 
-    this.innerElem = createNS(svgNS,'foreignObject');
+    this.innerElem = createNS('foreignObject');
     this.innerElem.setAttribute('width',this.assetData.w+"px");
     this.innerElem.setAttribute('height',this.assetData.h+"px");
 

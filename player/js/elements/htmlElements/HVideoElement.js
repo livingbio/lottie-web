@@ -14,12 +14,12 @@ HVideoElement.prototype.createElements = function(){
         var parent = document.createElement('div');
 
         // styleDiv(parent);
-        // var cont = createNS(svgNS,'svg');
+        // var cont = createNS('svg');
         // styleDiv(cont);
         // cont.setAttribute('width',this.assetData.w);
         // cont.setAttribute('height',this.assetData.h);
         // parent.appendChild(cont);
-        // this.imageElem = createNS(svgNS,'image');
+        // this.imageElem = createNS('image');
         // this.imageElem.setAttribute('width',this.assetData.w+"px");
         // this.imageElem.setAttribute('height',this.assetData.h+"px");
         // this.imageElem.setAttributeNS('http://www.w3.org/1999/xlink','href',assetPath);
@@ -74,7 +74,7 @@ HVideoElement.prototype.createElements = function(){
 
         if(this.parentContainer.parentNode != undefined) {
             if (this.parentContainer.parentNode.nodeName == 'svg') {
-                var parent = createNS(svgNS,'foreignObject');
+                var parent = createNS('foreignObject');
                 parent.setAttribute('width',this.assetData.w+"px");
                 parent.setAttribute('height',this.assetData.h+"px");
             }
