@@ -11,14 +11,14 @@ HAudioElement.prototype.createElements = function(){
     var parent = document.createElement('div');
     styleDiv(parent);
 
-    var cont = document.createElementNS('http://www.w3.org/1999/xhtml','audio');
+    var cont = createNS('http://www.w3.org/1999/xhtml','audio');
     styleDiv(cont);
 
     cont.setAttribute('preload','');
     cont.setAttribute('playsinline','');
     parent.appendChild(cont);
 
-    this.audioElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+    this.audioElem = createNS('http://www.w3.org/1999/xhtml','source');
     this.audioElem.setAttribute('src',assetPath);
     cont.appendChild(this.audioElem);
     this.layerElement = parent;

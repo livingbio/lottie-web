@@ -14,12 +14,12 @@ HVideoElement.prototype.createElements = function(){
         var parent = document.createElement('div');
 
         // styleDiv(parent);
-        // var cont = document.createElementNS(svgNS,'svg');
+        // var cont = createNS(svgNS,'svg');
         // styleDiv(cont);
         // cont.setAttribute('width',this.assetData.w);
         // cont.setAttribute('height',this.assetData.h);
         // parent.appendChild(cont);
-        // this.imageElem = document.createElementNS(svgNS,'image');
+        // this.imageElem = createNS(svgNS,'image');
         // this.imageElem.setAttribute('width',this.assetData.w+"px");
         // this.imageElem.setAttribute('height',this.assetData.h+"px");
         // this.imageElem.setAttributeNS('http://www.w3.org/1999/xlink','href',assetPath);
@@ -34,7 +34,7 @@ HVideoElement.prototype.createElements = function(){
         // console.log('ffffff');
         styleDiv(parent);
 
-        var cont = document.createElementNS('http://www.w3.org/1999/xhtml','video');
+        var cont = createNS('http://www.w3.org/1999/xhtml','video');
         styleDiv(cont);
 
         cont.setAttribute('muted',''); //iphone suuport - we need to mute audio to allow play/stop video from js
@@ -48,7 +48,7 @@ HVideoElement.prototype.createElements = function(){
 
         parent.appendChild(cont);
 
-        this.videoElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+        this.videoElem = createNS('http://www.w3.org/1999/xhtml','source');
         this.videoElem.setAttribute('src',assetPath);
         cont.appendChild(this.videoElem);
         this.layerElement = parent;
@@ -69,12 +69,12 @@ HVideoElement.prototype.createElements = function(){
         // parent.setAttribute('height','1000');
         //
         //
-        // var cont_vid = document.createElementNS('http://www.w3.org/1999/xhtml','body');
+        // var cont_vid = createNS('http://www.w3.org/1999/xhtml','body');
         // cont_vid.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
 
         if(this.parentContainer.parentNode != undefined) {
             if (this.parentContainer.parentNode.nodeName == 'svg') {
-                var parent = document.createElementNS(svgNS,'foreignObject');
+                var parent = createNS(svgNS,'foreignObject');
                 parent.setAttribute('width',this.assetData.w+"px");
                 parent.setAttribute('height',this.assetData.h+"px");
             }
@@ -88,7 +88,7 @@ HVideoElement.prototype.createElements = function(){
 
         styleDiv(parent);
 
-        var cont = document.createElementNS('http://www.w3.org/1999/xhtml','video');
+        var cont = createNS('http://www.w3.org/1999/xhtml','video');
         styleDiv(cont);
 
         cont.setAttribute('muted',''); //iphone suuport - we need to mute audio to allow play/stop video from js
@@ -122,7 +122,7 @@ HVideoElement.prototype.createElements = function(){
         parent.appendChild(cont);
 
 
-        this.videoElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+        this.videoElem = createNS('http://www.w3.org/1999/xhtml','source');
         this.videoElem.setAttribute('src',assetPath);
         cont.appendChild(this.videoElem);
         this.layerElement = parent;
