@@ -122,7 +122,7 @@ AnimationItem.prototype.includeLayers = function(data) {
         this.animationData.op = data.op;
         this.totalFrames = Math.floor(data.op - this.animationData.ip);
     }
-    var layers = this.animationData.layers;
+    var layers = this.renderer.layers;
     var i, len = layers.length;
     var newLayers = data.layers;
     var j, jLen = newLayers.length;
@@ -346,15 +346,15 @@ AnimationItem.prototype.play = function (name) {
         if(this._idle){
 
             //video/audio support
-            for (i = this.layers.length - 1; i >= 0; i--) {
+            for (i = this.renderer.layers.length - 1; i >= 0; i--) {
 
-                data = this.layers[i];
+                data = this.renderer.layers[i];
 
                 // ip = start time all video by FPS
                 // st = start specific time by FPS
                 // op = end time all video by FPS
 
-                if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st))
+                if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st))
                 {
                     if(this.isPaused === false) {
 
@@ -383,13 +383,13 @@ AnimationItem.prototype.pause = function (name) {
         this.isPaused = true;
         if (!this.pendingSegment) {
 
-            var i, len = this.layers.length, data;
+            var i, len = this.renderer.layers.length, data;
 
             for (i = len - 1; i >= 0; i--) {
-                data = this.layers[i];
+                data = this.renderer.layers[i];
                 // ip = start time all video by FPS
                 // st = start specific time by FPS
-                if (data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
+                if (data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
                     if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
 
                         if (this.projectInterface.compositions[0].elements[i].elements[0]) {
@@ -424,12 +424,10 @@ AnimationItem.prototype.stop = function (name) {
     this.playCount = 0;
     this._completedLoop = false;
     this.setCurrentRawFrameValue(0);
-    var i, len = this.layers.length, data;
+    var i, len = this.renderer.layers.length, data;
     for (i = len - 1; i >= 0; i--) {
-        data = this.layers[i];
-        if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
-            //we want to find the relative time of the video (in the current layer) so we take the value and minus the in point time
-            //after that we dvide by 24 to get seconds instead of frames.
+        data = this.renderer.layers[i];
+        if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
             if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
                 var goToTime = 0;
                 if (this.projectInterface.compositions[0].elements[i].elements[0]) {
@@ -450,10 +448,10 @@ AnimationItem.prototype.mute = function (name) {
         return;
     }
 
-    for (i = this.layers.length - 1; i >= 0; i--) {
-        data = this.layers[i];
+    for (i = this.renderer.layers.length - 1; i >= 0; i--) {
+        data = this.renderer.layers[i];
 
-        if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
+        if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
             if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
 
                 if (this.isMute === false || this.isMute == null) {
@@ -513,10 +511,10 @@ AnimationItem.prototype.muteAdudio = function (elements,action,mute,volume) {
 // set volume function 0-1 (decimal option)
 AnimationItem.prototype.setVolumeRange = function (value) {
 
-    for (i = this.layers.length - 1; i >= 0; i--) {
-        data = this.layers[i];
+    for (i = this.renderer.layers.length - 1; i >= 0; i--) {
+        data = this.renderer.layers[i];
 
-        if(data.ip - data.st <= (this.currentFrame - this.layers[i].st) && data.op - data.st > (this.currentFrame - this.layers[i].st)) {
+        if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
             if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
                 this.muteAdudio(this.projectInterface.compositions[0].elements[i].elements,'setVolume',true,value);
 
@@ -528,16 +526,16 @@ AnimationItem.prototype.setVolumeRange = function (value) {
 
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
 
-    var i, len = this.layers.length, data;
+    var i, len = this.renderer.layers.length, data;
     for (i = len - 1; i >= 0; i--) {
-        data = this.layers[i];
-        if (data.ip - data.st <= (value - this.layers[i].st) && data.op - data.st > (value - this.layers[i].st)) {
+        data = this.renderer.layers[i];
+        if (data.ip - data.st <= (value - this.renderer.layers[i].st) && data.op - data.st > (value - this.renderer.layers[i].st)) {
             //we want to find the relative time of the video (in the current layer) so we take the value and minus the in point time
-            //after that we dvide by 24 to get seconds instead of frames.
+            //after that we divide by this.frameRate to get seconds instead of frames.
 
             if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
 
-                var goToTime = (value - data.ip) /24;
+                var goToTime = (value - data.ip) / this.frameRate;
                 if (this.projectInterface.compositions[0].elements[i].elements[0]) {
                     this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'pause', null);
                     this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'goToTime', goToTime);
