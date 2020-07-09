@@ -358,10 +358,10 @@ AnimationItem.prototype.play = function (name) {
                 {
                     if(this.isPaused === false) {
 
-                        if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
-                            if (this.projectInterface.compositions[0].elements[i].elements[0]) {
+                        if (typeof this.renderer.elements[i].elements == "object") {
+                            if (this.renderer.elements[i].elements[0]) {
 
-                                this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements,'play',null);
+                                this.playAudioVideo(this.renderer.elements[i].elements,'play',null);
 
                             }
                         }
@@ -390,10 +390,10 @@ AnimationItem.prototype.pause = function (name) {
                 // ip = start time all video by FPS
                 // st = start specific time by FPS
                 if (data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-                    if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+                    if (typeof this.renderer.elements[i].elements == "object") {
 
-                        if (this.projectInterface.compositions[0].elements[i].elements[0]) {
-                            this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'pause', null);
+                        if (this.renderer.elements[i].elements[0]) {
+                            this.playAudioVideo(this.renderer.elements[i].elements, 'pause', null);
                         }
                     }
                 }
@@ -428,11 +428,11 @@ AnimationItem.prototype.stop = function (name) {
     for (i = len - 1; i >= 0; i--) {
         data = this.renderer.layers[i];
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+            if (typeof this.renderer.elements[i].elements == "object") {
                 var goToTime = 0;
-                if (this.projectInterface.compositions[0].elements[i].elements[0]) {
-                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'pause', null);
-                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'goToTime', goToTime);
+                if (this.renderer.elements[i].elements[0]) {
+                    this.playAudioVideo(this.renderer.elements[i].elements, 'pause', null);
+                    this.playAudioVideo(this.renderer.elements[i].elements, 'goToTime', goToTime);
                 }
 
             }
@@ -452,11 +452,11 @@ AnimationItem.prototype.mute = function (name) {
         data = this.renderer.layers[i];
 
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+            if (typeof this.renderer.elements[i].elements == "object") {
 
                 if (this.isMute === false || this.isMute == null) {
 
-                    this.muteAdudio(this.projectInterface.compositions[0].elements[i].elements,'mute',false,null);
+                    this.muteAdudio(this.renderer.elements[i].elements,'mute',false,null);
 
                     this.isMute = true;
                     break;
@@ -464,7 +464,7 @@ AnimationItem.prototype.mute = function (name) {
                 //TODO CHECK with two audio's playing together
                 else if (this.isMute === true) {
 
-                    this.muteAdudio(this.projectInterface.compositions[0].elements[i].elements,'mute',true,null);
+                    this.muteAdudio(this.renderer.elements[i].elements,'mute',true,null);
 
                     this.isMute = false;
                     break;
@@ -515,8 +515,8 @@ AnimationItem.prototype.setVolumeRange = function (value) {
         data = this.renderer.layers[i];
 
         if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
-                this.muteAdudio(this.projectInterface.compositions[0].elements[i].elements,'setVolume',true,value);
+            if (typeof this.renderer.elements[i].elements == "object") {
+                this.muteAdudio(this.renderer.elements[i].elements,'setVolume',true,value);
 
             }
         }
@@ -533,12 +533,12 @@ AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
             //we want to find the relative time of the video (in the current layer) so we take the value and minus the in point time
             //after that we divide by this.frameRate to get seconds instead of frames.
 
-            if (typeof this.projectInterface.compositions[0].elements[i].elements == "object") {
+            if (typeof this.renderer.elements[i].elements == "object") {
 
                 var goToTime = (value - data.ip) / this.frameRate;
-                if (this.projectInterface.compositions[0].elements[i].elements[0]) {
-                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'pause', null);
-                    this.playAudioVideo(this.projectInterface.compositions[0].elements[i].elements, 'goToTime', goToTime);
+                if (this.renderer.elements[i].elements[0]) {
+                    this.playAudioVideo(this.renderer.elements[i].elements, 'pause', null);
+                    this.playAudioVideo(this.renderer.elements[i].elements, 'goToTime', goToTime);
                 }
 
             }
