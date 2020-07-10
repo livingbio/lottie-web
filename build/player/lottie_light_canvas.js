@@ -7804,21 +7804,43 @@ IVideoElement.prototype.createContent = function(){
 };
 
 IVideoElement.prototype.hide = function(){
-    if(!this.hidden){
+    if (!this.hidden && (!this.isInRange || this.isTransparent)) {
+        var elem = this.baseElement || this.layerElement;
 
-        if(this.baseElement.getElementsByTagName('video').length !=0) {
-            this.baseElement.getElementsByTagName('video')[0].pause();
-            this.baseElement.getElementsByTagName('video')[0].currentTime = 0;
+        if (elem.getElementsByTagName('video').length != 0) {
+            elem.getElementsByTagName('video')[0].pause();
+            elem.getElementsByTagName('video')[0].currentTime = 0;
         }
 
-        this.layerElement.style.display = 'none';
+        elem.style.display = 'none';
         this.hidden = true;
     }
 };
 
-IVideoElement.prototype.destroy = function(){
-    this._parent.destroy.call(this._parent);
-    this.innerElem = null;
+IVideoElement.prototype.renderFrame = function(){
+    if (this.data.hd || this.hidden) {
+        var elem = this.baseElement || this.layerElement;
+
+        if (elem.parentElement.parentElement.getElementsByTagName('g').item(0) != undefined){
+            if(elem.getElementsByTagName('video').length !=0) {
+                elem.getElementsByTagName('video').item(0).setAttribute('style',elem.parentElement.parentElement.getAttribute("style"));
+            }
+        }
+
+        if(elem.getElementsByTagName('video').length !=0 && elem.getElementsByTagName('video')[0].currentTime == 0) {
+            elem.getElementsByTagName('video')[0].play();
+        }
+
+        return;
+    }
+
+    this.renderTransform();
+    this.renderRenderable();
+    this.renderElement();
+    this.renderInnerContent();
+    if (this._isFirstFrame) {
+        this._isFirstFrame = false;
+    }
 };
 
 IVideoElement.prototype.sourceRectAtTime = function() {
