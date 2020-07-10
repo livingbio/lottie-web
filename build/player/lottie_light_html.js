@@ -8112,35 +8112,31 @@ IVideoElement.prototype.hide = function(){
     }
 };
 
-IVideoElement.prototype.renderFrame = function(){
-    if (this.data.hd || this.hidden) {
-        var elem = this.baseElement || this.layerElement;
+IVideoElement.prototype.show = function() {
+    if (this.isInRange && !this.isTransparent){
+        if (!this.data.hd) {
+            var elem = this.baseElement || this.layerElement;
 
-        if (elem.parentElement.parentElement.getElementsByTagName('g').item(0) != undefined){
-            if(elem.getElementsByTagName('video').length !=0) {
-                elem.getElementsByTagName('video').item(0).setAttribute('style',elem.parentElement.parentElement.getAttribute("style"));
+            if (elem.parentElement.parentElement.getElementsByTagName('g').item(0) != undefined){
+                if(elem.getElementsByTagName('video').length !=0) {
+                    elem.getElementsByTagName('video').item(0).setAttribute('style',elem.parentElement.parentElement.getAttribute("style"));
+                }
             }
+
+            if(elem.getElementsByTagName('video').length !=0 && elem.getElementsByTagName('video')[0].currentTime == 0) {
+                elem.getElementsByTagName('video')[0].play();
+            }
+
+            elem.style.display = 'block';
         }
-
-        if(elem.getElementsByTagName('video').length !=0 && elem.getElementsByTagName('video')[0].currentTime == 0) {
-            elem.getElementsByTagName('video')[0].play();
-        }
-
-        return;
-    }
-
-    this.renderTransform();
-    this.renderRenderable();
-    this.renderElement();
-    this.renderInnerContent();
-    if (this._isFirstFrame) {
-        this._isFirstFrame = false;
+        this.hidden = false;
+        this._isFirstFrame = true;
     }
 };
 
 IVideoElement.prototype.sourceRectAtTime = function() {
     return this.sourceRect;
-}
+};
 
 function SVGCompElement(data,globalData,comp){
     this.layers = data.layers;
