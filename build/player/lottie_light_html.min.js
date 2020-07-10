@@ -10725,7 +10725,7 @@ AnimationItem.prototype.includeLayers = function(data) {
         this.animationData.op = data.op;
         this.totalFrames = Math.floor(data.op - this.animationData.ip);
     }
-    var layers = this.renderer.layers;
+    var layers = this.animationData.layers;
     var i, len = layers.length;
     var newLayers = data.layers;
     var j, jLen = newLayers.length;
@@ -11011,10 +11011,8 @@ AnimationItem.prototype.stop = function (name) {
     }
 };
 
-
 // mute function
 AnimationItem.prototype.mute = function (name) {
-
     if(name && this.name != name){
         return;
     }
@@ -11036,7 +11034,7 @@ AnimationItem.prototype.mute = function (name) {
                 this.isMute = false;
                 break;
             }
-    }
+        }
     }
 };
 
@@ -11076,7 +11074,6 @@ AnimationItem.prototype.setVolumeRange = function (value) {
         }
     }
 };
-
 
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
     if (name && this.name != name){
