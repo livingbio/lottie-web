@@ -9422,7 +9422,7 @@ AnimationItem.prototype.renderFrame = function () {
     }
 };
 
-AnimationItem.prototype.playAudioVideo = function (elements,action,goToTime) {
+AnimationItem.prototype.playAudioVideo = function (elements, action, goToTime) {
     if (elements instanceof Array) {
         for (var i = 0; i < elements.length; i++) {
             var videoCount = elements[i].baseElement.getElementsByTagName('video').length;
@@ -9459,27 +9459,31 @@ AnimationItem.prototype.playAudioVideo = function (elements,action,goToTime) {
     }
 }
 
+AnimationItem.prototype.layerIsStarted = function (layer) {
+    // ip = start time all video by FPS
+    // st = start specific time by FPS
+    // op = end time all video by FPS
+    if (layer.st <= this.currentRawFrame && this.currentRawFrame < layer.op) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 AnimationItem.prototype.play = function (name) {
-    if(name && this.name != name){
+    if (name && this.name != name) {
         return;
     }
-    if(this.isPaused === true){
+    if (this.isPaused === true) {
         this.isPaused = false;
-        if(this._idle){
+        if (this._idle) {
+            var i, len = this.renderer.layers.length, layer;
 
-            //video/audio support
-            for (i = this.renderer.layers.length - 1; i >= 0; i--) {
-
-                data = this.renderer.layers[i];
-
-                // ip = start time all video by FPS
-                // st = start specific time by FPS
-                // op = end time all video by FPS
-
-                if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-                    if(this.isPaused === false) {
-                        this.playAudioVideo(this.renderer.elements,'play',null);
+            for (i = len - 1; i >= 0; i--) {
+                layer = this.renderer.layers[i];
+                if (this.layerIsStarted(layer)) {
+                    if (this.isPaused === false) {
+                        this.playAudioVideo(this.renderer.elements, 'play', null);
                     }
                 }
             }
@@ -9497,20 +9501,17 @@ AnimationItem.prototype.pause = function (name) {
     if (this.isPaused === false) {
         this.isPaused = true;
         if (!this.pendingSegment) {
-
-            var i, len = this.renderer.layers.length, data;
+            var i, len = this.renderer.layers.length, layer;
 
             for (i = len - 1; i >= 0; i--) {
-                data = this.renderer.layers[i];
-                // ip = start time all video by FPS
-                // st = start specific time by FPS
-                if (data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
+                layer = this.renderer.layers[i];
+                if (this.layerIsStarted(layer)) {
                     this.playAudioVideo(this.renderer.elements, 'pause', null);
                 }
-
-                this._idle = true;
-                this.trigger('_idle');
             }
+
+            this._idle = true;
+            this.trigger('_idle');
         }
     }
 };
@@ -9534,13 +9535,13 @@ AnimationItem.prototype.stop = function (name) {
     this.playCount = 0;
     this._completedLoop = false;
     this.setCurrentRawFrameValue(0);
-    var i, len = this.renderer.layers.length, data;
+
+    var i, len = this.renderer.layers.length, layer;
+
     for (i = len - 1; i >= 0; i--) {
-        data = this.renderer.layers[i];
-        if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            var goToTime = 0;
-            this.playAudioVideo(this.renderer.elements, 'pause', null);
-            this.playAudioVideo(this.renderer.elements, 'goToTime', goToTime);
+        layer = this.renderer.layers[i];
+        if(this.layerIsStarted(layer)) {
+            this.playAudioVideo(this.renderer.elements, 'goToTime', 0);
         }
     }
 };
@@ -9553,18 +9554,20 @@ AnimationItem.prototype.mute = function (name) {
         return;
     }
 
-    for (i = this.renderer.layers.length - 1; i >= 0; i--) {
-        data = this.renderer.layers[i];
+    var i, len = this.renderer.layers.length, layer;
 
-        if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+
+        if (this.layerIsStarted(layer)) {
             if (this.isMute === false || this.isMute == null) {
-                this.muteAudio(this.renderer.elements,'mute',false,null);
+                this.adjustAudio(this.renderer.elements, 'mute', false, null);
                 this.isMute = true;
                 break;
             }
-            //TODO CHECK with two audio's playing together
+            // TODO: CHECK with two audio's playing together
             else if (this.isMute === true) {
-                this.muteAudio(this.renderer.elements,'mute',true,null);
+                this.adjustAudio(this.renderer.elements, 'mute', true, null);
                 this.isMute = false;
                 break;
             }
@@ -9572,7 +9575,7 @@ AnimationItem.prototype.mute = function (name) {
     }
 };
 
-AnimationItem.prototype.muteAudio = function (elements,action,mute,volume) {
+AnimationItem.prototype.adjustAudio = function (elements, action, mute, volume) {
 
     if (elements instanceof Array) {
         for (i = 0; i < elements.length; i++) {
@@ -9596,47 +9599,43 @@ AnimationItem.prototype.muteAudio = function (elements,action,mute,volume) {
     }
 }
 
-
-
-
-
-
 // set volume function 0-1 (decimal option)
 AnimationItem.prototype.setVolumeRange = function (value) {
+    var i, len = this.renderer.layers.length, layer;
 
-    for (i = this.renderer.layers.length - 1; i >= 0; i--) {
-        data = this.renderer.layers[i];
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
 
-        if(data.ip - data.st <= (this.currentFrame - this.renderer.layers[i].st) && data.op - data.st > (this.currentFrame - this.renderer.layers[i].st)) {
-            this.muteAudio(this.renderer.elements,'setVolume',true,value);
+        if(this.layerIsStarted(layer)) {
+            this.adjustAudio(this.renderer.elements, 'setVolume', true, value);
         }
     }
 };
 
 
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
+    if (name && this.name != name){
+        return;
+    }
 
-    var i, len = this.renderer.layers.length, data;
+    if (isFrame) {
+        this.setCurrentRawFrameValue(value);
+    } else {
+        this.setCurrentRawFrameValue(value * this.frameModifier);
+    }
+    this.pause();
+
+    var i, len = this.renderer.layers.length, layer;
+
     for (i = len - 1; i >= 0; i--) {
-        data = this.renderer.layers[i];
-        if (data.ip - data.st <= (value - this.renderer.layers[i].st) && data.op - data.st > (value - this.renderer.layers[i].st)) {
-            //we want to find the relative time of the video (in the current layer) so we take the value and minus the in point time
-            //after that we divide by this.frameRate to get seconds instead of frames.
-            var goToTime = (value - data.ip) / this.frameRate;
-            this.playAudioVideo(this.renderer.elements, 'pause', null);
+        layer = this.renderer.layers[i];
+        if (this.layerIsStarted(layer)) {
+            // find the relative time of the video (in the current layer)
+            var goToTime = (this.currentRawFrame - layer.st) / (this.frameModifier * 1000);
             this.playAudioVideo(this.renderer.elements, 'goToTime', goToTime);
         }
     }
 
-    if(name && this.name != name){
-        return;
-    }
-    if(isFrame){
-        this.setCurrentRawFrameValue(value);
-    }else{
-        this.setCurrentRawFrameValue(value * this.frameModifier);
-    }
-    this.pause();
 };
 
 AnimationItem.prototype.goToAndPlay = function (value, isFrame, name) {
