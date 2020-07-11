@@ -6341,7 +6341,6 @@ HybridRenderer.prototype.createVideo = function (data) {
     return new HVideoElement(data,this.globalData,this);
 };
 
-
 HybridRenderer.prototype.createAudio = function (data) {
     return new HAudioElement(data,this.globalData,this);
 };
@@ -8039,6 +8038,7 @@ IImageElement.prototype.createContent = function(){
     this.innerElem.setAttribute('height',this.assetData.h+"px");
     this.innerElem.setAttribute('preserveAspectRatio',this.assetData.pr || this.globalData.renderConfig.imagePreserveAspectRatio);
     this.innerElem.setAttributeNS('http://www.w3.org/1999/xlink','href',assetPath);
+
     this.layerElement.appendChild(this.innerElem);
 };
 
