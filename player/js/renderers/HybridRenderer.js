@@ -93,7 +93,6 @@ HybridRenderer.prototype.createVideo = function (data) {
     return new HVideoElement(data,this.globalData,this);
 };
 
-
 HybridRenderer.prototype.createAudio = function (data) {
     return new HAudioElement(data,this.globalData,this);
 };
