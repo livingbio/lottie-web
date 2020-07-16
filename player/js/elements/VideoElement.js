@@ -13,25 +13,20 @@ IVideoElement.prototype.createContent = function(){
     this.innerElem = createNS('foreignObject');
     this.innerElem.setAttribute('width',this.assetData.w+"px");
     this.innerElem.setAttribute('height',this.assetData.h+"px");
-
-    var cont = document.createElementNS('http://www.w3.org/1999/xhtml','video');
-    styleDiv(cont);
-
-    cont.setAttribute('muted',''); //iphone suuport - we need to mute audio to allow play/stop video from js
-    cont.setAttribute('preload','');
-    cont.setAttribute('loop','loop');
-    cont.setAttribute('playsinline',''); //for iphone support
-    cont.setAttribute('width',this.assetData.w);
-    cont.setAttribute('height',this.assetData.h);
-    cont.setAttribute('style','object-fit: fill');
-    this.innerElem.appendChild(cont);
-
-    this.videoElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
-    this.videoElem.setAttribute('src',assetPath);
-    cont.appendChild(this.videoElem);
-
     this.innerElem.setAttribute('preserveAspectRatio',this.assetData.pr || this.globalData.renderConfig.imagePreserveAspectRatio);
-    this.maskedElement = this.innerElem.parent;
+
+    var videoElem = document.createElementNS('http://www.w3.org/1999/xhtml','video');
+    videoElem.setAttribute('muted',''); //iphone suuport - we need to mute audio to allow play/stop video from js
+    videoElem.setAttribute('preload','');
+    videoElem.setAttribute('loop','loop');
+    videoElem.setAttribute('playsinline',''); //for iphone support
+    videoElem.setAttribute('width',this.assetData.w);
+    videoElem.setAttribute('height',this.assetData.h);
+    videoElem.setAttribute('style','object-fit: fill');
+    videoElem.setAttribute('src',assetPath);
+    this.innerElem.appendChild(videoElem);
+
+    // this.maskedElement = this.innerElem.parentElement;
     this.layerElement.appendChild(this.innerElem);
 };
 

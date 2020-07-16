@@ -284,40 +284,36 @@ AnimationItem.prototype.renderFrame = function () {
     }
 };
 
-AnimationItem.prototype.playAudioVideo = function (elements, action, goToTime) {
-    if (elements instanceof Array) {
-        for (var i = 0; i < elements.length; i++) {
-            var videoCount = elements[i].baseElement.getElementsByTagName('video').length;
-            var audioCount = elements[i].baseElement.getElementsByTagName('audio').length;
-            var v, a;
+AnimationItem.prototype.playAudioVideo = function (element, action, goToTime) {
+    var videoCount = element.getElementsByTagName('video').length;
+    var audioCount = element.getElementsByTagName('audio').length;
+    var v, a;
 
-            switch (action) {
-                case 'play':
-                    for (v = 0; v < videoCount; v++) {
-                        elements[i].baseElement.getElementsByTagName('video')[v].play();
-                    }
-                    for (a = 0; a < audioCount; a++) {
-                        elements[i].baseElement.getElementsByTagName('audio')[a].play();
-                    }
-                    break;
-                case 'pause':
-                    for (v = 0; v < videoCount; v++) {
-                        elements[i].baseElement.getElementsByTagName('video')[v].pause();
-                    }
-                    for (a = 0; a < audioCount; a++) {
-                        elements[i].baseElement.getElementsByTagName('audio')[a].pause();
-                    }
-                    break;
-                case 'goToTime':
-                    for (v = 0; v < videoCount; v++) {
-                        elements[i].baseElement.getElementsByTagName('video')[v].currentTime = goToTime;
-                    }
-                    for (a = 0; a < audioCount; a++) {
-                        elements[i].baseElement.getElementsByTagName('audio')[a].currentTime = goToTime;
-                    }
-                    break;
+    switch (action) {
+        case 'play':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].play();
             }
-        }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].play();
+            }
+            break;
+        case 'pause':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].pause();
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].pause();
+            }
+            break;
+        case 'goToTime':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].currentTime = goToTime;
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].currentTime = goToTime;
+            }
+            break;
     }
 }
 
@@ -345,7 +341,7 @@ AnimationItem.prototype.play = function (name) {
                 layer = this.renderer.layers[i];
                 if (this.layerIsStarted(layer)) {
                     if (this.isPaused === false) {
-                        this.playAudioVideo(this.renderer.elements, 'play', null);
+                        this.playAudioVideo(this.renderer.layerElement.children[i], 'play', null);
                     }
                 }
             }
@@ -362,19 +358,18 @@ AnimationItem.prototype.pause = function (name) {
     }
     if (this.isPaused === false) {
         this.isPaused = true;
-        if (!this.pendingSegment) {
-            var i, len = this.renderer.layers.length, layer;
 
-            for (i = len - 1; i >= 0; i--) {
-                layer = this.renderer.layers[i];
-                if (this.layerIsStarted(layer)) {
-                    this.playAudioVideo(this.renderer.elements, 'pause', null);
-                }
+        var i, len = this.renderer.layers.length, layer;
+
+        for (i = len - 1; i >= 0; i--) {
+            layer = this.renderer.layers[i];
+            if (this.layerIsStarted(layer)) {
+                this.playAudioVideo(this.renderer.layerElement.children[i], 'pause', null);
             }
-
-            this._idle = true;
-            this.trigger('_idle');
         }
+
+        this._idle = true;
+        this.trigger('_idle');
     }
 };
 
@@ -403,7 +398,7 @@ AnimationItem.prototype.stop = function (name) {
     for (i = len - 1; i >= 0; i--) {
         layer = this.renderer.layers[i];
         if(this.layerIsStarted(layer)) {
-            this.playAudioVideo(this.renderer.elements, 'goToTime', 0);
+            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', 0);
         }
     }
 };
@@ -482,7 +477,6 @@ AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
     } else {
         this.setCurrentRawFrameValue(value * this.frameModifier);
     }
-    this.pause();
 
     var i, len = this.renderer.layers.length, layer;
 
@@ -491,10 +485,11 @@ AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
         if (this.layerIsStarted(layer)) {
             // find the relative time of the video (in the current layer)
             var goToTime = (this.currentRawFrame - layer.st) / (this.frameModifier * 1000);
-            this.playAudioVideo(this.renderer.elements, 'goToTime', goToTime);
+            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', goToTime);
         }
     }
 
+    this.pause();
 };
 
 AnimationItem.prototype.goToAndPlay = function (value, isFrame, name) {
