@@ -61,6 +61,15 @@ function SVGRenderer(animationItem, config){
 
 extendPrototype([BaseRenderer],SVGRenderer);
 
+SVGRenderer.prototype.createAudio = function (data) {
+    throw new Error('You\'re using a audio object. Try the html renderer.');
+};
+
+SVGRenderer.prototype.createVideo = function (data) {
+//     throw new Error('You\'re using a video object. Try the html renderer.');
+    return new IVideoElement(data,this.globalData,this);
+};
+
 SVGRenderer.prototype.createNull = function (data) {
     return new NullElement(data,this.globalData,this);
 };

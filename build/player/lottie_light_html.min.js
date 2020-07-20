@@ -5874,6 +5874,10 @@ BaseRenderer.prototype.createItem = function(layer){
             return this.createShape(layer);
         case 5:
             return this.createText(layer);
+        case 6:
+            return this.createAudio(layer);
+        case 9:
+            return this.createVideo(layer);
         case 13:
             return this.createCamera(layer);
     }
@@ -6032,6 +6036,15 @@ function SVGRenderer(animationItem, config){
 }
 
 extendPrototype([BaseRenderer],SVGRenderer);
+
+SVGRenderer.prototype.createAudio = function (data) {
+    throw new Error('You\'re using a audio object. Try the html renderer.');
+};
+
+SVGRenderer.prototype.createVideo = function (data) {
+//     throw new Error('You\'re using a video object. Try the html renderer.');
+    return new IVideoElement(data,this.globalData,this);
+};
 
 SVGRenderer.prototype.createNull = function (data) {
     return new NullElement(data,this.globalData,this);
@@ -6322,6 +6335,14 @@ HybridRenderer.prototype.createText = function (data) {
         return new SVGTextElement(data, this.globalData, this);
     }
     return new HTextElement(data, this.globalData, this);
+};
+
+HybridRenderer.prototype.createVideo = function (data) {
+    return new HVideoElement(data,this.globalData,this);
+};
+
+HybridRenderer.prototype.createAudio = function (data) {
+    return new HAudioElement(data,this.globalData,this);
 };
 
 HybridRenderer.prototype.createCamera = function (data) {
@@ -8040,6 +8061,84 @@ ISolidElement.prototype.createContent = function(){
     rect.setAttribute('fill',this.data.sc);
     this.layerElement.appendChild(rect);
 };
+function IVideoElement(data,globalData,comp){
+    this.assetData = globalData.getAssetData(data.refId);
+    this.initElement(data,globalData,comp);
+    this.sourceRect = {top:0,left:0,width:this.assetData.w,height:this.assetData.h};
+}
+
+extendPrototype([BaseElement,TransformElement,SVGBaseElement,HierarchyElement,FrameElement,RenderableDOMElement], IVideoElement);
+
+IVideoElement.prototype.createContent = function(){
+
+    var assetPath = this.globalData.getAssetsPath(this.assetData);
+
+    this.innerElem = createNS('foreignObject');
+    this.innerElem.setAttribute('width',this.assetData.w+"px");
+    this.innerElem.setAttribute('height',this.assetData.h+"px");
+    this.innerElem.setAttribute('preserveAspectRatio',this.assetData.pr || this.globalData.renderConfig.imagePreserveAspectRatio);
+
+    var videoElem = document.createElementNS('http://www.w3.org/1999/xhtml','video');
+    videoElem.setAttribute('muted',''); //iphone suuport - we need to mute audio to allow play/stop video from js
+    videoElem.setAttribute('preload','');
+    videoElem.setAttribute('loop','loop');
+    videoElem.setAttribute('playsinline',''); //for iphone support
+    videoElem.setAttribute('width',this.assetData.w);
+    videoElem.setAttribute('height',this.assetData.h);
+    videoElem.setAttribute('style','object-fit: fill');
+    this.innerElem.appendChild(videoElem);
+
+    var sourceElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+    sourceElem.setAttribute('src',assetPath);
+    if (this.data.cl) {
+        sourceElem.setAttribute('type','video/'+this.data.cl);
+    }
+    videoElem.appendChild(sourceElem);
+
+    // this.maskedElement = this.innerElem.parentElement;
+    this.layerElement.appendChild(this.innerElem);
+};
+
+IVideoElement.prototype.hide = function(){
+    if (!this.hidden && (!this.isInRange || this.isTransparent)) {
+        var elem = this.baseElement || this.layerElement;
+
+        if (elem.getElementsByTagName('video').length != 0) {
+            elem.getElementsByTagName('video')[0].pause();
+            elem.getElementsByTagName('video')[0].currentTime = 0;
+        }
+
+        elem.style.display = 'none';
+        this.hidden = true;
+    }
+};
+
+IVideoElement.prototype.show = function() {
+    if (this.isInRange && !this.isTransparent){
+        if (!this.data.hd) {
+            var elem = this.baseElement || this.layerElement;
+
+            if (elem.parentElement.parentElement.getElementsByTagName('g').item(0) != undefined){
+                if(elem.getElementsByTagName('video').length !=0) {
+                    elem.getElementsByTagName('video').item(0).setAttribute('style',elem.parentElement.parentElement.getAttribute("style"));
+                }
+            }
+
+            if(elem.getElementsByTagName('video').length !=0 && elem.getElementsByTagName('video')[0].currentTime == 0) {
+                elem.getElementsByTagName('video')[0].play();
+            }
+
+            elem.style.display = 'block';
+        }
+        this.hidden = false;
+        this._isFirstFrame = true;
+    }
+};
+
+IVideoElement.prototype.sourceRectAtTime = function() {
+    return this.sourceRect;
+};
+
 function SVGCompElement(data,globalData,comp){
     this.layers = data.layers;
     this.supports3d = true;
@@ -9341,13 +9440,32 @@ function HCompElement(data,globalData,comp){
     this.tm = data.tm ? PropertyFactory.getProp(this,data.tm,0,globalData.frameRate,this) : {_placeholder:true};
 }
 
+// var isvideo = false
+
+// function checkVideoLayer(layers){
+//     if (layers) {
+//         for (var i = layers.length - 1; i >= 0; i--) {
+//             if (layers[i].layers != undefined){
+//                 checkVideoLayer(layers[i].layers)
+//             }
+
+//             if(layers[i].ty == 9) {
+//                 isvideo = true;
+//             }
+//         }}
+// }
+
 extendPrototype([HybridRenderer, ICompElement, HBaseElement], HCompElement);
 HCompElement.prototype._createBaseContainerElements = HCompElement.prototype.createContainerElements;
 
 HCompElement.prototype.createContainerElements = function(){
     this._createBaseContainerElements();
     //divElement.style.clip = 'rect(0px, '+this.data.w+'px, '+this.data.h+'px, 0px)';
-    if(this.data.hasMask){
+    if (this.data.hasMask) {
+        // isvideo = false
+        // checkVideoLayer(this.data.layers)
+        // if (isvideo != true && this.data.layers[0].ty != 9) {} else {}
+
         this.svgElement.setAttribute('width',this.data.w);
         this.svgElement.setAttribute('height',this.data.h);
         this.transformedElement = this.baseElement;
@@ -9868,6 +9986,271 @@ HImageElement.prototype.createContent = function(){
         this.baseElement.setAttribute('id',this.data.ln);
     }
 };
+function HVideoElement(data,globalData,comp){
+    this.assetData = globalData.getAssetData(data.refId);
+    this.initElement(data,globalData,comp);
+}
+
+extendPrototype([BaseElement,TransformElement,HBaseElement,HSolidElement,HierarchyElement,FrameElement,RenderableElement], HVideoElement);
+
+HVideoElement.prototype.createContent = function(){
+    // this.isMasked = this.checkMasks();
+    var assetPath = this.globalData.getAssetsPath(this.assetData);
+
+  // console.log(this.data);
+    if(this.data.hasMask){
+    //need to add mask support
+        var parent = document.createElement('div');
+
+        // styleDiv(parent);
+        // var cont = createNS('svg');
+        // styleDiv(cont);
+        // cont.setAttribute('width',this.assetData.w);
+        // cont.setAttribute('height',this.assetData.h);
+        // parent.appendChild(cont);
+        // this.imageElem = createNS('image');
+        // this.imageElem.setAttribute('width',this.assetData.w+"px");
+        // this.imageElem.setAttribute('height',this.assetData.h+"px");
+        // this.imageElem.setAttributeNS('http://www.w3.org/1999/xlink','href',assetPath);
+        // cont.appendChild(this.imageElem);
+        // this.layerElement = parent;
+        // this.transformedElement = parent;
+        // this.baseElement = parent;
+        // this.innerElem = parent;
+        // this.maskedElement = this.imageElem;
+        //
+
+        // console.log('ffffff');
+        styleDiv(parent);
+
+        var cont = document.createElementNS('http://www.w3.org/1999/xhtml','video');
+        styleDiv(cont);
+
+        cont.setAttribute('muted',''); //iphone suuport - we need to mute audio to allow play/stop video from js
+        cont.setAttribute('preload','');
+        cont.setAttribute('loop','loop');
+        cont.setAttribute('playsinline',''); //for iphone support
+        cont.setAttribute('width',this.assetData.w);
+        cont.setAttribute('height',this.assetData.h);
+        cont.setAttribute('style','object-fit: fill');
+
+
+        parent.appendChild(cont);
+
+        this.videoElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+        this.videoElem.setAttribute('src',assetPath);
+        cont.appendChild(this.videoElem);
+        this.layerElement = parent;
+        this.transformedElement = parent;
+        this.baseElement = parent;
+        this.innerElem = parent;
+        this.maskedElement = cont;
+
+        this.renderType = 'html';
+    } else {
+
+        // var parent = document.createElement('foreignObject');
+        // // x="10" y="10"
+        // parent.setAttribute('x','10');
+        // parent.setAttribute('y','10');
+        //
+        // parent.setAttribute('width','1000');
+        // parent.setAttribute('height','1000');
+        //
+        //
+        // var cont_vid = document.createElementNS('http://www.w3.org/1999/xhtml','body');
+        // cont_vid.setAttribute('xmlns','http://www.w3.org/1999/xhtml');
+
+        if(this.parentContainer.parentNode != undefined) {
+            if (this.parentContainer.parentNode.nodeName == 'svg') {
+                var parent = createNS('foreignObject');
+                parent.setAttribute('width',this.assetData.w+"px");
+                parent.setAttribute('height',this.assetData.h+"px");
+            }
+        }
+        else
+        {
+        var parent = document.createElement('div');
+
+
+        }
+
+        styleDiv(parent);
+
+        var cont = document.createElementNS('http://www.w3.org/1999/xhtml','video');
+        styleDiv(cont);
+
+        cont.setAttribute('muted',''); //iphone suuport - we need to mute audio to allow play/stop video from js
+        cont.setAttribute('preload','');
+        cont.setAttribute('loop','loop');
+        cont.setAttribute('playsinline',''); //for iphone support
+        cont.setAttribute('width',this.assetData.w);
+        cont.setAttribute('height',this.assetData.h);
+        cont.setAttribute('style','object-fit: fill');
+
+        // console.log(this.parentContainer.attributes);
+        if (this.parentContainer.getElementsByTagName('g').item(0) != undefined){
+            if (this.parentContainer.getElementsByTagName('g').item(0).attributes.item(0) != undefined) {
+                cont.setAttribute('style', 'clip-path:' + this.parentContainer.getElementsByTagName('g').item(0).attributes.item(0).textContent);
+            }
+        }
+
+        if (this.parentContainer.attributes.getNamedItem('clip-path') != undefined)
+            cont.setAttribute('style','-webkit-mask:'+this.parentContainer.attributes.getNamedItem('clip-path').textContent);
+
+        if (this.parentContainer.attributes.getNamedItem('data-clip-path') != undefined)
+            cont.setAttribute('style','-webkit-mask:'+this.parentContainer.attributes.getNamedItem('data-clip-path').textContent);
+
+        // if (this.parentContainer.attributes.item(0) != undefined)
+        //     cont.setAttribute('style','clip-path:'+this.parentContainer.attributes.item(0).textContent);
+
+
+
+
+
+        parent.appendChild(cont);
+
+
+        this.videoElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+        this.videoElem.setAttribute('src',assetPath);
+        cont.appendChild(this.videoElem);
+        this.layerElement = parent;
+        this.transformedElement = parent;
+        this.baseElement = parent;
+        this.innerElem = parent;
+        this.renderType = 'html';
+
+        // console.log(this.baseElement);
+
+        // console.log(this.parentContainer.parentElement.getElementsByTagName('g').item(0).attributes.item(0).textContent)
+        // console.log(this.parentContainer.getElementsByTagName('g').item(0).attributes.item(0).textContent)
+
+
+
+    }
+
+    this.checkParenting();
+};
+
+HVideoElement.prototype.hide = function(){
+    if(!this.hidden){
+        //we need to pause & reset video position in case we play this video again (like in loop)
+        if(this.baseElement.getElementsByTagName('video').length !=0) {
+            this.baseElement.getElementsByTagName('video')[0].pause();
+            this.baseElement.getElementsByTagName('video')[0].currentTime = 0;
+        }
+
+        this.layerElement.style.display = 'none';
+        this.hidden = true;
+    }
+};
+
+
+HVideoElement.prototype.renderFrame = function(parentMatrix){
+    var renderParent = this._parent.renderFrame.call(this,parentMatrix);
+    if(renderParent===false){
+        this.hide();
+        return;
+    }
+
+    if(this.hidden){
+
+
+        if(this.baseElement.getElementsByTagName('video').length !=0 && this.baseElement.getElementsByTagName('video')[0].currentTime == 0) {
+            this.baseElement.getElementsByTagName('video')[0].play();
+        }
+
+        this.hidden = false;
+        this.layerElement.style.display = 'block';
+    }
+    if(this.firstFrame){
+        this.firstFrame = false;
+    }
+};
+
+HVideoElement.prototype.destroy = function(){
+    this._parent.destroy.call();
+    this.innerElem =  null;
+};
+function HAudioElement(data,globalData,comp){
+    this.assetData = globalData.getAssetData(data.refId);
+    this.initElement(data,globalData,comp);
+}
+
+extendPrototype([BaseElement,TransformElement,HBaseElement,HSolidElement,HierarchyElement,FrameElement,RenderableElement], HAudioElement);
+
+HAudioElement.prototype.createContent = function(){
+
+    var assetPath = this.globalData.getAssetsPath(this.assetData);
+
+    var parent = document.createElement('div');
+    styleDiv(parent);
+
+    var cont = document.createElementNS('http://www.w3.org/1999/xhtml','audio');
+    styleDiv(cont);
+
+    cont.setAttribute('preload','');
+    cont.setAttribute('playsinline','');
+    parent.appendChild(cont);
+
+    this.audioElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+    this.audioElem.setAttribute('src',assetPath);
+    cont.appendChild(this.audioElem);
+    this.layerElement = parent;
+    this.transformedElement = parent;
+    this.baseElement = parent;
+    this.innerElem = parent;
+    this.renderType = 'html';
+
+    this.checkParenting();
+};
+
+
+
+HAudioElement.prototype.hide = function(){
+    if(!this.hidden){
+        //we need to pause & reset audio position in case we play this video again (like in loop)
+        if(this.baseElement.getElementsByTagName('audio').length !=0){
+            this.baseElement.getElementsByTagName('audio')[0].pause();
+            this.baseElement.getElementsByTagName('audio')[0].currentTime = 0;
+
+        }
+
+        this.layerElement.style.display = 'none';
+        this.hidden = true;
+    }
+};
+
+HAudioElement.prototype.renderFrame = function(parentMatrix){
+    var renderParent = this._parent.renderFrame.call(this,parentMatrix);
+    if(renderParent===false){
+        this.hide();
+        return;
+    }
+
+    if(this.hidden){
+        //play the video
+        if(this.comp.comp.animationItem.isPaused === false) {
+            if(this.baseElement.getElementsByTagName('audio').length !=0){
+                if (this.baseElement.getElementsByTagName('audio')[0].paused) {
+                    this.baseElement.getElementsByTagName('audio')[0].play();
+                }
+            }
+        }
+        this.hidden = false;
+        this.layerElement.style.display = 'block';
+    }
+    if(this.firstFrame){
+
+        this.firstFrame = false;
+    }
+};
+
+HAudioElement.prototype.destroy = function(){
+    this._parent.destroy.call();
+    this.innerElem =  null;
+};
+
 function HCameraElement(data,globalData,comp){
     this.initFrame();
     this.initBaseData(data,globalData,comp);
@@ -10153,6 +10536,13 @@ var animationManager = (function(){
         }
     }
 
+    function mute(animation) {
+        var i;
+        for(i=0;i<len;i+=1){
+            registeredAnimations[i].animation.mute(animation);
+        }
+    }
+
     function destroy(animation) {
         var i;
         for(i=(len-1);i>=0;i-=1){
@@ -10217,6 +10607,7 @@ var animationManager = (function(){
     moduleOb.play = play;
     moduleOb.pause = pause;
     moduleOb.stop = stop;
+    moduleOb.mute = mute;
     moduleOb.togglePause = togglePause;
     moduleOb.searchAnimations = searchAnimations;
     moduleOb.resize = resize;
@@ -10500,6 +10891,18 @@ AnimationItem.prototype.gotoFrame = function () {
     if(this.timeCompleted !== this.totalFrames && this.currentFrame > this.timeCompleted){
         this.currentFrame = this.timeCompleted;
     }
+
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+        if (this.layerIsStarted(layer)) {
+            // find the relative time of the video (in the current layer)
+            var goToTime = (this.currentFrame - layer.st) / (this.frameModifier * 1000);
+            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', goToTime);
+        }
+    }
+
     this.trigger('enterFrame');
     this.renderFrame();
 };
@@ -10515,6 +10918,50 @@ AnimationItem.prototype.renderFrame = function () {
     }
 };
 
+AnimationItem.prototype.playAudioVideo = function (element, action, goToTime) {
+    var videoCount = element.getElementsByTagName('video').length;
+    var audioCount = element.getElementsByTagName('audio').length;
+    var v, a;
+
+    switch (action) {
+        case 'play':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].play();
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].play();
+            }
+            break;
+        case 'pause':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].pause();
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].pause();
+            }
+            break;
+        case 'goToTime':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].currentTime = goToTime;
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].currentTime = goToTime;
+            }
+            break;
+    }
+}
+
+AnimationItem.prototype.layerIsStarted = function (layer) {
+    // ip = start time all video by FPS
+    // st = start specific time by FPS
+    // op = end time all video by FPS
+    if (layer.st <= this.currentRawFrame && this.currentRawFrame < layer.op) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 AnimationItem.prototype.play = function (name) {
     if(name && this.name != name){
         return;
@@ -10522,6 +10969,17 @@ AnimationItem.prototype.play = function (name) {
     if(this.isPaused === true){
         this.isPaused = false;
         if(this._idle){
+            var i, len = this.renderer.layers.length, layer;
+
+            for (i = len - 1; i >= 0; i--) {
+                layer = this.renderer.layers[i];
+                if (this.layerIsStarted(layer)) {
+                    if (this.isPaused === false) {
+                        this.playAudioVideo(this.renderer.layerElement.children[i], 'play', null);
+                    }
+                }
+            }
+
             this._idle = false;
             this.trigger('_active');
         }
@@ -10534,6 +10992,16 @@ AnimationItem.prototype.pause = function (name) {
     }
     if(this.isPaused === false){
         this.isPaused = true;
+
+        var i, len = this.renderer.layers.length, layer;
+
+        for (i = len - 1; i >= 0; i--) {
+            layer = this.renderer.layers[i];
+            if (this.layerIsStarted(layer)) {
+                this.playAudioVideo(this.renderer.layerElement.children[i], 'pause', null);
+            }
+        }
+
         this._idle = true;
         this.trigger('_idle');
     }
@@ -10558,6 +11026,79 @@ AnimationItem.prototype.stop = function (name) {
     this.playCount = 0;
     this._completedLoop = false;
     this.setCurrentRawFrameValue(0);
+
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+        if(this.layerIsStarted(layer)) {
+            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', 0);
+        }
+    }
+};
+
+// mute function
+AnimationItem.prototype.mute = function (name) {
+    if(name && this.name != name){
+        return;
+    }
+
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+
+        if (this.layerIsStarted(layer)) {
+            if (this.isMute === false || this.isMute == null) {
+                this.adjustAudio(this.renderer.elements, 'mute', false, null);
+                this.isMute = true;
+                break;
+            }
+            // TODO: CHECK with two audio's playing together
+            else if (this.isMute === true) {
+                this.adjustAudio(this.renderer.elements, 'mute', true, null);
+                this.isMute = false;
+                break;
+            }
+        }
+    }
+};
+
+AnimationItem.prototype.adjustAudio = function (elements, action, mute, volume) {
+
+    if (elements instanceof Array) {
+        for (i = 0; i < elements.length; i++) {
+            if (elements[i].baseElement.getElementsByTagName('audio').length != 0) {
+                if (action == 'mute') {
+                    if (mute === false) {
+                        elements[i].baseElement.getElementsByTagName('audio')[0].muted = true;
+                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = 0;
+                    }
+
+                    else if (mute === true) {
+                        elements[i].baseElement.getElementsByTagName('audio')[0].muted = false;
+                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = 1;
+                    }
+                } else if (action == 'setVolume') {
+                    elements[i].baseElement.getElementsByTagName('audio')[0].volume = volume;
+                }
+
+            }
+        }
+    }
+}
+
+// set volume function 0-1 (decimal option)
+AnimationItem.prototype.setVolumeRange = function (value) {
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+
+        if(this.layerIsStarted(layer)) {
+            this.adjustAudio(this.renderer.elements, 'setVolume', true, value);
+        }
+    }
 };
 
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
@@ -10913,6 +11454,7 @@ function getFactory(name) {
 
 lottie.play = animationManager.play;
 lottie.pause = animationManager.pause;
+lottie.mute = animationManager.mute;
 lottie.setLocationHref = setLocationHref;
 lottie.togglePause = animationManager.togglePause;
 lottie.setSpeed = animationManager.setSpeed;
@@ -10933,7 +11475,7 @@ lottie.freeze = animationManager.freeze;
 lottie.unfreeze = animationManager.unfreeze;
 lottie.getRegisteredAnimations = animationManager.getRegisteredAnimations;
 lottie.__getFactory = getFactory;
-lottie.version = '5.7.0';
+lottie.version = '5.7.1a0';
 
 function checkReady() {
     if (document.readyState === "complete") {

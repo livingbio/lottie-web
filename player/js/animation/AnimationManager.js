@@ -141,6 +141,13 @@ var animationManager = (function(){
         }
     }
 
+    function mute(animation) {
+        var i;
+        for(i=0;i<len;i+=1){
+            registeredAnimations[i].animation.mute(animation);
+        }
+    }
+
     function destroy(animation) {
         var i;
         for(i=(len-1);i>=0;i-=1){
@@ -205,6 +212,7 @@ var animationManager = (function(){
     moduleOb.play = play;
     moduleOb.pause = pause;
     moduleOb.stop = stop;
+    moduleOb.mute = mute;
     moduleOb.togglePause = togglePause;
     moduleOb.searchAnimations = searchAnimations;
     moduleOb.resize = resize;

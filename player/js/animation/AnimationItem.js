@@ -269,6 +269,18 @@ AnimationItem.prototype.gotoFrame = function () {
     if(this.timeCompleted !== this.totalFrames && this.currentFrame > this.timeCompleted){
         this.currentFrame = this.timeCompleted;
     }
+
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+        if (this.layerIsStarted(layer)) {
+            // find the relative time of the video (in the current layer)
+            var goToTime = (this.currentFrame - layer.st) / (this.frameModifier * 1000);
+            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', goToTime);
+        }
+    }
+
     this.trigger('enterFrame');
     this.renderFrame();
 };
@@ -284,6 +296,50 @@ AnimationItem.prototype.renderFrame = function () {
     }
 };
 
+AnimationItem.prototype.playAudioVideo = function (element, action, goToTime) {
+    var videoCount = element.getElementsByTagName('video').length;
+    var audioCount = element.getElementsByTagName('audio').length;
+    var v, a;
+
+    switch (action) {
+        case 'play':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].play();
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].play();
+            }
+            break;
+        case 'pause':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].pause();
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].pause();
+            }
+            break;
+        case 'goToTime':
+            for (v = 0; v < videoCount; v++) {
+                element.getElementsByTagName('video')[v].currentTime = goToTime;
+            }
+            for (a = 0; a < audioCount; a++) {
+                element.getElementsByTagName('audio')[a].currentTime = goToTime;
+            }
+            break;
+    }
+}
+
+AnimationItem.prototype.layerIsStarted = function (layer) {
+    // ip = start time all video by FPS
+    // st = start specific time by FPS
+    // op = end time all video by FPS
+    if (layer.st <= this.currentRawFrame && this.currentRawFrame < layer.op) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 AnimationItem.prototype.play = function (name) {
     if(name && this.name != name){
         return;
@@ -291,6 +347,17 @@ AnimationItem.prototype.play = function (name) {
     if(this.isPaused === true){
         this.isPaused = false;
         if(this._idle){
+            var i, len = this.renderer.layers.length, layer;
+
+            for (i = len - 1; i >= 0; i--) {
+                layer = this.renderer.layers[i];
+                if (this.layerIsStarted(layer)) {
+                    if (this.isPaused === false) {
+                        this.playAudioVideo(this.renderer.layerElement.children[i], 'play', null);
+                    }
+                }
+            }
+
             this._idle = false;
             this.trigger('_active');
         }
@@ -303,6 +370,16 @@ AnimationItem.prototype.pause = function (name) {
     }
     if(this.isPaused === false){
         this.isPaused = true;
+
+        var i, len = this.renderer.layers.length, layer;
+
+        for (i = len - 1; i >= 0; i--) {
+            layer = this.renderer.layers[i];
+            if (this.layerIsStarted(layer)) {
+                this.playAudioVideo(this.renderer.layerElement.children[i], 'pause', null);
+            }
+        }
+
         this._idle = true;
         this.trigger('_idle');
     }
@@ -327,6 +404,79 @@ AnimationItem.prototype.stop = function (name) {
     this.playCount = 0;
     this._completedLoop = false;
     this.setCurrentRawFrameValue(0);
+
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+        if(this.layerIsStarted(layer)) {
+            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', 0);
+        }
+    }
+};
+
+// mute function
+AnimationItem.prototype.mute = function (name) {
+    if(name && this.name != name){
+        return;
+    }
+
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+
+        if (this.layerIsStarted(layer)) {
+            if (this.isMute === false || this.isMute == null) {
+                this.adjustAudio(this.renderer.elements, 'mute', false, null);
+                this.isMute = true;
+                break;
+            }
+            // TODO: CHECK with two audio's playing together
+            else if (this.isMute === true) {
+                this.adjustAudio(this.renderer.elements, 'mute', true, null);
+                this.isMute = false;
+                break;
+            }
+        }
+    }
+};
+
+AnimationItem.prototype.adjustAudio = function (elements, action, mute, volume) {
+
+    if (elements instanceof Array) {
+        for (i = 0; i < elements.length; i++) {
+            if (elements[i].baseElement.getElementsByTagName('audio').length != 0) {
+                if (action == 'mute') {
+                    if (mute === false) {
+                        elements[i].baseElement.getElementsByTagName('audio')[0].muted = true;
+                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = 0;
+                    }
+
+                    else if (mute === true) {
+                        elements[i].baseElement.getElementsByTagName('audio')[0].muted = false;
+                        elements[i].baseElement.getElementsByTagName('audio')[0].volume = 1;
+                    }
+                } else if (action == 'setVolume') {
+                    elements[i].baseElement.getElementsByTagName('audio')[0].volume = volume;
+                }
+
+            }
+        }
+    }
+}
+
+// set volume function 0-1 (decimal option)
+AnimationItem.prototype.setVolumeRange = function (value) {
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+
+        if(this.layerIsStarted(layer)) {
+            this.adjustAudio(this.renderer.elements, 'setVolume', true, value);
+        }
+    }
 };
 
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {

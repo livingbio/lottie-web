@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const UglifyJS = require("uglify-js");
 
 const rootFolder = 'player/';
-const bm_version = '5.7.0';
+const bm_version = '5.7.1a0';
 const buildReducedVersion = process.argv[2] === 'reduced'
 const defaultBuilds = ['full', 'svg_light', 'svg', 'canvas', 'html', 'canvas_light', 'html_light', 'canvas_worker']
 
@@ -325,6 +325,10 @@ const scripts = [
 		builds: defaultBuilds
 	},
 	{
+		src: 'js/elements/VideoElement.js',
+		builds: defaultBuilds
+	},
+	{
 		src: 'js/elements/svgElements/SVGCompElement.js',
 		builds: ['full', 'svg', 'svg_light', 'html', 'html_light']
 	},
@@ -435,6 +439,14 @@ const scripts = [
 	{
 		src: 'js/elements/htmlElements/HImageElement.js',
 		builds: ['full', 'html', 'html_light']
+	},
+	{
+		src: 'js/elements/htmlElements/HVideoElement.js',
+		builds: ['full','html','html_light']
+	},
+	{
+		src: 'js/elements/htmlElements/HAudioElement.js',
+		builds: ['full','html','html_light']
 	},
 	{
 		src: 'js/elements/htmlElements/HCameraElement.js',

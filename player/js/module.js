@@ -73,6 +73,7 @@ function getFactory(name) {
 
 lottie.play = animationManager.play;
 lottie.pause = animationManager.pause;
+lottie.mute = animationManager.mute;
 lottie.setLocationHref = setLocationHref;
 lottie.togglePause = animationManager.togglePause;
 lottie.setSpeed = animationManager.setSpeed;
