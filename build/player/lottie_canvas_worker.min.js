@@ -7719,8 +7719,14 @@ IVideoElement.prototype.createContent = function(){
     videoElem.setAttribute('width',this.assetData.w);
     videoElem.setAttribute('height',this.assetData.h);
     videoElem.setAttribute('style','object-fit: fill');
-    videoElem.setAttribute('src',assetPath);
     this.innerElem.appendChild(videoElem);
+
+    var sourceElem = document.createElementNS('http://www.w3.org/1999/xhtml','source');
+    sourceElem.setAttribute('src',assetPath);
+    if (this.data.cl) {
+        sourceElem.setAttribute('type','video/'+this.data.cl);
+    }
+    videoElem.appendChild(sourceElem);
 
     // this.maskedElement = this.innerElem.parentElement;
     this.layerElement.appendChild(this.innerElem);
