@@ -341,12 +341,12 @@ AnimationItem.prototype.layerIsStarted = function (layer) {
 }
 
 AnimationItem.prototype.play = function (name) {
-    if (name && this.name != name) {
+    if(name && this.name != name){
         return;
     }
-    if (this.isPaused === true) {
+    if(this.isPaused === true){
         this.isPaused = false;
-        if (this._idle) {
+        if(this._idle){
             var i, len = this.renderer.layers.length, layer;
 
             for (i = len - 1; i >= 0; i--) {
@@ -365,10 +365,10 @@ AnimationItem.prototype.play = function (name) {
 };
 
 AnimationItem.prototype.pause = function (name) {
-    if (name && this.name != name) {
+    if(name && this.name != name){
         return;
     }
-    if (this.isPaused === false) {
+    if(this.isPaused === false){
         this.isPaused = true;
 
         var i, len = this.renderer.layers.length, layer;
@@ -480,16 +480,14 @@ AnimationItem.prototype.setVolumeRange = function (value) {
 };
 
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
-    if (name && this.name != name){
+    if(name && this.name != name){
         return;
     }
-
-    if (isFrame) {
+    if(isFrame){
         this.setCurrentRawFrameValue(value);
-    } else {
+    }else{
         this.setCurrentRawFrameValue(value * this.frameModifier);
     }
-
     this.pause();
 };
 
