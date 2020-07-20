@@ -9445,6 +9445,18 @@ AnimationItem.prototype.gotoFrame = function () {
     if(this.timeCompleted !== this.totalFrames && this.currentFrame > this.timeCompleted){
         this.currentFrame = this.timeCompleted;
     }
+
+    var i, len = this.renderer.layers.length, layer;
+
+    for (i = len - 1; i >= 0; i--) {
+        layer = this.renderer.layers[i];
+        if (this.layerIsStarted(layer)) {
+            // find the relative time of the video (in the current layer)
+            var goToTime = (this.currentFrame - layer.st) / (this.frameModifier * 1000);
+            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', goToTime);
+        }
+    }
+
     this.trigger('enterFrame');
     this.renderFrame();
 };
@@ -9505,12 +9517,12 @@ AnimationItem.prototype.layerIsStarted = function (layer) {
 }
 
 AnimationItem.prototype.play = function (name) {
-    if (name && this.name != name) {
+    if(name && this.name != name){
         return;
     }
-    if (this.isPaused === true) {
+    if(this.isPaused === true){
         this.isPaused = false;
-        if (this._idle) {
+        if(this._idle){
             var i, len = this.renderer.layers.length, layer;
 
             for (i = len - 1; i >= 0; i--) {
@@ -9529,10 +9541,10 @@ AnimationItem.prototype.play = function (name) {
 };
 
 AnimationItem.prototype.pause = function (name) {
-    if (name && this.name != name) {
+    if(name && this.name != name){
         return;
     }
-    if (this.isPaused === false) {
+    if(this.isPaused === false){
         this.isPaused = true;
 
         var i, len = this.renderer.layers.length, layer;
@@ -9644,27 +9656,14 @@ AnimationItem.prototype.setVolumeRange = function (value) {
 };
 
 AnimationItem.prototype.goToAndStop = function (value, isFrame, name) {
-    if (name && this.name != name){
+    if(name && this.name != name){
         return;
     }
-
-    if (isFrame) {
+    if(isFrame){
         this.setCurrentRawFrameValue(value);
-    } else {
+    }else{
         this.setCurrentRawFrameValue(value * this.frameModifier);
     }
-
-    var i, len = this.renderer.layers.length, layer;
-
-    for (i = len - 1; i >= 0; i--) {
-        layer = this.renderer.layers[i];
-        if (this.layerIsStarted(layer)) {
-            // find the relative time of the video (in the current layer)
-            var goToTime = (this.currentRawFrame - layer.st) / (this.frameModifier * 1000);
-            this.playAudioVideo(this.renderer.layerElement.children[i], 'goToTime', goToTime);
-        }
-    }
-
     this.pause();
 };
 
